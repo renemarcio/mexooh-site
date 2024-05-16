@@ -15,7 +15,7 @@ export default function MyAppShell({ children }: AppShellProps) {
   return (
     <AppShell header={{ height: 70 }}>
       <AppShell.Header>
-        <Group justify="space-between" maw={"1920px"} mx={"auto"}>
+        <Group justify="space-between" maw={"1960px"} px={"60"} mx={"auto"}>
           <Center h={70}>
             <Link href={"/"}>Logotipo</Link>
           </Center>
@@ -24,9 +24,11 @@ export default function MyAppShell({ children }: AppShellProps) {
             <ActionIcon variant="default">
               <IconLogin2 size={14} />
             </ActionIcon>
-            <ActionIcon variant="default">
-              <IconShoppingCart size={14} />
-            </ActionIcon>
+            <Link href={"/checkout"}>
+              <ActionIcon variant="default">
+                <IconShoppingCart size={14} />
+              </ActionIcon>
+            </Link>
           </Group>
         </Group>
       </AppShell.Header>
