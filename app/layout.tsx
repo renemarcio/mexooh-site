@@ -1,18 +1,26 @@
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
+import classes from "./styles.module.css";
 import React from "react";
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeScript,
+  Container,
+  Box,
+} from "@mantine/core";
 import { theme } from "../theme";
+import MyAppShell from "../components/AppShell";
 
 export const metadata = {
-  title: "Mantine Next.js template",
-  description: "I am using Mantine with Next.js!",
+  title: "Mex",
+  description: "Locação de painéis e outdoors é aqui!",
 };
 
 export default function RootLayout({ children }: { children: any }) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="dark" />
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"
@@ -20,7 +28,13 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
+          <MyAppShell>
+            <Box className={classes.body} mb={"330px"}>
+              {children}
+            </Box>
+          </MyAppShell>
+        </MantineProvider>
       </body>
     </html>
   );

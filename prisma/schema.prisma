@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cargos {
+  id           Int            @id @default(autoincrement()) @db.UnsignedInt
+  cargo        String         @unique(map: "cargo") @db.VarChar(25)
+  funcionarios funcionarios[]
+}
+
+model clientes {
+  id                 Int                  @id @default(autoincrement()) @db.UnsignedInt
+  pessoa             String               @db.Char(1)
+  cnpj_cpf           String               @unique(map: "cnpj_cpf") @db.VarChar(14)
+  nome               String               @db.VarChar(80)
+  fantasia           String               @db.VarChar(80)
+  ins_est_rg         String?              @db.Char(18)
+  segmento_id        Int                  @default(1) @db.UnsignedInt
+  cheque_nominal     Boolean              @default(false)
+  cheque_cruzado     Boolean              @default(false)
+  fornecedor         Boolean?             @default(false)
+  proprietario       Boolean?             @default(false)
+  socio              Boolean?             @default(false)
+  funcionario        Boolean?             @default(false)
+  agencia            Boolean?             @default(false)
+  segmentos          segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
+  enderecos_clientes enderecos_clientes[]
+
+  @@index([segmento_id], map: "clientes_fk2")
+}
+
+model empresas {
+  id           Int            @id @default(autoincrement()) @db.UnsignedInt
+  cnpj         String         @unique(map: "cnpj") @db.VarChar(14)
+  empresa      String         @db.VarChar(50)
+  fantasia     String         @db.VarChar(50)
+  sistema      Boolean?       @default(true)
+  CEP          String?        @db.Char(10)
+  Endereco     String         @db.VarChar(40)
+  Numero       String         @db.Char(5)
+  Complemento  String?        @db.VarChar(20)
+  Bairro       String         @db.VarChar(30)
+  Cidade       String?        @db.VarChar(30)
+  UF           String?        @db.Char(2)
+  funcionarios funcionarios[]
+}
+
+model enderecos_clientes {
+  id          Int      @default(autoincrement()) @db.UnsignedInt
+  cliente_id  Int      @db.UnsignedInt
+  cep         String?  @db.Char(10)
+  endereco    String?  @db.VarChar(50)
+  numero      String?  @db.Char(5)
+  complemento String?  @db.VarChar(20)
+  bairro      String?  @db.VarChar(30)
+  Cidade      String?  @db.VarChar(30)
+  UF          String?  @db.Char(2)
+  clientes    clientes @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "endereco_Clientes_fk1")
+
+  @@id([id, cliente_id])
+  @@index([cliente_id], map: "endereco_Clientes_fk1")
+}
+
+model funcionarios {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  cpf           String    @unique(map: "cpf") @db.VarChar(14)
+  nome          String    @db.VarChar(80)
+  ativo         Boolean?  @default(true)
+  data_admissao DateTime? @db.Date
+  data_demissao DateTime? @db.Date
+  empresa_id    Int?      @db.UnsignedInt
+  cargo_id      Int?      @db.UnsignedInt
+  login         String?   @unique(map: "login") @db.VarChar(10)
+  trocar_senha  Boolean?  @default(true)
+  senha         String?   @db.VarChar(100)
+  data_senha    DateTime? @db.Date
+  nivel         Int?      @db.UnsignedInt
+  CEP           String?   @db.Char(10)
+  Endereco      String?   @db.VarChar(50)
+  Numero        String?   @db.Char(5)
+  complemento   String?   @db.VarChar(20)
+  Bairro        String?   @db.VarChar(30)
+  Cidade        String?   @db.VarChar(30)
+  UF            String?   @db.Char(2)
+  empresas      empresas? @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk0")
+  cargos        cargos?   @relation(fields: [cargo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk2")
+
+  @@index([empresa_id], map: "funcionarios_fk0")
+  @@index([cargo_id], map: "funcionarios_fk2")
+}
+
+model segmentos {
+  id       Int        @id @default(autoincrement()) @db.UnsignedInt
+  segmento String     @unique(map: "segmento") @db.VarChar(40)
+  clientes clientes[]
+}

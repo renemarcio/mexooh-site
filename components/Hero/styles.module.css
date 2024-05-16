@@ -1,0 +1,29 @@
+.controls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+}
+
+.root {
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
+  }
+}
+
+.control {
+  background-color: white;
+}
+
+.indicator {
+  background-color: white;
+}
+/* 
+.bgImg {
+  filter: blur(0px);
+  transition: 150ms ease;
+}
+
+.bgImg:hover {
+  filter: blur(5px);
+} */
