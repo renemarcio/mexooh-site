@@ -1,6 +1,3 @@
-import "@mantine/core/styles.css";
-import "@mantine/carousel/styles.css";
-import classes from "./styles.module.css";
 import React from "react";
 import {
   MantineProvider,
@@ -10,6 +7,10 @@ import {
 } from "@mantine/core";
 import { theme } from "../theme";
 import MyAppShell from "../components/AppShell";
+// import { MidiaTheme } from "../lib/theme";
+import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
+import classes from "./styles.module.css";
 
 export const metadata = {
   title: "Mex",

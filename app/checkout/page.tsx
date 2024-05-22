@@ -2,9 +2,16 @@
 import { Button, Card, Center, Space, Stepper } from "@mantine/core";
 import React, { useState } from "react";
 import LoginForm from "../../components/LoginForm";
+import RegisterPFForm from "../../components/RegisterPFForm";
+import RegisterPJForm from "../../components/RegisterPJForm";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
+
+  function handleStepSwitch(step: number) {
+    setCurrentStep(Math.min(Math.max(step, 0), 3));
+  }
+
   return (
     <>
       <Space h={"100px"} />
@@ -22,6 +29,8 @@ export default function Checkout() {
           </Card.Section>
           <Card.Section p={"xl"}>
             <LoginForm />
+            <RegisterPFForm />
+            <RegisterPJForm />
           </Card.Section>
         </Card>
       </Center>

@@ -1,3 +1,11 @@
 .tableBody {
   background-color: var(--mantine-color-body);
 }
+
+.title {
+  color: var(--mantine-color-white);
+}
+
+.background {
+  background-color: var(--mantine-primary-color-filled);
+}

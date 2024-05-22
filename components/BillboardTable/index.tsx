@@ -28,8 +28,9 @@ export default function BillboardTable() {
 
   return (
     <>
-      <Group grow>
+      <Group gap={0}>
         <TextInput
+          flex={3}
           value={address}
           placeholder="Endereço..."
           onBlur={() => {
@@ -38,7 +39,7 @@ export default function BillboardTable() {
           }}
           onChange={(e) => setAddress(e.currentTarget.value)}
         />
-        <Select placeholder="Cidade..." />
+        <Select flex={1} placeholder="Cidade..." />
       </Group>
       <Table striped highlightOnHover withColumnBorders withTableBorder>
         <Table.Thead>

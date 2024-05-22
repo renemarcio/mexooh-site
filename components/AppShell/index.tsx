@@ -1,11 +1,12 @@
 "use client";
 
-import { ActionIcon, AppShell, Center, Group } from "@mantine/core";
+import { ActionIcon, AppShell, Box, Center, Group, Stack } from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import React from "react";
 import { Footer } from "../Footer";
 import ThemeToggleIcon from "../ThemeToggleIcon";
 import Link from "next/link";
+import Logo from "../Logo";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -16,8 +17,12 @@ export default function MyAppShell({ children }: AppShellProps) {
     <AppShell header={{ height: 70 }}>
       <AppShell.Header>
         <Group justify="space-between" maw={"1960px"} px={"60"} mx={"auto"}>
-          <Center h={70}>
-            <Link href={"/"}>Logotipo</Link>
+          <Center>
+            <Link href={"/"}>
+              <Box h={70} p={10}>
+                <Logo />
+              </Box>
+            </Link>
           </Center>
           <Group>
             <ThemeToggleIcon />
