@@ -12,7 +12,7 @@ type HeroProps = {
 };
 
 export default function Hero({ slides }: HeroProps) {
-  const autoplay = useRef(Autoplay({ delay: 5000 } as AutoplayOptionsType));
+  const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
 
   const cardsData: SlideData[] = [
     {
@@ -53,7 +53,7 @@ export default function Hero({ slides }: HeroProps) {
       plugins={[autoplay.current]}
       onMouseEnter={autoplay.current.stop}
       onMouseLeave={autoplay.current.reset}
-      speed={2}
+      speed={5}
       classNames={classes}
     >
       <Carousel.Slide>

@@ -1,9 +1,7 @@
 "use client";
-import { Button, Card, Center, Space, Stepper } from "@mantine/core";
+import { Card, Center, Space, Stepper } from "@mantine/core";
 import React, { useState } from "react";
 import LoginForm from "../../components/LoginForm";
-import RegisterPFForm from "../../components/RegisterPFForm";
-import RegisterPJForm from "../../components/RegisterPJForm";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,8 +27,6 @@ export default function Checkout() {
           </Card.Section>
           <Card.Section p={"xl"}>
             <LoginForm />
-            <RegisterPFForm />
-            <RegisterPJForm />
           </Card.Section>
         </Card>
       </Center>

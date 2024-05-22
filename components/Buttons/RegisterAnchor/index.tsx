@@ -1,22 +1,13 @@
 import { Anchor, Button, Center, Group, Modal, Stack } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import {
-  IconBuilding,
-  IconUser,
-  IconUserPlus,
-  IconUsersGroup,
-} from "@tabler/icons-react";
-import React, { useState } from "react";
+import { IconBuilding, IconUser } from "@tabler/icons-react";
+import React from "react";
 import RegisterPJForm from "../../RegisterPJForm";
 import RegisterPFForm from "../../RegisterPFForm";
-
+import { modals } from "@mantine/modals";
 export default function RegisterAnchor() {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [type, setType] = useState<"pf" | "pj" | null>(null);
-
   const selectTypeModal = (
     <Group>
-      <Button w={"10rem"} h={"10rem"} onClick={() => setType("pf")}>
+      <Button w={"10rem"} h={"10rem"} onClick={pfModal}>
         <Stack>
           <Center>
             <IconUser size={50} />
@@ -24,7 +15,7 @@ export default function RegisterAnchor() {
           Pessoa Física
         </Stack>
       </Button>
-      <Button w={"10rem"} h={"10rem"} onClick={() => setType("pj")}>
+      <Button w={"10rem"} h={"10rem"} onClick={pjModal}>
         <Stack>
           <Center>
             <IconBuilding size={50} />
@@ -35,37 +26,41 @@ export default function RegisterAnchor() {
     </Group>
   );
 
-  const pjModal = <RegisterPJForm />;
-  const pfModal = <RegisterPFForm />;
+  function selectModal() {
+    modals.open({
+      title: "Crie sua conta",
+      children: selectTypeModal,
+      centered: true,
+      size: "auto",
+    });
+  }
+
+  function pfModal() {
+    modals.open({
+      title: "Pessoa Física",
+      children: <RegisterPFForm />,
+      centered: true,
+      size: "auto",
+    });
+  }
+
+  function pjModal() {
+    modals.open({
+      title: "Pessoa Jurídica",
+      children: <RegisterPJForm />,
+      centered: true,
+      size: "auto",
+    });
+  }
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={() => {
-          close();
-          setType(null);
-        }}
-        withCloseButton
-        centered
-        size={"auto"}
-        title={
-          type === null
-            ? "Crie sua conta "
-            : type === "pf"
-            ? "Pessoa Física"
-            : "Pessoa Juridica"
-        }
-      >
-        {type === null ? selectTypeModal : type === "pf" ? pjModal : pfModal}
-      </Modal>
-
       <Anchor
         ta={"center"}
         href="#"
         onClick={(e) => {
           e.preventDefault();
-          open();
+          selectModal();
         }}
         size="xs"
         fw={600}

@@ -28,26 +28,31 @@ model clientes {
   socio              Boolean?             @default(false)
   funcionario        Boolean?             @default(false)
   agencia            Boolean?             @default(false)
+  email              String?              @db.VarChar(100)
+  password           String?              @db.VarChar(100)
   segmentos          segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
   enderecos_clientes enderecos_clientes[]
+  inventarios        inventarios[]
 
   @@index([segmento_id], map: "clientes_fk2")
 }
 
 model empresas {
-  id           Int            @id @default(autoincrement()) @db.UnsignedInt
-  cnpj         String         @unique(map: "cnpj") @db.VarChar(14)
-  empresa      String         @db.VarChar(50)
-  fantasia     String         @db.VarChar(50)
-  sistema      Boolean?       @default(true)
-  CEP          String?        @db.Char(10)
-  Endereco     String         @db.VarChar(40)
-  Numero       String         @db.Char(5)
-  Complemento  String?        @db.VarChar(20)
-  Bairro       String         @db.VarChar(30)
-  Cidade       String?        @db.VarChar(30)
-  UF           String?        @db.Char(2)
-  funcionarios funcionarios[]
+  id                                                     Int            @id @default(autoincrement()) @db.UnsignedInt
+  cnpj                                                   String         @unique(map: "cnpj") @db.VarChar(14)
+  empresa                                                String         @db.VarChar(50)
+  fantasia                                               String         @db.VarChar(50)
+  ativo                                                  Boolean?       @default(true)
+  CEP                                                    String?        @db.Char(10)
+  Endereco                                               String         @db.VarChar(40)
+  Numero                                                 String         @db.Char(5)
+  Complemento                                            String?        @db.VarChar(20)
+  Bairro                                                 String         @db.VarChar(30)
+  cidade                                                 String?        @db.VarChar(30)
+  uf                                                     String?        @db.Char(2)
+  funcionarios                                           funcionarios[]
+  inventarios_inventarios_id_EmpresaNegocioToempresas    inventarios[]  @relation("inventarios_id_EmpresaNegocioToempresas")
+  inventarios_inventarios_id_EmpresaContaPagarToempresas inventarios[]  @relation("inventarios_id_EmpresaContaPagarToempresas")
 }
 
 model enderecos_clientes {
@@ -58,8 +63,8 @@ model enderecos_clientes {
   numero      String?  @db.Char(5)
   complemento String?  @db.VarChar(20)
   bairro      String?  @db.VarChar(30)
-  Cidade      String?  @db.VarChar(30)
-  UF          String?  @db.Char(2)
+  cidade      String?  @db.VarChar(30)
+  uf          String?  @db.Char(2)
   clientes    clientes @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "endereco_Clientes_fk1")
 
   @@id([id, cliente_id])
@@ -85,8 +90,8 @@ model funcionarios {
   Numero        String?   @db.Char(5)
   complemento   String?   @db.VarChar(20)
   Bairro        String?   @db.VarChar(30)
-  Cidade        String?   @db.VarChar(30)
-  UF            String?   @db.Char(2)
+  cidade        String?   @db.VarChar(30)
+  uf            String?   @db.Char(2)
   empresas      empresas? @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk0")
   cargos        cargos?   @relation(fields: [cargo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk2")
 
@@ -98,4 +103,44 @@ model segmentos {
   id       Int        @id @default(autoincrement()) @db.UnsignedInt
   segmento String     @unique(map: "segmento") @db.VarChar(40)
   clientes clientes[]
+}
+
+model dimensoes {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  dimensao    String?       @db.VarChar(25)
+  inventarios inventarios[]
+}
+
+model inventarios {
+  id                                                  Int             @id @db.UnsignedInt
+  id_Proprietario                                     Int             @db.UnsignedInt
+  id_EmpresaNegocio                                   Int             @default(1) @db.UnsignedInt
+  id_EmpresaContaPagar                                Int             @default(1) @db.UnsignedInt
+  id_TipoInventario                                   Int             @default(1) @db.UnsignedInt
+  Localizacao                                         String?         @db.VarChar(100)
+  ativo                                               Int             @default(0)
+  id_dimensao                                         Int?            @default(0) @db.UnsignedInt
+  cidade                                              String?         @db.VarChar(30)
+  uf                                                  String?         @db.Char(2)
+  Face                                                String?         @db.VarChar(20)
+  Urbanizado                                          String?         @db.Char(1)
+  Iluminado                                           String?         @db.Char(1)
+  LinkGoogleMaps                                      String?         @db.VarChar(50)
+  clientes                                            clientes        @relation(fields: [id_Proprietario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk1")
+  empresas_inventarios_id_EmpresaNegocioToempresas    empresas        @relation("inventarios_id_EmpresaNegocioToempresas", fields: [id_EmpresaNegocio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk2")
+  empresas_inventarios_id_EmpresaContaPagarToempresas empresas        @relation("inventarios_id_EmpresaContaPagarToempresas", fields: [id_EmpresaContaPagar], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk3")
+  tipoinventarios                                     tipoinventarios @relation(fields: [id_TipoInventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk4")
+  dimensoes                                           dimensoes?      @relation(fields: [id_dimensao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk5")
+
+  @@index([id_Proprietario], map: "inventarios_fk1")
+  @@index([id_EmpresaNegocio], map: "inventarios_fk2")
+  @@index([id_EmpresaContaPagar], map: "inventarios_fk3")
+  @@index([id_TipoInventario], map: "inventarios_fk4")
+  @@index([id_dimensao], map: "inventarios_fk5")
+}
+
+model tipoinventarios {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  inventario  String?       @db.VarChar(50)
+  inventarios inventarios[]
 }

@@ -1,15 +1,4 @@
-import {
-  Anchor,
-  Box,
-  Button,
-  ButtonGroup,
-  Group,
-  Paper,
-  PasswordInput,
-  Stack,
-  TextInput,
-  Text,
-} from "@mantine/core";
+import { Button, Paper, Stack, TextInput } from "@mantine/core";
 import React from "react";
 import PasswordInputWithRecovery from "../Inputs/PasswordInputWithRecovery";
 import RegisterAnchor from "../Buttons/RegisterAnchor";
@@ -20,7 +9,6 @@ export default function LoginForm() {
       <form>
         <Stack gap={"md"}>
           <TextInput label="Email" placeholder="Email" />
-          {/* <PasswordInput label="Senha" /> */}
           <PasswordInputWithRecovery />
           <Stack gap={"xs"}>
             <RegisterAnchor />

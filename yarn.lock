@@ -210,6 +210,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/modals@npm:^7.9.2":
+  version: 7.9.2
+  resolution: "@mantine/modals@npm:7.9.2"
+  peerDependencies:
+    "@mantine/core": 7.9.2
+    "@mantine/hooks": 7.9.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 10c0/5e4d30823f0f158d4203666cec49c923ebfa4f300ba920add5d37efc2b77224c9a7eeccacc4282d9b3a37e7fd60444044e49a09c1cef74be6316f1d44ff36ec1
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:14.2.3":
   version: 14.2.3
   resolution: "@next/env@npm:14.2.3"
@@ -2532,6 +2544,7 @@ __metadata:
     "@mantine/carousel": "npm:^7.9.1"
     "@mantine/core": "npm:7.9.1"
     "@mantine/hooks": "npm:7.9.1"
+    "@mantine/modals": "npm:^7.9.2"
     "@prisma/client": "npm:^5.14.0"
     "@tabler/icons-react": "npm:^3.3.0"
     "@types/node": "npm:20.12.12"

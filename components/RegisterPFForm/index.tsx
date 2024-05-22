@@ -1,10 +1,16 @@
 import { Paper, Stack, TextInput, Button, PasswordInput } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import React from "react";
 
 export default function RegisterPFForm() {
   return (
     <Paper mx={"auto"} maw={"400px"} withBorder shadow="md" p={"lg"}>
-      <form>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          modals.closeAll();
+        }}
+      >
         <Stack>
           <TextInput label="Nome" />
           <TextInput label="Email" />

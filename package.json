@@ -12,6 +12,7 @@
     "@mantine/carousel": "^7.9.1",
     "@mantine/core": "7.9.1",
     "@mantine/hooks": "7.9.1",
+    "@mantine/modals": "^7.9.2",
     "@prisma/client": "^5.14.0",
     "@tabler/icons-react": "^3.3.0",
     "embla-carousel-autoplay": "^7.1.0",

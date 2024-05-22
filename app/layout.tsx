@@ -11,6 +11,7 @@ import MyAppShell from "../components/AppShell";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./styles.module.css";
+import { ModalsProvider } from "@mantine/modals";
 
 export const metadata = {
   title: "Mex",
@@ -30,11 +31,13 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-          <MyAppShell>
-            <Box className={classes.body} mb={"330px"}>
-              {children}
-            </Box>
-          </MyAppShell>
+          <ModalsProvider>
+            <MyAppShell>
+              <Box className={classes.body} mb={"330px"}>
+                {children}
+              </Box>
+            </MyAppShell>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>
