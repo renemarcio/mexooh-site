@@ -52,7 +52,7 @@ export default function BillboardTable() {
   ));
 
   return (
-    <Stack justify="space-between" gap={0} h={"100%"}>
+    <Stack justify="space-between" gap={0} h={"100%"} w={"100%"}>
       <Box>
         <Group gap={0}>
           <TextInput
@@ -74,69 +74,7 @@ export default function BillboardTable() {
               <Table.Th ta={"center"}>Estado</Table.Th>
             </Table.Tr>
           </Table.Thead>
-          <Table.Tbody h={"100%"}>
-            {/* <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td ta={"left"}>Rua Marino Alves Palomo</Table.Td>
-            <Table.Td>Outdoor</Table.Td>
-            <Table.Td>R$ 1.325,00</Table.Td>
-          </Table.Tr> */}
-            {tableRows}
-          </Table.Tbody>
+          <Table.Tbody h={"100%"}>{tableRows}</Table.Tbody>
         </Table>
       </Box>
       <Box>
