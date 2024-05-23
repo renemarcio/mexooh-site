@@ -1,22 +1,64 @@
 import { Paper, Stack, TextInput, Button, PasswordInput } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { useForm } from "@mantine/form";
 import React from "react";
 
 export default function RegisterPFForm() {
+  const form = useForm({
+    initialValues: {
+      nome: "",
+      email: "",
+      cpf: "",
+      password: "",
+      confirmarSenha: "",
+    },
+
+    validate: {
+      confirmarSenha: (value, values) =>
+        value !== values.password ? "As senhas precisam ser iguais" : null,
+    },
+  });
+
+  async function handleSubmit(values: any) {
+    const res = await fetch("http://localhost:3000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    console.log(res);
+    if (res.ok) {
+      modals.closeAll();
+    } else {
+      console.log("Error");
+      console.log(await res.json());
+    }
+  }
+
   return (
-    <Paper mx={"auto"} maw={"400px"} withBorder shadow="md" p={"lg"}>
+    <Paper w={"400px"} withBorder p={"lg"}>
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          modals.closeAll();
-        }}
+        onSubmit={form.onSubmit((values) => {
+          handleSubmit(values);
+        })}
       >
         <Stack>
-          <TextInput label="Nome" />
-          <TextInput label="Email" />
-          <TextInput label="CPF" />
-          <PasswordInput label="Senha" />
-          <PasswordInput label="Repita a senha" />
+          <TextInput required {...form.getInputProps("nome")} label="Nome" />
+          <TextInput required {...form.getInputProps("email")} label="Email" />
+          <TextInput required {...form.getInputProps("cpf")} label="CPF" />
+          <PasswordInput
+            required
+            {...form.getInputProps("password")}
+            label="Senha"
+          />
+          <PasswordInput
+            required
+            {...form.getInputProps("confirmarSenha")}
+            onBlur={() => form.validateField("confirmarSenha")}
+            onSelect={() => form.clearFieldError("confirmarSenha")}
+            label="Repita a senha"
+          />
           <Button type="submit">Cadastrar</Button>
         </Stack>
       </form>

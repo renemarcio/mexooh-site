@@ -1,4 +1,12 @@
-import { Text, Container, ActionIcon, Group, rem, Stack } from "@mantine/core";
+import {
+  Text,
+  Container,
+  ActionIcon,
+  Group,
+  rem,
+  Stack,
+  Box,
+} from "@mantine/core";
 import {
   IconBrandTwitter,
   IconBrandYoutube,
@@ -8,6 +16,7 @@ import classes from "./Footer.module.css";
 import { RiMastercardFill, RiVisaLine } from "react-icons/ri";
 import { FaBarcode, FaCcAmex, FaCcDinersClub } from "react-icons/fa";
 import { SiNubank } from "react-icons/si";
+import Logo from "../Logo";
 
 // const data = [
 //   {
@@ -66,7 +75,6 @@ export function Footer() {
       <Container className={classes.inner}>
         <div className={classes.logo}>
           Mídia Painéis
-          {/* <MantineLogo size={30} /> */}
           <Text size="xs" c="dimmed" className={classes.description}>
             R. João Evangelista, 380
             <br />

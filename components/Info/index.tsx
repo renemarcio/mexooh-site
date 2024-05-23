@@ -3,7 +3,6 @@ import {
   Center,
   Container,
   Group,
-  Image,
   Stack,
   Text,
   Title,

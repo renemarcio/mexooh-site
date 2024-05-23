@@ -1,23 +1,59 @@
 import { Paper, Stack, TextInput, PasswordInput, Button } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React from "react";
 
 export default function RegisterPJForm() {
+  const form = useForm({
+    initialValues: {
+      nome: "",
+      fantasia: "",
+      email: "",
+      cnpj: "",
+      senha: "",
+      confirmarSenha: "",
+    },
+
+    validate: {
+      confirmarSenha: (value, values) =>
+        value !== values.senha ? "As senhas precisam ser iguais" : null,
+    },
+  });
+
+  function handleSubmit(values: any) {
+    console.log(values);
+    modals.closeAll();
+  }
   return (
-    <Paper mx={"auto"} maw={"400px"} withBorder shadow="md" p={"lg"}>
+    <Paper w={"400px"} withBorder p={"lg"}>
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          modals.closeAll();
-        }}
+        onSubmit={form.onSubmit((values) => {
+          handleSubmit(values);
+        })}
       >
         <Stack>
-          <TextInput label="Nome da empresa" />
-          <TextInput label="Nome fantasia da empresa" />
-          <TextInput label="Email" />
-          <TextInput label="CNPJ" />
-          <PasswordInput label="Senha" />
-          <PasswordInput label="Repita a senha" />
+          <TextInput
+            required
+            {...form.getInputProps("nome")}
+            label="Nome da empresa"
+          />
+          <TextInput
+            required
+            {...form.getInputProps("fantasia")}
+            label="Nome fantasia da empresa"
+          />
+          <TextInput required {...form.getInputProps("email")} label="Email" />
+          <TextInput required {...form.getInputProps("cnpj")} label="CNPJ" />
+          <PasswordInput
+            required
+            {...form.getInputProps("senha")}
+            label="Senha"
+          />
+          <PasswordInput
+            required
+            {...form.getInputProps("confirmarSenha")}
+            label="Repita a senha"
+          />
           <Button type="submit">Cadastrar</Button>
         </Stack>
       </form>
