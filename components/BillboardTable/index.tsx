@@ -21,12 +21,18 @@ export default function BillboardTable() {
   const [billboards, setBillboards] = useState<inventarios[]>([]);
 
   async function handleBillboardFetch() {
-    const response = await fetch(
-      `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}`
-    );
-    const data = await response.json();
-    setTotalPages(data.totalPages);
-    setBillboards(data.billboards);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}`
+      );
+      const data = await response.json();
+      setTotalPages(data.totalPages);
+      setBillboards(data.billboards);
+    } catch {
+      setBillboards([]);
+      setTotalPages(0);
+      console.log("Couldn't fetch billboards.");
+    }
   }
 
   useEffect(() => {

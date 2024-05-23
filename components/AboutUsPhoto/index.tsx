@@ -7,7 +7,9 @@ export default function AboutUsPhoto() {
       pos={"relative"}
       w={"35vw"}
       h={"28vw"}
+      maw={"648px"}
       miw={"324px"}
+      mah={"516px"}
       mih={"258px"}
       top={"-10px"}
       mx="auto"

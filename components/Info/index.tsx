@@ -40,25 +40,29 @@ export default function Info() {
                 Megalight.
               </Text>
               <Text size={"lg"}>
-                Além disso, a Mídia Painéis também trabalha com outdoors e mídia
-                aeroportuária, com pontos de exibição de propaganda nos
-                aeroportos internacionais de Viracopos (Campinas) e Congonhas
-                (São Paulo), possibilitando uma grande exposição da sua marca
-                junto aos consumidores.
+              Além disso, a Mídia Painéis também trabalha com outdoors e mídia
+              aeroportuária, com pontos de exibição de propaganda nos
+              aeroportos internacionais de Viracopos (Campinas) e Congonhas
+              (São Paulo), possibilitando uma grande exposição da sua marca
+              junto aos consumidores.
               </Text> */}
-              <Text size={"lg"}>
-                Bem-vindo à{" "}
-                <Text component="span" fw={800}>
+              <Box>
+                <Text size={"lg"} component="span">
+                  Bem-vindo à{" "}
+                </Text>
+                <Text size={"lg"} component="span" fw={800}>
                   MEX
                 </Text>
-                , o seu parceiro confiável em mídia externa na vibrante região
-                de Itapetininga, Sorocaba, São Paulo e arredores! Nós somos mais
-                do que apenas uma empresa de aluguel de outdoors e painéis;
-                somos impulsionadores de marcas, contadores de histórias e
-                conectores de comunidades. Desde a nossa humilde origem, temos
-                crescido de forma constante e rápida, alimentados pela paixão em
-                oferecer soluções de publicidade externa que realmente fazem a
-                diferença.
+                <Text component="span" size={"lg"}>
+                  , o seu parceiro confiável em mídia externa na vibrante região
+                  de Itapetininga, Sorocaba, São Paulo e arredores! Nós somos
+                  mais do que apenas uma empresa de aluguel de outdoors e
+                  painéis; somos impulsionadores de marcas, contadores de
+                  histórias e conectores de comunidades. Desde a nossa humilde
+                  origem, temos crescido de forma constante e rápida,
+                  alimentados pela paixão em oferecer soluções de publicidade
+                  externa que realmente fazem a diferença.
+                </Text>
                 <Text size={"lg"}>
                   O que nos diferencia? É o nosso compromisso com a excelência,
                   desde a seleção estratégica de locais premium até a execução
@@ -93,11 +97,11 @@ export default function Info() {
                   com você e criar experiências de publicidade externa que
                   deixam uma impressão duradoura.
                 </Text>
-              </Text>
-              <Text size={"xs"} ta={"center"} c={"dimmed"}>
-                Texto feito por IA e é apenas um placeholder, trocar antes de
-                realizar o deploy!
-              </Text>
+                <Text size={"xs"} ta={"center"} c={"dimmed"}>
+                  Texto feito por IA e é apenas um placeholder, trocar antes de
+                  realizar o deploy!
+                </Text>
+              </Box>
             </Stack>
           </Container>
         </Group>

@@ -118,7 +118,7 @@ model inventarios {
   id_EmpresaContaPagar                                Int             @default(1) @db.UnsignedInt
   id_TipoInventario                                   Int             @default(1) @db.UnsignedInt
   Localizacao                                         String?         @db.VarChar(100)
-  ativo                                               Int             @default(0)
+  ativo                                               Boolean?        @default(true)
   id_dimensao                                         Int?            @default(0) @db.UnsignedInt
   cidade                                              String?         @db.VarChar(30)
   uf                                                  String?         @db.Char(2)

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
             },
           },
           {
-            ativo: 1,
+            ativo: true,
           },
         ],
       },
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
             },
           },
           {
-            ativo: 1,
+            ativo: true,
           },
         ],
       },
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
             },
           },
           {
-            ativo: 1,
+            ativo: true,
           },
           {
             Localizacao: {
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
             },
           },
           {
-            ativo: 1,
+            ativo: true,
           },
           {
             Localizacao: {
