@@ -10,20 +10,33 @@ export default function RegisterPJForm() {
       fantasia: "",
       email: "",
       cnpj: "",
-      senha: "",
+      password: "",
       confirmarSenha: "",
     },
 
     validate: {
       confirmarSenha: (value, values) =>
-        value !== values.senha ? "As senhas precisam ser iguais" : null,
+        value !== values.password ? "As senhas precisam ser iguais" : null,
     },
   });
 
-  function handleSubmit(values: any) {
-    console.log(values);
-    modals.closeAll();
+  async function handleSubmit(values: any) {
+    const res = await fetch("http://localhost:3000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    console.log(res);
+    if (res.ok) {
+      modals.closeAll();
+    } else {
+      console.log("Error");
+      console.log(await res.json());
+    }
   }
+
   return (
     <Paper w={"400px"} withBorder p={"lg"}>
       <form
@@ -46,7 +59,7 @@ export default function RegisterPJForm() {
           <TextInput required {...form.getInputProps("cnpj")} label="CNPJ" />
           <PasswordInput
             required
-            {...form.getInputProps("senha")}
+            {...form.getInputProps("password")}
             label="Senha"
           />
           <PasswordInput
