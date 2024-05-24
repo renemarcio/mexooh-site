@@ -11,65 +11,15 @@ import {
   IconBrandTwitter,
   IconBrandYoutube,
   IconBrandInstagram,
+  IconBrandFacebook,
 } from "@tabler/icons-react";
 import classes from "./Footer.module.css";
 import { RiMastercardFill, RiVisaLine } from "react-icons/ri";
 import { FaBarcode, FaCcAmex, FaCcDinersClub } from "react-icons/fa";
 import { SiNubank } from "react-icons/si";
-import Logo from "../Logo";
-
-// const data = [
-//   {
-//     title: "About",
-//     links: [
-//       { label: "Features", link: "#" },
-//       { label: "Pricing", link: "#" },
-//       { label: "Support", link: "#" },
-//       { label: "Forums", link: "#" },
-//     ],
-//   },
-//   {
-//     title: "Project",
-//     links: [
-//       { label: "Contribute", link: "#" },
-//       { label: "Media assets", link: "#" },
-//       { label: "Changelog", link: "#" },
-//       { label: "Releases", link: "#" },
-//     ],
-//   },
-//   {
-//     title: "Community",
-//     links: [
-//       { label: "Join Discord", link: "#" },
-//       { label: "Follow on Twitter", link: "#" },
-//       { label: "Email newsletter", link: "#" },
-//       { label: "GitHub discussions", link: "#" },
-//     ],
-//   },
-// ];
+import Link from "next/link";
 
 export function Footer() {
-  //   const groups = data.map((group) => {
-  //     const links = group.links.map((link, index) => (
-  //       <Text<"a">
-  //         key={index}
-  //         className={classes.link}
-  //         component="a"
-  //         href={link.link}
-  //         onClick={(event) => event.preventDefault()}
-  //       >
-  //         {link.label}
-  //       </Text>
-  //     ));
-
-  //     return (
-  //       <div className={classes.wrapper} key={group.title}>
-  //         <Text className={classes.title}>{group.title}</Text>
-  //         {links}
-  //       </div>
-  //     );
-  //   });
-
   return (
     <footer className={classes.footer}>
       <Container className={classes.inner}>
@@ -103,19 +53,33 @@ export function Footer() {
           justify="flex-end"
           wrap="nowrap"
         >
-          <ActionIcon size="lg" color="gray" variant="subtle">
+          {/* <ActionIcon size="lg" color="gray" variant="subtle">
             <IconBrandTwitter
               style={{ width: rem(18), height: rem(18) }}
               stroke={1.5}
             />
-          </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube
+          </ActionIcon> */}
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            component={Link}
+            href={"https://www.facebook.com/midiapaineis/"}
+            target={"_blank"}
+          >
+            <IconBrandFacebook
               style={{ width: rem(18), height: rem(18) }}
               stroke={1.5}
             />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            component={Link}
+            href={"https://www.instagram.com/mex_ooh/"}
+            target={"_blank"}
+          >
             <IconBrandInstagram
               style={{ width: rem(18), height: rem(18) }}
               stroke={1.5}

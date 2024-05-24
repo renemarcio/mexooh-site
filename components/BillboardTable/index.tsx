@@ -108,7 +108,6 @@ export default function BillboardTable() {
               </Table>
               <Center w={"100%"}>
                 <Pagination
-                  // withEdges
                   total={totalPages}
                   value={activePage}
                   onChange={setPage}
