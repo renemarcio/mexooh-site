@@ -3,7 +3,8 @@
 }
 
 .title {
-  color: var(--mantine-color-white);
+  /* color: var(--mantine-primary-color-contrast); */
+  color: var(--mantine-color-bright);
 }
 
 .background {

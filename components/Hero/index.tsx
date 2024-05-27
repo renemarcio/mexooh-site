@@ -1,42 +1,52 @@
 "use client";
 import classes from "./styles.module.css";
 import { Carousel } from "@mantine/carousel";
-import React, { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Autoplay, { AutoplayOptionsType } from "embla-carousel-autoplay";
-import { Center, Paper } from "@mantine/core";
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
-
+import { CityContext } from "../../contexts/ctx";
+import { Text } from "@mantine/core";
 type HeroProps = {
-  slides?: any[];
+  slides?: SlideData[];
+  setCity: (city: string) => void;
 };
 
-export default function Hero({ slides }: HeroProps) {
+export default function Hero({ slides, setCity }: HeroProps) {
   const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
 
   const cardsData: SlideData[] = [
     {
-      src: "https://source.unsplash.com/random",
-      alt: "random image",
+      src: "https://picsum.photos/1920/600",
+      alt: "Anuncie em Itapetininga!",
       button: {
-        text: "Learn more",
-        link: "https://mantine.dev",
+        text: "Veja as opções",
+        link: "#rent",
+        onClick: () => {
+          setCity("Itapetininga");
+        },
       },
     },
     {
-      src: "https://source.unsplash.com/random",
-      alt: "random image",
+      src: "https://picsum.photos/1920/600?&random=2",
+      alt: "Anuncie em Tatuí!",
       button: {
-        text: "Learn more 2",
-        link: "https://mantine.dev",
+        text: "Veja as opções",
+        link: "#rent",
+        onClick: () => {
+          setCity("Tatuí");
+        },
       },
     },
     {
-      src: "https://source.unsplash.com/random",
-      alt: "random image",
+      src: "https://picsum.photos/1920/600?random=3",
+      alt: "Anuncie em Sorocaba!",
       button: {
-        text: "Learn more 3",
-        link: "https://mantine.dev",
+        text: "Veja as opções",
+        link: "#rent",
+        onClick: () => {
+          setCity("Sorocaba");
+        },
       },
     },
   ];
@@ -56,21 +66,6 @@ export default function Hero({ slides }: HeroProps) {
       speed={5}
       classNames={classes}
     >
-      <Carousel.Slide>
-        <Center h="100%" bg={"blue"}>
-          Slide 1
-        </Center>
-      </Carousel.Slide>
-      <Carousel.Slide>
-        <Center h="100%" bg={"orange"}>
-          Slide 2
-        </Center>
-      </Carousel.Slide>
-      <Carousel.Slide>
-        <Center h="100%" bg={"green"}>
-          Slide 3
-        </Center>
-      </Carousel.Slide>
       {cards}
       {/* ...other slides */}
     </Carousel>

@@ -1,7 +1,12 @@
 import { Group, Anchor, Text, PasswordInput, Stack } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
 import React from "react";
 
-export default function PasswordInputWithRecovery() {
+type Props = {
+  form: UseFormReturnType<any>;
+};
+
+export default function PasswordInputWithRecovery({ form }: Props) {
   return (
     <Stack gap={0}>
       <Group justify="space-between" my={0}>
@@ -18,7 +23,7 @@ export default function PasswordInputWithRecovery() {
           Esqueci a senha
         </Anchor>
       </Group>
-      <PasswordInput placeholder="Senha" />
+      <PasswordInput placeholder="Senha" {...form.getInputProps("password")} />
     </Stack>
   );
 }

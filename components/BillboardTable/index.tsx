@@ -17,7 +17,12 @@ import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 
-export default function BillboardTable() {
+type Props = {
+  city: string;
+  setCity: (city: string) => void;
+};
+
+export default function BillboardTable({ city, setCity }: Props) {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
@@ -28,7 +33,7 @@ export default function BillboardTable() {
   async function handleBillboardFetch() {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}`
+        `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -42,7 +47,7 @@ export default function BillboardTable() {
 
   useEffect(() => {
     handleBillboardFetch();
-  }, [activePage, debouncedAddress]);
+  }, [activePage, debouncedAddress, city]);
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
@@ -74,11 +79,8 @@ export default function BillboardTable() {
       <Paper withBorder h={600} w={"80vw"}>
         <Grid p={"sm"}>
           <Grid.Col span={5} h={600}>
-            <Stack h={"100%"} bg={"cyan"} gap={0}>
-              <Image
-                src={"https://source.unsplash.com/random"}
-                height={"300px"}
-              />
+            <Stack h={"100%"} gap={0}>
+              <Image src={"https://picsum.photos/800/600"} height={"300px"} />
               <Map lat={lat} long={long} />
             </Stack>
           </Grid.Col>
@@ -94,7 +96,17 @@ export default function BillboardTable() {
                   }}
                   onChange={(e) => setAddress(e.currentTarget.value)}
                 />
-                <Select flex={1} placeholder="Cidade..." />
+                <Select
+                  flex={1}
+                  placeholder="Cidade..."
+                  value={city}
+                  data={["Itapetininga", "Sorocaba", "Tatuí"]}
+                  clearable={false}
+                  onChange={(value) => {
+                    setCity(value!);
+                    handleBillboardFetch();
+                  }}
+                />
               </Group>
               <Table striped highlightOnHover>
                 <Table.Thead>
@@ -104,7 +116,19 @@ export default function BillboardTable() {
                     <Table.Th ta={"center"}>Estado</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
-                <Table.Tbody h={"100%"}>{tableRows}</Table.Tbody>
+                <Table.Tbody h={"100%"}>
+                  {tableRows.length > 0 ? (
+                    tableRows
+                  ) : (
+                    <Table.Tr>
+                      <Table.Td colSpan={3}>
+                        <Text fs={"italic"} ta={"center"} c={"dimmed"}>
+                          Nenhum resultado encontrado
+                        </Text>
+                      </Table.Td>
+                    </Table.Tr>
+                  )}
+                </Table.Tbody>
               </Table>
               <Center w={"100%"}>
                 <Pagination

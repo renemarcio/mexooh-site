@@ -20,7 +20,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: any }) {
   return (
-    <html lang="pt-br">
+    <html lang="pt-br" style={{ scrollBehavior: "smooth" }}>
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
         <link rel="shortcut icon" href="/favicon.svg" />

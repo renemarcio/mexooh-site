@@ -49,7 +49,17 @@ export default function Info() {
                 <Text size={"lg"} component="span">
                   Bem-vindo à{" "}
                 </Text>
-                <Text size={"lg"} component="span" fw={800}>
+                <Text
+                  size={"lg"}
+                  component="span"
+                  fw={800}
+                  variant="gradient"
+                  gradient={{
+                    from: "var(--mantine-primary-color-9)",
+                    to: "var(--mantine-primary-color-6)",
+                    deg: 45,
+                  }}
+                >
                   MEX
                 </Text>
                 <Text component="span" size={"lg"}>

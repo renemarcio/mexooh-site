@@ -1,8 +1,12 @@
 "use client";
 
+import { generateColors } from "@mantine/colors-generator";
 import { createTheme } from "@mantine/core";
 
 export const theme = createTheme({
   /* Put your mantine theme override here */
-  primaryColor: "green",
+  colors: {
+    midiagreen: generateColors("#00652E"),
+  },
+  primaryColor: "midiagreen",
 });

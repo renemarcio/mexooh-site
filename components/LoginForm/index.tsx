@@ -20,14 +20,21 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
       email: "",
       password: "",
     },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Email inválido"),
+    },
   });
 
   return (
     <Paper mx={"auto"} maw={"400px"} withBorder shadow="md" p={"lg"}>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap={"md"}>
-          <TextInput label="Email" placeholder="Email" />
-          <PasswordInputWithRecovery />
+          <TextInput
+            label="Email"
+            placeholder="Email"
+            {...form.getInputProps("email")}
+          />
+          <PasswordInputWithRecovery form={form} />
           <Stack gap={"xs"}>
             <RegisterAnchor />
             <Button type="submit" fullWidth>
