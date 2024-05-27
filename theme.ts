@@ -9,4 +9,5 @@ export const theme = createTheme({
     midiagreen: generateColors("#00652E"),
   },
   primaryColor: "midiagreen",
+  primaryShade: 9,
 });

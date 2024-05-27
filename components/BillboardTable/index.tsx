@@ -85,53 +85,56 @@ export default function BillboardTable({ city, setCity }: Props) {
             </Stack>
           </Grid.Col>
           <Grid.Col span={7} h={600}>
-            <Stack h={600} justify="center" gap={5}>
-              <Group gap={5}>
-                <TextInput
-                  flex={3}
-                  value={address}
-                  placeholder="Endereço..."
-                  onBlur={() => {
-                    handleBillboardFetch();
-                  }}
-                  onChange={(e) => setAddress(e.currentTarget.value)}
-                />
-                <Select
-                  flex={1}
-                  placeholder="Cidade..."
-                  value={city}
-                  data={["Itapetininga", "Sorocaba", "Tatuí"]}
-                  clearable={false}
-                  onChange={(value) => {
-                    setCity(value!);
-                    handleBillboardFetch();
-                  }}
-                />
-              </Group>
-              <Table striped highlightOnHover>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Endereço</Table.Th>
-                    <Table.Th ta={"center"}>Cidade</Table.Th>
-                    <Table.Th ta={"center"}>Estado</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody h={"100%"}>
-                  {tableRows.length > 0 ? (
-                    tableRows
-                  ) : (
+            <Stack h={"100%"} justify="space-between" gap={5}>
+              <Box>
+                <Group gap={5}>
+                  <TextInput
+                    flex={3}
+                    value={address}
+                    placeholder="Endereço..."
+                    onBlur={() => {
+                      handleBillboardFetch();
+                    }}
+                    onChange={(e) => setAddress(e.currentTarget.value)}
+                  />
+                  <Select
+                    flex={1}
+                    placeholder="Cidade..."
+                    value={city}
+                    data={["Itapetininga", "Sorocaba", "Tatuí"]}
+                    clearable={false}
+                    onChange={(value) => {
+                      setCity(value!);
+                      handleBillboardFetch();
+                    }}
+                  />
+                </Group>
+                <Table striped highlightOnHover>
+                  <Table.Thead>
                     <Table.Tr>
-                      <Table.Td colSpan={3}>
-                        <Text fs={"italic"} ta={"center"} c={"dimmed"}>
-                          Nenhum resultado encontrado
-                        </Text>
-                      </Table.Td>
+                      <Table.Th>Endereço</Table.Th>
+                      <Table.Th ta={"center"}>Cidade</Table.Th>
+                      <Table.Th ta={"center"}>Estado</Table.Th>
                     </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
+                  </Table.Thead>
+                  <Table.Tbody h={"100%"}>
+                    {tableRows.length > 0 ? (
+                      tableRows
+                    ) : (
+                      <Table.Tr>
+                        <Table.Td colSpan={3}>
+                          <Text fs={"italic"} ta={"center"} c={"dimmed"}>
+                            Nenhum resultado encontrado
+                          </Text>
+                        </Table.Td>
+                      </Table.Tr>
+                    )}
+                  </Table.Tbody>
+                </Table>
+              </Box>
               <Center w={"100%"}>
                 <Pagination
+                  pb={"xs"}
                   total={totalPages}
                   value={activePage}
                   onChange={setPage}
