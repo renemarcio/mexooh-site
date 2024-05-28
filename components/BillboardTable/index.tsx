@@ -46,7 +46,11 @@ export default function BillboardTable() {
 
   useEffect(() => {
     handleBillboardFetch();
-  }, [activePage, debouncedAddress, city]);
+  }, [debouncedAddress, city]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [city]);
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
@@ -101,7 +105,7 @@ export default function BillboardTable() {
                     placeholder="Cidade..."
                     value={city}
                     data={["Itapetininga", "Sorocaba", "Tatuí"]}
-                    clearable={false}
+                    allowDeselect={false}
                     onChange={(value) => {
                       setCity(value!);
                       handleBillboardFetch();
