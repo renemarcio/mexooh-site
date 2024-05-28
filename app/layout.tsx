@@ -12,6 +12,8 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./styles.module.css";
 import { ModalsProvider } from "@mantine/modals";
+import { CityProvider } from "../contexts/CityContext";
+import Providers from "../contexts/providers";
 
 export const metadata = {
   title: "Mex",
@@ -30,15 +32,17 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
-          <ModalsProvider>
-            <MyAppShell>
-              <Box className={classes.body} mb={"330px"}>
-                {children}
-              </Box>
-            </MyAppShell>
-          </ModalsProvider>
-        </MantineProvider>
+        {/* <MantineProvider theme={theme} defaultColorScheme="dark"> */}
+        {/* <ModalsProvider> */}
+        <Providers>
+          <MyAppShell>
+            <Box className={classes.body} mb={"330px"}>
+              {children}
+            </Box>
+          </MyAppShell>
+        </Providers>
+        {/* </ModalsProvider> */}
+        {/* </MantineProvider> */}
       </body>
     </html>
   );

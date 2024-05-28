@@ -19,7 +19,7 @@ type SlideProps = {
 
 export default function Slide({ slide }: SlideProps) {
   return (
-    <Carousel.Slide>
+    <Carousel.Slide key={slide.alt}>
       <BackgroundImage className={classes.bgImg} src={slide.src} h={"100%"}>
         <Anchor
           href={slide.button.link}

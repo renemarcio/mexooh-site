@@ -16,13 +16,9 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
+import { useCityContext } from "../../contexts/CityContext";
 
-type Props = {
-  city: string;
-  setCity: (city: string) => void;
-};
-
-export default function BillboardTable({ city, setCity }: Props) {
+export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
@@ -30,6 +26,9 @@ export default function BillboardTable({ city, setCity }: Props) {
   const [billboards, setBillboards] = useState<inventarios[]>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
+
+  const { city, setCity } = useCityContext();
+
   async function handleBillboardFetch() {
     try {
       const response = await fetch(

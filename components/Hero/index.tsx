@@ -1,19 +1,20 @@
 "use client";
 import classes from "./styles.module.css";
 import { Carousel } from "@mantine/carousel";
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Autoplay, { AutoplayOptionsType } from "embla-carousel-autoplay";
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
-import { CityContext } from "../../contexts/ctx";
-import { Text } from "@mantine/core";
+import { useCityContext } from "../../contexts/CityContext";
 type HeroProps = {
   slides?: SlideData[];
-  setCity: (city: string) => void;
+  // setCity: (city: string) => void;
 };
 
-export default function Hero({ slides, setCity }: HeroProps) {
+export default function Hero({ slides }: HeroProps) {
   const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
+
+  const { city, setCity } = useCityContext();
 
   const cardsData: SlideData[] = [
     {
