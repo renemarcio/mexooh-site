@@ -278,6 +278,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/font@npm:^14.2.3":
+  version: 14.2.3
+  resolution: "@next/font@npm:14.2.3"
+  peerDependencies:
+    next: "*"
+  checksum: 10c0/e436515f7830d82d772a0edbd630112c0a5937b6ebecb6995939493fd63c8874bc77b1357f3dfd527f454f44dcd85241aa250ff566c4c8546eac70903ed95364
+  languageName: node
+  linkType: hard
+
 "@next/swc-darwin-arm64@npm:14.2.3":
   version: 14.2.3
   resolution: "@next/swc-darwin-arm64@npm:14.2.3"
@@ -3030,6 +3039,7 @@ __metadata:
     "@mantine/form": "npm:^7.10.0"
     "@mantine/hooks": "npm:7.9.1"
     "@mantine/modals": "npm:^7.9.2"
+    "@next/font": "npm:^14.2.3"
     "@prisma/client": "npm:^5.14.0"
     "@tabler/icons-react": "npm:^3.3.0"
     "@types/bcrypt": "npm:^5"

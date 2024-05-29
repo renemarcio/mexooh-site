@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import React from "react";
 import AboutUsPhoto from "../AboutUsPhoto";
+import { handelGoth } from "@/styles/fonts/fonts";
 
 export default function Info() {
   return (
@@ -58,6 +59,9 @@ export default function Info() {
                     from: "var(--mantine-primary-color-9)",
                     to: "var(--mantine-primary-color-6)",
                     deg: 45,
+                  }}
+                  style={{
+                    fontFamily: `${handelGoth.style.fontFamily}, sans-serif`,
                   }}
                 >
                   MEX

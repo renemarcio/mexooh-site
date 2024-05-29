@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import classes from "./styles.module.css";
 import Link from "next/link";
+import { handelGoth } from "@/styles/fonts/fonts";
 type SlideProps = {
   slide: SlideData;
 };
@@ -38,7 +39,10 @@ export default function Slide({ slide }: SlideProps) {
               w={400}
               // c={`rgb(${slide.txtRgb})`}
               c={"white"}
-              style={{ WebkitTextStroke: "2px black" }}
+              style={{
+                WebkitTextStroke: "2px black",
+                fontFamily: `${handelGoth.style.fontFamily}, Segoe UI, sans-serif`,
+              }}
             >
               {slide.alt}
             </Text>
