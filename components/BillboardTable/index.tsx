@@ -17,6 +17,8 @@ import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
+import { bucket } from "@/utils/bucket";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -26,10 +28,28 @@ export default function BillboardTable() {
   const [billboards, setBillboards] = useState<inventarios[]>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   const { city, setCity } = useCityContext();
 
-  async function handleBillboardFetch() {
+  // async function fetchThumbnail() {
+  //   console.log("Fetch Thumb");
+  //   console.log(bucket);
+  //   const { Body } = await bucket.send(
+  //     new GetObjectCommand({
+  //       Bucket: "mexooh-webapp-system-files",
+  //       Key: "Photos/Outdoor/500169.jpg",
+  //     })
+  //   );
+  //   if (Body) {
+  //     console.log(await Body.transformToString());
+  //   } else {
+  //     console.log("Body is null");
+  //   }
+  //   // return Body;
+  // }
+
+  async function handleBillboardsFetch() {
     try {
       const response = await fetch(
         `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}`
@@ -44,13 +64,29 @@ export default function BillboardTable() {
     }
   }
 
+  async function handleBillboardFetch(id: number) {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/billboards/${id}`
+      );
+      const data = await response.json();
+      setThumbnailUrl(data.signedUrl);
+    } catch {
+      console.log("Couldn't fetch billboard.");
+    }
+  }
+
   useEffect(() => {
-    handleBillboardFetch();
+    handleBillboardsFetch();
   }, [debouncedAddress, city]);
 
   useEffect(() => {
     setPage(1);
   }, [city]);
+
+  // useEffect(() => {
+  //   fetchThumbnail();
+  // }, []);
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
@@ -58,6 +94,7 @@ export default function BillboardTable() {
       onClick={() => {
         setLat(Number(billboard.LinkGoogleMaps?.split(",")[0]));
         setLong(Number(billboard.LinkGoogleMaps?.split(",")[1]));
+        handleBillboardFetch(billboard.id);
       }}
       style={{ cursor: "pointer" }}
     >
@@ -83,7 +120,14 @@ export default function BillboardTable() {
         <Grid p={"sm"}>
           <Grid.Col span={5} h={600}>
             <Stack h={"100%"} gap={0}>
-              <Image src={"https://picsum.photos/800/600"} height={"300px"} />
+              {/* <Image src={"https://picsum.photos/800/600"} height={"300px"} /> */}
+              <Image
+                src={
+                  // "https://mexooh-webapp-system-files.s3.amazonaws.com/Photos/Outdoor/500169.jpg"
+                  thumbnailUrl
+                }
+                height={"300px"}
+              />
               <Map lat={lat} long={long} />
             </Stack>
           </Grid.Col>
@@ -96,7 +140,7 @@ export default function BillboardTable() {
                     value={address}
                     placeholder="Endereço..."
                     onBlur={() => {
-                      handleBillboardFetch();
+                      handleBillboardsFetch();
                     }}
                     onChange={(e) => setAddress(e.currentTarget.value)}
                   />
@@ -108,7 +152,7 @@ export default function BillboardTable() {
                     allowDeselect={false}
                     onChange={(value) => {
                       setCity(value!);
-                      handleBillboardFetch();
+                      handleBillboardsFetch();
                     }}
                   />
                 </Group>

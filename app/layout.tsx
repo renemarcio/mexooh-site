@@ -1,18 +1,9 @@
 import React from "react";
-import {
-  MantineProvider,
-  ColorSchemeScript,
-  Container,
-  Box,
-} from "@mantine/core";
-import { theme } from "../theme";
+import { ColorSchemeScript, Box } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
-// import { MidiaTheme } from "../lib/theme";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./styles.module.css";
-import { ModalsProvider } from "@mantine/modals";
-import { CityProvider } from "../contexts/CityContext";
 import Providers from "../contexts/providers";
 
 export const metadata = {
@@ -32,8 +23,6 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        {/* <MantineProvider theme={theme} defaultColorScheme="dark"> */}
-        {/* <ModalsProvider> */}
         <Providers>
           <MyAppShell>
             <Box className={classes.body} mb={"330px"}>
@@ -41,8 +30,6 @@ export default function RootLayout({ children }: { children: any }) {
             </Box>
           </MyAppShell>
         </Providers>
-        {/* </ModalsProvider> */}
-        {/* </MantineProvider> */}
       </body>
     </html>
   );

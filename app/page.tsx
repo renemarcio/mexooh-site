@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero setCity={setCity} />
+      <Hero />
       <Info />
       <Rent city={city} setCity={setCity} />
     </>
