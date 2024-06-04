@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
 import { useCartContext } from "@/contexts/CartContext";
+import { IconShoppingCartPlus } from "@tabler/icons-react";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -176,6 +177,7 @@ export default function BillboardTable() {
                 console.log("ERRO!!! Não tem outdoor selecionado.");
               }
             }}
+            leftSection={<IconShoppingCartPlus />}
           >
             Adicionar ao carrinho
           </Button>
