@@ -1,6 +1,14 @@
 "use client";
 
-import { ActionIcon, AppShell, Box, Center, Group, Stack } from "@mantine/core";
+import {
+  ActionIcon,
+  AppShell,
+  Box,
+  Center,
+  Divider,
+  Group,
+  Stack,
+} from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import React from "react";
 import { Footer } from "../Footer";
@@ -26,6 +34,7 @@ export default function MyAppShell({ children }: AppShellProps) {
           </Center>
           <Group>
             <ThemeToggleIcon />
+            <Divider orientation="vertical" />
             <ActionIcon variant="default">
               <IconLogin2 size={14} />
             </ActionIcon>
