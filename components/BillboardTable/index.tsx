@@ -11,14 +11,14 @@ import {
   Image,
   Grid,
   Paper,
+  Button,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
-import { bucket } from "@/utils/bucket";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { useCartContext } from "@/contexts/CartContext";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -29,25 +29,10 @@ export default function BillboardTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [activeBillboard, setActiveBillboard] = useState<inventarios>();
 
   const { city, setCity } = useCityContext();
-
-  // async function fetchThumbnail() {
-  //   console.log("Fetch Thumb");
-  //   console.log(bucket);
-  //   const { Body } = await bucket.send(
-  //     new GetObjectCommand({
-  //       Bucket: "mexooh-webapp-system-files",
-  //       Key: "Photos/Outdoor/500169.jpg",
-  //     })
-  //   );
-  //   if (Body) {
-  //     console.log(await Body.transformToString());
-  //   } else {
-  //     console.log("Body is null");
-  //   }
-  //   // return Body;
-  // }
+  const cartContext = useCartContext();
 
   async function handleBillboardsFetch() {
     try {
@@ -78,15 +63,11 @@ export default function BillboardTable() {
 
   useEffect(() => {
     handleBillboardsFetch();
-  }, [debouncedAddress, city]);
+  }, [debouncedAddress, city, activePage]);
 
   useEffect(() => {
     setPage(1);
   }, [city]);
-
-  // useEffect(() => {
-  //   fetchThumbnail();
-  // }, []);
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
@@ -95,6 +76,7 @@ export default function BillboardTable() {
         setLat(Number(billboard.LinkGoogleMaps?.split(",")[0]));
         setLong(Number(billboard.LinkGoogleMaps?.split(",")[1]));
         handleBillboardFetch(billboard.id);
+        setActiveBillboard(billboard);
       }}
       style={{ cursor: "pointer" }}
     >
@@ -116,22 +98,15 @@ export default function BillboardTable() {
 
   return (
     <>
-      <Paper withBorder h={600} w={"80vw"}>
+      <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} mt={"lg"}>
         <Grid p={"sm"}>
-          <Grid.Col span={5} h={600}>
+          <Grid.Col span={5}>
             <Stack h={"100%"} gap={0}>
-              {/* <Image src={"https://picsum.photos/800/600"} height={"300px"} /> */}
-              <Image
-                src={
-                  // "https://mexooh-webapp-system-files.s3.amazonaws.com/Photos/Outdoor/500169.jpg"
-                  thumbnailUrl
-                }
-                height={"300px"}
-              />
+              <Image src={thumbnailUrl} height={"300px"} />
               <Map lat={lat} long={long} />
             </Stack>
           </Grid.Col>
-          <Grid.Col span={7} h={600}>
+          <Grid.Col span={7}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Box>
                 <Group gap={5}>
@@ -190,6 +165,21 @@ export default function BillboardTable() {
             </Stack>
           </Grid.Col>
         </Grid>
+        <Center>
+          <Button
+            w={"80%"}
+            disabled={!activeBillboard}
+            onClick={() => {
+              if (activeBillboard) {
+                cartContext.setCart([...cartContext.cart, activeBillboard]);
+              } else {
+                console.log("ERRO!!! Não tem outdoor selecionado.");
+              }
+            }}
+          >
+            Adicionar ao carrinho
+          </Button>
+        </Center>
       </Paper>
     </>
   );
