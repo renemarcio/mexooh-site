@@ -87,12 +87,12 @@ export default function BillboardTable() {
           {billboard.Localizacao?.toLowerCase()}
         </Text>
       </Table.Td>
-      <Table.Td ta={"center"}>
+      {/* <Table.Td ta={"center"}>
         <Text lineClamp={1} tt={"capitalize"}>
           {billboard.cidade?.toLowerCase()}
         </Text>
-      </Table.Td>
-      <Table.Td ta={"center"}>
+      </Table.Td> */}
+      <Table.Td ta={"center"} w={"200px"}>
         <Text lineClamp={1}>
           <NumberFormatter
             prefix="R$ "
@@ -147,7 +147,7 @@ export default function BillboardTable() {
                   <Table.Thead>
                     <Table.Tr>
                       <Table.Th>Endereço</Table.Th>
-                      <Table.Th ta={"center"}>Cidade</Table.Th>
+                      {/* <Table.Th ta={"center"}>Cidade</Table.Th> */}
                       <Table.Th ta={"center"}>Valor</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
@@ -156,7 +156,7 @@ export default function BillboardTable() {
                       tableRows
                     ) : (
                       <Table.Tr>
-                        <Table.Td colSpan={3}>
+                        <Table.Td colSpan={2}>
                           <Text fs={"italic"} ta={"center"} c={"dimmed"}>
                             Nenhum resultado encontrado
                           </Text>
@@ -180,7 +180,9 @@ export default function BillboardTable() {
         <Center>
           <Button
             w={"80%"}
-            disabled={!activeBillboard}
+            disabled={
+              !activeBillboard || cartContext.cart.includes(activeBillboard)
+            }
             onClick={() => {
               if (activeBillboard) {
                 cartContext.setCart([...cartContext.cart, activeBillboard]);

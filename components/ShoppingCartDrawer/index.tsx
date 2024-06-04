@@ -49,7 +49,9 @@ export default function ShoppingCartDrawer({
       </ActionIcon>
       <Text size="sm">{billboard.Localizacao}</Text>
       <Group grow gap={0}>
-        <Text size="sm">R$ 1000,00 / bisemana</Text>
+        <Text size="sm">
+          R$ {billboard.Iluminado == "S" ? 1190 : 1090},00 / bisemana
+        </Text>
         <NumberInput defaultValue={1} size="xs" min={1} />
       </Group>
       <Center>
