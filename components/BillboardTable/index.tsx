@@ -12,6 +12,7 @@ import {
   Grid,
   Paper,
   Button,
+  NumberFormatter,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
@@ -92,7 +93,17 @@ export default function BillboardTable() {
         </Text>
       </Table.Td>
       <Table.Td ta={"center"}>
-        <Text lineClamp={1}>{billboard.uf}</Text>
+        <Text lineClamp={1}>
+          <NumberFormatter
+            prefix="R$ "
+            thousandSeparator="."
+            decimalSeparator=","
+            decimalScale={2}
+            fixedDecimalScale
+            //@ts-ignore
+            value={billboard.valor}
+          />
+        </Text>
       </Table.Td>
     </Table.Tr>
   ));
@@ -137,7 +148,7 @@ export default function BillboardTable() {
                     <Table.Tr>
                       <Table.Th>Endereço</Table.Th>
                       <Table.Th ta={"center"}>Cidade</Table.Th>
-                      <Table.Th ta={"center"}>Estado</Table.Th>
+                      <Table.Th ta={"center"}>Valor</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
                   <Table.Tbody h={"100%"}>

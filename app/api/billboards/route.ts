@@ -67,15 +67,17 @@ export async function GET(req: NextRequest) {
     },
   });
 
+  const billboardsWithValues = billboards.map((billboard) => {
+    return {
+      ...billboard,
+      valor: billboard.Iluminado === "S" ? 1190 : 1090,
+    };
+  });
+
   const res = {
-    billboards,
+    billboards: billboardsWithValues,
     totalPages: Math.floor(totalBillboards.length / perPage) + 1,
   };
-  console.log(res);
-
-  console.log(address);
-  console.log(city);
-  console.log(page);
 
   return NextResponse.json(res);
   // }
