@@ -1,3 +1,4 @@
+import { useLocalStorage } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
 import { createContext, useContext, useState } from "react";
 
@@ -14,7 +15,11 @@ export const CartContext = createContext<CartContextType>({
 export const useCartContext = () => useContext(CartContext);
 
 export function CartProvider({ children }: any) {
-  const [cart, setCart] = useState<inventarios[]>([]);
+  // const [cart, setCart] = useState<inventarios[]>([]);
+  const [cart, setCart] = useLocalStorage<inventarios[]>({
+    key: "cart",
+    defaultValue: [],
+  });
   return (
     <CartContext.Provider value={{ cart, setCart }}>
       {children}

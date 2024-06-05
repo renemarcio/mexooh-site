@@ -21,6 +21,7 @@ import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
 import { useCartContext } from "@/contexts/CartContext";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
+import classes from "./styles.module.css";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -81,6 +82,13 @@ export default function BillboardTable() {
         setActiveBillboard(billboard);
       }}
       style={{ cursor: "pointer" }}
+      // className={cartContext.cart.includes(billboard) ? classes.inCart : ""}
+      // (vendors.find(e => e.Name === 'Magenic')
+      className={
+        cartContext.cart.find((e) => e.id === billboard.id)
+          ? classes.inCart
+          : ""
+      }
     >
       <Table.Td ta={"left"}>
         <Text lineClamp={1} tt={"capitalize"}>
@@ -147,7 +155,6 @@ export default function BillboardTable() {
                   <Table.Thead>
                     <Table.Tr>
                       <Table.Th>Endereço</Table.Th>
-                      {/* <Table.Th ta={"center"}>Cidade</Table.Th> */}
                       <Table.Th ta={"center"}>Valor</Table.Th>
                     </Table.Tr>
                   </Table.Thead>
@@ -181,7 +188,9 @@ export default function BillboardTable() {
           <Button
             w={"80%"}
             disabled={
-              !activeBillboard || cartContext.cart.includes(activeBillboard)
+              !activeBillboard ||
+              cartContext.cart.find((e) => e.id === activeBillboard.id) !==
+                undefined
             }
             onClick={() => {
               if (activeBillboard) {

@@ -1,0 +1,7 @@
+.inCart {
+  background-color: var(--mantine-primary-color-light);
+}
+
+.inCart:hover {
+  background: var(--mantine-primary-color-light-hover);
+}
