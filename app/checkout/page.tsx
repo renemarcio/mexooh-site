@@ -1,8 +1,17 @@
 "use client";
-import { Anchor, Box, Card, Center, Space, Stepper } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Card,
+  Center,
+  Group,
+  Space,
+  Stepper,
+} from "@mantine/core";
 import React, { useState } from "react";
 import LoginForm from "../../components/LoginForm";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import BillboardTable from "../../components/BillboardTable";
 
 export default function Checkout() {
@@ -14,6 +23,10 @@ export default function Checkout() {
 
   function handleNext() {
     handleStepSwitch(currentStep + 1);
+  }
+
+  function handlePrevious() {
+    handleStepSwitch(currentStep - 1);
   }
 
   return (
@@ -32,7 +45,7 @@ export default function Checkout() {
             </Stepper>
           </Card.Section>
           <Card.Section p={"xl"}>
-            {currentStep > 0 && (
+            {/* {currentStep > 0 && (
               <Anchor
                 // pos={"absolute"}
                 href="#"
@@ -45,10 +58,32 @@ export default function Checkout() {
                 <IconChevronLeft size={15} />
                 Anterior
               </Anchor>
-            )}
+            )} */}
             {currentStep === 0 && <LoginForm nextStepFn={handleNext} />}
-            {currentStep === 1 && <BillboardTable />}
-            {currentStep === 2 && <LoginForm nextStepFn={handleNext} />}
+            {currentStep === 1 && (
+              <>
+                <BillboardTable />
+                <Group justify="flex-end" mt="md">
+                  <Button
+                    rightSection={<IconChevronRight size={15} />}
+                    onClick={handleNext}
+                  >
+                    Avançar
+                  </Button>
+                </Group>
+              </>
+            )}
+            {currentStep === 2 && (
+              <>
+                <LoginForm nextStepFn={handleNext} />
+                <Button
+                  rightSection={<IconChevronLeft size={15} />}
+                  onClick={handlePrevious}
+                >
+                  Voltar
+                </Button>
+              </>
+            )}
           </Card.Section>
         </Card>
       </Center>

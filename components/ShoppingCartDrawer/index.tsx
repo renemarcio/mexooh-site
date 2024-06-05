@@ -10,9 +10,11 @@ import {
   NumberFormatter,
   NumberInput,
   Paper,
+  ScrollArea,
   Stack,
   Text,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
@@ -50,7 +52,9 @@ export default function ShoppingCartDrawer({
       <Text size="sm">{billboard.Localizacao}</Text>
       <Group grow gap={0}>
         <Text size="sm">
-          R$ {billboard.Iluminado == "S" ? 1190 : 1090},00 / bisemana
+          {/* R$ {billboard.Iluminado == "S" ? 1190 : 1090},00 / bisemana */}
+          {/* @ts-ignore */}
+          R$ {billboard.valor},00 / bisemana
         </Text>
         <NumberInput defaultValue={1} size="xs" min={1} />
       </Group>
@@ -62,7 +66,8 @@ export default function ShoppingCartDrawer({
             decimalSeparator=","
             decimalScale={2}
             fixedDecimalScale
-            value={100}
+            // @ts-ignore (Also, change 1 to quantity of fortnights)
+            value={billboard.valor * 1}
           />
         </Text>
       </Center>
@@ -80,7 +85,9 @@ export default function ShoppingCartDrawer({
       <Stack justify="space-between" h={"calc(100vh - 70px)"}>
         <Box style={{ flexGrow: 1 }}>
           {cartContext.cart.length > 0 ? (
-            billboardList
+            <ScrollArea h={"80vh"} pr={"sm"}>
+              {billboardList}
+            </ScrollArea>
           ) : (
             <>
               <Center>
@@ -98,16 +105,43 @@ export default function ShoppingCartDrawer({
             </>
           )}
         </Box>
-        <Button
-          component={Link}
-          href="/checkout"
-          onClick={close}
-          variant="gradient"
-          fullWidth
-          gradient={{ from: "midiagreen", to: "midiagreen.8" }}
-        >
+        <Button component={Link} href="/checkout" onClick={close} fullWidth>
           Ir para Checkout
         </Button>
+        {cartContext.cart.length > 0 && (
+          <Button
+            color="red"
+            // component={Link}
+            // href="/checkout"
+            onClick={() =>
+              modals.openConfirmModal({
+                title: "Limpar o carrinho?",
+                centered: true,
+                groupProps: { justify: "center" },
+                children: (
+                  <Text ta={"center"}>
+                    Tem certeza que deseja limpar o carrinho?
+                  </Text>
+                ),
+                labels: {
+                  confirm: "Sim, limpar o carrinho",
+                  cancel: "Não, quero voltar",
+                },
+                confirmProps: {
+                  color: "red",
+                },
+                onCancel: () => {},
+                onConfirm: () => {
+                  cartContext.setCart([]);
+                  close();
+                },
+              })
+            }
+            fullWidth
+          >
+            Limpar o Carrinho
+          </Button>
+        )}
       </Stack>
     </Drawer>
   );

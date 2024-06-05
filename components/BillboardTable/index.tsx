@@ -20,7 +20,10 @@ import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
 import { useCartContext } from "@/contexts/CartContext";
-import { IconShoppingCartPlus } from "@tabler/icons-react";
+import {
+  IconShoppingCartMinus,
+  IconShoppingCartPlus,
+} from "@tabler/icons-react";
 import classes from "./styles.module.css";
 
 export default function BillboardTable() {
@@ -185,24 +188,40 @@ export default function BillboardTable() {
           </Grid.Col>
         </Grid>
         <Center>
-          <Button
-            w={"80%"}
-            disabled={
-              !activeBillboard ||
-              cartContext.cart.find((e) => e.id === activeBillboard.id) !==
-                undefined
-            }
-            onClick={() => {
-              if (activeBillboard) {
-                cartContext.setCart([...cartContext.cart, activeBillboard]);
-              } else {
-                console.log("ERRO!!! Não tem outdoor selecionado.");
-              }
-            }}
-            leftSection={<IconShoppingCartPlus />}
-          >
-            Adicionar ao carrinho
-          </Button>
+          {cartContext.cart.find((e) => e.id === activeBillboard?.id) !==
+          undefined ? (
+            <Button
+              w={"80%"}
+              color="red"
+              onClick={() => {
+                if (activeBillboard) {
+                  cartContext.setCart(
+                    cartContext.cart.filter((e) => e.id !== activeBillboard.id)
+                  );
+                } else {
+                  console.log("ERRO!!! Não tem outdoor selecionado.");
+                }
+              }}
+              leftSection={<IconShoppingCartMinus />}
+            >
+              Remover do carrinho
+            </Button>
+          ) : (
+            <Button
+              w={"80%"}
+              disabled={!activeBillboard}
+              onClick={() => {
+                if (activeBillboard) {
+                  cartContext.setCart([...cartContext.cart, activeBillboard]);
+                } else {
+                  console.log("ERRO!!! Não tem outdoor selecionado.");
+                }
+              }}
+              leftSection={<IconShoppingCartPlus />}
+            >
+              Adicionar ao carrinho
+            </Button>
+          )}
         </Center>
       </Paper>
     </>
