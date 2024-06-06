@@ -30,7 +30,7 @@ export default function Map({ lat, long }: MapProps) {
             c={"dimmed"}
             size="1.7rem"
           >
-            Selecione um outdoor.
+            Selecione ao lado.
           </Text>
         </Paper>
       )}

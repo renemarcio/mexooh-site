@@ -43,7 +43,7 @@ export default function BillboardTable() {
   async function handleBillboardsFetch() {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);

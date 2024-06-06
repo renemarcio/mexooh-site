@@ -7,12 +7,12 @@ export async function GET(req: NextRequest) {
   const page = searchParams.get("p") || undefined;
   const perPage = 11;
 
-  const billboards = await prisma.inventarios.findMany({
+  const panels = await prisma.inventarios.findMany({
     where: {
       AND: [
         {
           tipoinventarios: {
-            id: 1,
+            id: 2,
           },
         },
         {
@@ -29,25 +29,16 @@ export async function GET(req: NextRequest) {
           },
         },
       ],
-    },
-    select: {
-      id: true,
-      Localizacao: true,
-      Face: true,
-      Iluminado: true,
-      LinkGoogleMaps: true,
-      uf: true,
-      cidade: true,
     },
     take: perPage,
     skip: (Number(page) - 1) * perPage,
   });
-  const totalBillboards = await prisma.inventarios.findMany({
+  const totalPanels = await prisma.inventarios.findMany({
     where: {
       AND: [
         {
           tipoinventarios: {
-            id: 1,
+            id: 2,
           },
         },
         {
@@ -67,16 +58,9 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const billboardsWithValues = billboards.map((billboard) => {
-    return {
-      ...billboard,
-      valor: billboard.Iluminado === "S" ? 1190 : 1090,
-    };
-  });
-
   const res = {
-    billboards: billboardsWithValues,
-    totalPages: Math.floor(totalBillboards.length / perPage) + 1,
+    panels,
+    totalPages: Math.floor(totalPanels.length / perPage) + 1,
   };
 
   return NextResponse.json(res);

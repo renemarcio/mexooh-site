@@ -12,7 +12,7 @@ export default function Rent() {
   return (
     <Box w={"100%"} className={classes.background} p={"lg"} id="rent">
       <Center my={"lg"}>
-        <Title className={classes.title}>Alugue seus pontos aqui!</Title>
+        <Title className={classes.title}>Alugue outdoors aqui!</Title>
       </Center>
       <Center>
         <BillboardTable />
