@@ -17,8 +17,6 @@ model clientes {
   id                 Int                  @id @default(autoincrement()) @db.UnsignedInt
   pessoa             String               @db.Char(1)
   cnpj_cpf           String               @unique(map: "cnpj_cpf") @db.VarChar(14)
-  email              String?              @unique(map: "email") @db.VarChar(100)
-  password           String?              @default("") @db.VarChar(100)
   nome               String               @db.VarChar(80)
   fantasia           String               @db.VarChar(80)
   ins_est_rg         String?              @db.Char(18)
@@ -30,6 +28,8 @@ model clientes {
   socio              Boolean?             @default(false)
   funcionario        Boolean?             @default(false)
   agencia            Boolean?             @default(false)
+  email              String?              @db.VarChar(100)
+  password           String?              @db.VarChar(100)
   segmentos          segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
   enderecos_clientes enderecos_clientes[]
   inventarios        inventarios[]
@@ -143,13 +143,4 @@ model tipoinventarios {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
   inventario  String?       @db.VarChar(50)
   inventarios inventarios[]
-}
-
-model bisemanas {
-  id       Int      @id @default(autoincrement()) @db.UnsignedInt
-  numero   String   @db.Char(2)
-  ano      String   @db.Char(4)
-  dtInicio DateTime @db.Date
-  dtFinal  DateTime @db.Date
-  impar    Boolean? @default(false)
 }

@@ -1,16 +1,20 @@
-import { Button, Code, Paper, Stack, TextInput } from "@mantine/core";
+import { Button, Paper, Stack, TextInput } from "@mantine/core";
 import React from "react";
 import PasswordInputWithRecovery from "../Inputs/PasswordInputWithRecovery";
 import RegisterAnchor from "../Buttons/RegisterAnchor";
 import { UseFormInput, useForm } from "@mantine/form";
-import { login } from "./LoginForm.server";
-import { auth, signIn } from "@/auth";
 
 type LoginProps = {
   nextStepFn?: () => void;
 };
 
 export default function LoginForm({ nextStepFn }: LoginProps) {
+  function handleSubmit(values: any) {
+    if (nextStepFn) {
+      nextStepFn();
+    }
+  }
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -21,19 +25,9 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
     },
   });
 
-  const handleSubmit = async (values: any) => {
-    const { email, password } = values;
-    await login({ email, password });
-  };
-
   return (
     <Paper mx={"auto"} maw={"400px"} withBorder shadow="md" p={"lg"}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(form.values);
-        }}
-      >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap={"md"}>
           <TextInput
             label="Email"
@@ -46,7 +40,6 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
             <Button type="submit" fullWidth>
               Entrar
             </Button>
-            <Code>{JSON.stringify(auth, null, 2)}</Code>
           </Stack>
         </Stack>
       </form>
