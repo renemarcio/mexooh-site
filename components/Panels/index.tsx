@@ -58,7 +58,7 @@ export default function Panels() {
                   color={"#25D366"} //Whatsapp's official color...
                   component={Link}
                   href={
-                    "https://wa.me/5515972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                    "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
                   }
                   target={"_blank"}
                   rel="noreferrer"

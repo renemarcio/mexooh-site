@@ -3,7 +3,6 @@ import React from "react";
 import PasswordInputWithRecovery from "../Inputs/PasswordInputWithRecovery";
 import RegisterAnchor from "../Buttons/RegisterAnchor";
 import { UseFormInput, useForm } from "@mantine/form";
-
 type LoginProps = {
   nextStepFn?: () => void;
 };

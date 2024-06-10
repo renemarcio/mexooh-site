@@ -25,6 +25,8 @@ import {
   IconShoppingCartPlus,
 } from "@tabler/icons-react";
 import classes from "./styles.module.css";
+import { modals } from "@mantine/modals";
+import RentBillboardModal from "../RentBillboardModal";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -212,7 +214,15 @@ export default function BillboardTable() {
               disabled={!activeBillboard}
               onClick={() => {
                 if (activeBillboard) {
-                  cartContext.setCart([...cartContext.cart, activeBillboard]);
+                  // cartContext.setCart([...cartContext.cart, activeBillboard]);
+                  modals.open({
+                    title: "Adicionar ao carrinho",
+                    centered: true,
+                    size: "xl",
+                    children: (
+                      <RentBillboardModal billboard={activeBillboard} />
+                    ),
+                  });
                 } else {
                   console.log("ERRO!!! Não tem outdoor selecionado.");
                 }
