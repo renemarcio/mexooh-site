@@ -34,8 +34,8 @@ export default function Panels() {
       <Center>
         <Stack gap={0} align="center" my={"md"}>
           <Group wrap="nowrap" gap={10}>
-            <Paper withBorder radius={"xl"} py={0} px={5}>
-              <Tooltip label="Entre em contato pelo Whatsapp!">
+            {/* <Paper withBorder radius={"xl"} py={0} px={5}> */}
+            {/* <Tooltip label="Entre em contato pelo Whatsapp!">
                 <ActionIcon
                   radius={"xl"}
                   size={"lg"}
@@ -50,24 +50,24 @@ export default function Panels() {
                 >
                   <IconBrandWhatsapp size={25} />
                 </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Entre em contato pelo Whatsapp!">
-                <ActionIcon
-                  radius={"xl"}
-                  size={"lg"}
-                  color={"#25D366"} //Whatsapp's official color...
-                  component={Link}
-                  href={
-                    "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
-                  }
-                  target={"_blank"}
-                  rel="noreferrer"
-                  variant="subtle"
-                >
-                  <IconBrandWhatsapp size={25} />
-                </ActionIcon>
-              </Tooltip>
-            </Paper>
+              </Tooltip> */}
+            <Tooltip label="Entre em contato pelo Whatsapp!">
+              <ActionIcon
+                radius={"xl"}
+                size={"lg"}
+                color={"#25D366"} //Whatsapp's official color...
+                component={Link}
+                href={
+                  "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                }
+                target={"_blank"}
+                rel="noreferrer"
+                variant="subtle"
+              >
+                <IconBrandWhatsapp size={25} />
+              </ActionIcon>
+            </Tooltip>
+            {/* </Paper> */}
           </Group>
           <Tooltip label="Mande um e-mail!">
             <ActionIcon

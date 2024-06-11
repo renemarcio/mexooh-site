@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Drawer,
+  NumberFormatter,
   ScrollArea,
   Stack,
   Text,
@@ -25,6 +26,12 @@ export default function ShoppingCartDrawer({
   close,
 }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
+  //const result = numbers.reduce((sum, num) => sum + num, 0);
+  const total = cartContext.cart.reduce(
+    //@ts-ignore
+    (sum, cartItem) => sum + cartItem.valor * cartItem.fortnights.length,
+    0
+  );
 
   const billboardList = cartContext.cart.map((billboard) => (
     <CartEntry key={billboard.id} billboard={billboard} />
@@ -101,6 +108,19 @@ export default function ShoppingCartDrawer({
             </>
           )}
         </Box>
+        {cartContext.cart.length > 0 && (
+          <Text size="lg" fw={700} c={"midiagreen.8"} ta={"center"}>
+            Total:{" "}
+            <NumberFormatter
+              prefix="R$ "
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={2}
+              fixedDecimalScale
+              value={total}
+            />
+          </Text>
+        )}
         <Button component={Link} href="/checkout" onClick={close} fullWidth>
           Ir para Checkout
         </Button>

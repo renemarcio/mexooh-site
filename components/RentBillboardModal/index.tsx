@@ -11,17 +11,21 @@ import {
   Title,
 } from "@mantine/core";
 import { bisemanas, inventarios } from "@prisma/client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Map from "../Map";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
+import { CartContext } from "@/contexts/CartContext";
+import { modals } from "@mantine/modals";
 
 type Props = {
   billboard: inventarios;
+  closeFn: () => void;
 };
 
-export default function RentBillboardModal({ billboard }: Props) {
+export default function RentBillboardModal({ billboard, closeFn }: Props) {
   const [fortnights, setFortnights] = useState<bisemanas[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
+  const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
@@ -34,6 +38,7 @@ export default function RentBillboardModal({ billboard }: Props) {
         new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
     };
   });
+
   console.log(fortnightsData);
   useEffect(() => {
     fetchFortnights();
@@ -50,8 +55,22 @@ export default function RentBillboardModal({ billboard }: Props) {
     setFortnights(data);
   }
 
+  async function handleSubmit() {
+    const billboardWithFortnights = {
+      ...billboard,
+      fortnights: selectedFortnights,
+    };
+    cart.setCart([...cart.cart, billboardWithFortnights]);
+    closeFn();
+  }
+
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <Title ta={"center"}>{billboard.Localizacao}</Title>
       <Stack gap={"md"}>
         <Center>
@@ -75,6 +94,7 @@ export default function RentBillboardModal({ billboard }: Props) {
           fullWidth
           leftSection={<IconShoppingCartPlus />}
           disabled={selectedFortnights.length <= 0}
+          type="submit"
         >
           Adicionar ao carrinho
         </Button>

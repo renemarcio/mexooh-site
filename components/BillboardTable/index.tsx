@@ -220,7 +220,10 @@ export default function BillboardTable() {
                     centered: true,
                     size: "xl",
                     children: (
-                      <RentBillboardModal billboard={activeBillboard} />
+                      <RentBillboardModal
+                        billboard={activeBillboard}
+                        closeFn={() => modals.closeAll()}
+                      />
                     ),
                   });
                 } else {

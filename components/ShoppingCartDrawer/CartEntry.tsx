@@ -7,6 +7,7 @@ import {
   Center,
   NumberFormatter,
   Text,
+  Code,
 } from "@mantine/core";
 import { inventarios } from "@prisma/client";
 import { IconTrash } from "@tabler/icons-react";
@@ -43,7 +44,16 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
           {/* @ts-ignore */}
           R$ {billboard.valor},00 / bisemana
         </Text>
-        <NumberInput defaultValue={1} size="xs" min={1} />
+        <Text ta={"right"}>
+          {
+            //@ts-ignore
+            billboard.fortnights.length > 1
+              ? //@ts-ignore
+                `${billboard.fortnights.length} bisemanas`
+              : //@ts-ignore
+                `${billboard.fortnights.length} bisemana`
+          }
+        </Text>
       </Group>
       <Center>
         <Text size="lg" fw={700} c={"midiagreen.8"}>
@@ -54,10 +64,11 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
             decimalScale={2}
             fixedDecimalScale
             // @ts-ignore (Also, change 1 to quantity of fortnights)
-            value={billboard.valor * 1}
+            value={billboard.valor * billboard.fortnights.length}
           />
         </Text>
       </Center>
+      <Code>{JSON.stringify(billboard, null, 2)}</Code>
     </Paper>
   );
 }
