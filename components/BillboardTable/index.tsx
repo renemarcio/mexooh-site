@@ -97,6 +97,7 @@ export default function BillboardTable() {
     >
       <Table.Td ta={"left"}>
         <Text lineClamp={1} tt={"capitalize"}>
+          {activeBillboard?.id === billboard.id && "• "}
           {billboard.Localizacao?.toLowerCase()}
         </Text>
       </Table.Td>
