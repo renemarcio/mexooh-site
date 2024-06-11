@@ -15,6 +15,8 @@ export default function AboutUsPhoto() {
       mih={"258px"}
       top={"-10px"}
       mx="auto"
+      bg={"white"}
+      shadow="xl"
       className={classes.polaroid}
       my={"lg"}
     >
