@@ -40,6 +40,7 @@ export default function BillboardTable() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [activeBillboard, setActiveBillboard] = useState<inventarios>();
   const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
@@ -58,7 +59,7 @@ export default function BillboardTable() {
   async function handleBillboardsFetch() {
     try {
       const response = await fetch(
-        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}&fortnights=${selectedFortnights}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -96,7 +97,7 @@ export default function BillboardTable() {
 
   useEffect(() => {
     handleBillboardsFetch();
-  }, [debouncedAddress, city, activePage]);
+  }, [debouncedAddress, city, activePage, selectedFortnights]);
 
   useEffect(() => {
     setPage(1);
@@ -176,8 +177,12 @@ export default function BillboardTable() {
                   />
                   <MultiSelect
                     flex={1}
+                    classNames={{ pillsList: classes.pillsList }}
                     placeholder="Bi-Semana..."
                     data={fortnightsData}
+                    onChange={(value) => {
+                      setSelectedFortnights(value);
+                    }}
                   />
                   <Select
                     flex={1}

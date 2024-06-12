@@ -5,3 +5,7 @@
 .inCart:hover {
   background: var(--mantine-primary-color-light-hover);
 }
+
+.pillsList {
+  display: none;
+}
