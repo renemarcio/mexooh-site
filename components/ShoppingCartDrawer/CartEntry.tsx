@@ -68,7 +68,6 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
           />
         </Text>
       </Center>
-      <Code>{JSON.stringify(billboard, null, 2)}</Code>
     </Paper>
   );
 }

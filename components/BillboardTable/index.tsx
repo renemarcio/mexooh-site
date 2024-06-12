@@ -13,9 +13,10 @@ import {
   Paper,
   Button,
   NumberFormatter,
+  MultiSelect,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { inventarios } from "@prisma/client";
+import { bisemanas, inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
@@ -38,7 +39,19 @@ export default function BillboardTable() {
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [activeBillboard, setActiveBillboard] = useState<inventarios>();
-
+  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const fortnightsData = fortnights.map((fortnight) => {
+    return {
+      value: fortnight.id.toString(),
+      label:
+        "BI-" +
+        fortnight.numero +
+        " - " +
+        new Date(fortnight.dtInicio).toLocaleDateString("pt-BR") +
+        " - " +
+        new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
+    };
+  });
   const { city, setCity } = useCityContext();
   const cartContext = useCartContext();
 
@@ -69,6 +82,18 @@ export default function BillboardTable() {
     }
   }
 
+  async function fetchFortnights() {
+    const res = await fetch("http://localhost:3000/api/fortnights", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+
+    setFortnights(data);
+  }
+
   useEffect(() => {
     handleBillboardsFetch();
   }, [debouncedAddress, city, activePage]);
@@ -76,6 +101,10 @@ export default function BillboardTable() {
   useEffect(() => {
     setPage(1);
   }, [city]);
+
+  useEffect(() => {
+    fetchFortnights();
+  }, []);
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
@@ -144,6 +173,11 @@ export default function BillboardTable() {
                       handleBillboardsFetch();
                     }}
                     onChange={(e) => setAddress(e.currentTarget.value)}
+                  />
+                  <MultiSelect
+                    flex={1}
+                    placeholder="Bi-Semana..."
+                    data={fortnightsData}
                   />
                   <Select
                     flex={1}

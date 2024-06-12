@@ -82,9 +82,9 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
           </Box>
         </Center>
         <MultiSelect
-          label="Selecione as bisemanas para alugar."
+          label="Selecione as Bi-Semanas."
           // description="O aluguel deve ser realizado 10 dias antes do inicio da bisemana, estas são as bisemanas disponíveis."
-          description="Bisemanas disponíveis"
+          description="Bi-Semanas disponíveis"
           data={fortnightsData}
           value={selectedFortnights}
           onChange={setSelectedFortnights}

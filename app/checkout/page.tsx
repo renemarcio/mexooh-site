@@ -41,7 +41,7 @@ export default function Checkout() {
                 label="Etapa 2"
                 description="Selecione os pontos de interesse"
               />
-              <Stepper.Step label="Etapa 3" description="Pagamento" />
+              <Stepper.Step label="Etapa 3" description="Método de Pagamento" />
             </Stepper>
           </Card.Section>
           <Card.Section p={"xl"}>
