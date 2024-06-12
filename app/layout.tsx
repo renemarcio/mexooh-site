@@ -21,6 +21,10 @@ export default function RootLayout({ children }: { children: any }) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="script-src 'self' https://maps.googleapis.com"
+        />
       </head>
       <body>
         <Providers>
