@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import BillboardTable from "../../components/BillboardTable";
+import CheckoutForm from "@/components/CheckoutForm";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -75,7 +76,8 @@ export default function Checkout() {
             )}
             {currentStep === 2 && (
               <>
-                <LoginForm nextStepFn={handleNext} />
+                {/* <LoginForm nextStepFn={handleNext} /> */}
+                <CheckoutForm />
                 <Button
                   rightSection={<IconChevronLeft size={15} />}
                   onClick={handlePrevious}

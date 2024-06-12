@@ -29,6 +29,7 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap={"md"}>
           <TextInput
+            tabIndex={1}
             label="Email"
             placeholder="Email"
             {...form.getInputProps("email")}

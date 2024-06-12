@@ -52,7 +52,7 @@ export default function Hero({ slides }: HeroProps) {
     },
   ];
 
-  const cards = cardsData.map((card) => <Slide slide={card} />);
+  const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
 
   return (
     <Carousel

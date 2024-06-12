@@ -19,11 +19,16 @@ export default function PasswordInputWithRecovery({ form }: Props) {
           pt={2}
           fw={500}
           fz="xs"
+          tabIndex={3}
         >
           Esqueci a senha
         </Anchor>
       </Group>
-      <PasswordInput placeholder="Senha" {...form.getInputProps("password")} />
+      <PasswordInput
+        placeholder="Senha"
+        {...form.getInputProps("password")}
+        tabIndex={2}
+      />
     </Stack>
   );
 }
