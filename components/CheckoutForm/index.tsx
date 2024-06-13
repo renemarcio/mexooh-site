@@ -1,6 +1,13 @@
-import { Paper, SegmentedControl, TextInput, Title } from "@mantine/core";
+import {
+  Button,
+  Paper,
+  SegmentedControl,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React, { useState } from "react";
+import ShoppingCartDoneMail from "../ShoppingCartDoneMail";
 
 export default function CheckoutForm() {
   const [payment, setPayment] = useState("Credito");
@@ -55,6 +62,27 @@ export default function CheckoutForm() {
             <TextInput label="Cartão" placeholder="0000 0000 0000 0000" />
           </>
         )}
+        <Button
+          fullWidth
+          mt={"xl"}
+          onClick={() => {
+            fetch("/api/mail/shoppingCartReady", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                from: "Não Responda <naoresponda@mexooh.com>",
+              }),
+            });
+          }}
+        >
+          Enviar e-mail de teste
+        </Button>
+        <Title>E-mail de teste</Title>
+        <Paper withBorder>
+          <ShoppingCartDoneMail name="Teste" />
+        </Paper>
       </Paper>
     </form>
   );
