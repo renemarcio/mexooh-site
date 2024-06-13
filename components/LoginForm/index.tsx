@@ -3,14 +3,24 @@ import React from "react";
 import PasswordInputWithRecovery from "../Inputs/PasswordInputWithRecovery";
 import RegisterAnchor from "../Buttons/RegisterAnchor";
 import { UseFormInput, useForm } from "@mantine/form";
+import { signIn } from "next-auth/react";
 type LoginProps = {
   nextStepFn?: () => void;
 };
 
 export default function LoginForm({ nextStepFn }: LoginProps) {
-  function handleSubmit(values: any) {
-    if (nextStepFn) {
-      nextStepFn();
+  async function handleSubmit(values: any) {
+    const response = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+    if (response?.ok) {
+      if (nextStepFn) {
+        nextStepFn();
+      }
+    } else {
+      console.log(response?.error);
     }
   }
 
