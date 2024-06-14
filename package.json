@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "mail": "email dev"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.2.0",
@@ -19,6 +20,7 @@
     "@mantine/hooks": "7.9.1",
     "@mantine/modals": "^7.9.2",
     "@prisma/client": "^5.14.0",
+    "@react-email/components": "0.0.19",
     "@tabler/icons-react": "^3.3.0",
     "bcrypt": "^5.1.1",
     "chroma-js": "^2.4.2",
@@ -29,6 +31,7 @@
     "prisma": "^5.14.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-email": "2.1.4",
     "react-icons": "^5.2.1",
     "resend": "^3.3.0"
   },

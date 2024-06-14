@@ -1,4 +1,5 @@
 import { useCartContext } from "@/contexts/CartContext";
+import { CartEntry as CartEntryType } from "@/types/cartEntry";
 import {
   Paper,
   ActionIcon,
@@ -14,13 +15,13 @@ import { IconTrash } from "@tabler/icons-react";
 import React from "react";
 
 type ShoppingCartDrawerProps = {
-  billboard: inventarios;
+  entry: CartEntryType;
 };
 
-export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
+export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
   return (
-    <Paper withBorder p={"sm"} my={"sm"} key={billboard.id} pos={"relative"}>
+    <Paper withBorder p={"sm"} my={"sm"} key={entry.item.id} pos={"relative"}>
       <ActionIcon
         //disabled={if is paying already, disable removal, make them leave the payment page}
         pos={"absolute"}
@@ -28,7 +29,7 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
         right={0}
         onClick={() =>
           cartContext.setCart(
-            cartContext.cart.filter((b) => b.id !== billboard.id)
+            cartContext.cart.filter((b) => b.item.id !== entry.item.id)
           )
         }
         // variant="transparent"
@@ -37,22 +38,13 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
       >
         <IconTrash />
       </ActionIcon>
-      <Text size="sm">{billboard.Localizacao}</Text>
+      <Text size="sm">{entry.item.Localizacao}</Text>
       <Group grow gap={0}>
-        <Text size="sm">
-          {/* R$ {billboard.Iluminado == "S" ? 1190 : 1090},00 / bisemana */}
-          {/* @ts-ignore */}
-          R$ {billboard.valor},00 / bisemana
-        </Text>
+        <Text size="sm">R$ {entry.value},00 / bisemana</Text>
         <Text ta={"right"}>
-          {
-            //@ts-ignore
-            billboard.fortnights.length > 1
-              ? //@ts-ignore
-                `${billboard.fortnights.length} bisemanas`
-              : //@ts-ignore
-                `${billboard.fortnights.length} bisemana`
-          }
+          {entry.fortnightIDs.length > 1
+            ? `${entry.fortnightIDs.length} bisemanas`
+            : `${entry.fortnightIDs.length} bisemana`}
         </Text>
       </Group>
       <Center>
@@ -63,8 +55,7 @@ export default function CartEntry({ billboard }: ShoppingCartDrawerProps) {
             decimalSeparator=","
             decimalScale={2}
             fixedDecimalScale
-            // @ts-ignore (Also, change 1 to quantity of fortnights)
-            value={billboard.valor * billboard.fortnights.length}
+            value={entry.value * entry.fortnightIDs.length}
           />
         </Text>
       </Center>

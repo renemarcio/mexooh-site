@@ -73,9 +73,7 @@ export default function BillboardTable() {
 
   async function handleBillboardFetch(id: number) {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/billboards/${id}`
-      );
+      const response = await fetch(`/api/billboards/${id}`);
       const data = await response.json();
       setThumbnailUrl(data.signedUrl);
     } catch {
@@ -84,7 +82,7 @@ export default function BillboardTable() {
   }
 
   async function fetchFortnights() {
-    const res = await fetch("http://localhost:3000/api/fortnights", {
+    const res = await fetch("/api/fortnights", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +118,7 @@ export default function BillboardTable() {
       // className={cartContext.cart.includes(billboard) ? classes.inCart : ""}
       // (vendors.find(e => e.Name === 'Magenic')
       className={
-        cartContext.cart.find((e) => e.id === billboard.id)
+        cartContext.cart.find((e) => e.item.id === billboard.id)
           ? classes.inCart
           : ""
       }
@@ -230,7 +228,7 @@ export default function BillboardTable() {
           </Grid.Col>
         </Grid>
         <Center>
-          {cartContext.cart.find((e) => e.id === activeBillboard?.id) !==
+          {cartContext.cart.find((e) => e.item.id === activeBillboard?.id) !==
           undefined ? (
             <Button
               w={"80%"}
@@ -238,7 +236,10 @@ export default function BillboardTable() {
               onClick={() => {
                 if (activeBillboard) {
                   cartContext.setCart(
-                    cartContext.cart.filter((e) => e.id !== activeBillboard.id)
+                    cartContext.cart.filter(
+                      (e) => e.item.id !== activeBillboard.id
+                    )
+                    // cartContext.cart.filter((e) => id !== activeBillboard.id)
                   );
                 } else {
                   console.log("ERRO!!! Não tem outdoor selecionado.");

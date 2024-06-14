@@ -1,3 +1,4 @@
+import { CartContext } from "@/contexts/CartContext";
 import {
   Button,
   Paper,
@@ -10,6 +11,7 @@ import React, { useState } from "react";
 
 export default function CheckoutForm() {
   const [payment, setPayment] = useState("Credito");
+  const cartContext = React.useContext(CartContext);
   //   const form = useForm({
   //     initialValues: {
   //       card: "",
@@ -70,9 +72,7 @@ export default function CheckoutForm() {
               headers: {
                 "Content-Type": "application/json",
               },
-              // body: JSON.stringify({
-              //   from: "Não Responda <naoresponda@mexooh.com>",
-              // }),
+              body: JSON.stringify({ name: "Test", cart: cartContext.cart }),
             });
           }}
         >

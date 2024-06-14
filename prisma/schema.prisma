@@ -112,26 +112,26 @@ model dimensoes {
 }
 
 model inventarios {
-  id                                                  Int                @id @db.UnsignedInt
-  id_Proprietario                                     Int                @db.UnsignedInt
-  id_EmpresaNegocio                                   Int                @default(1) @db.UnsignedInt
-  id_EmpresaContaPagar                                Int                @default(1) @db.UnsignedInt
-  id_TipoInventario                                   Int                @default(1) @db.UnsignedInt
-  Localizacao                                         String?            @db.VarChar(100)
-  ativo                                               Boolean?           @default(true)
-  id_dimensao                                         Int?               @default(0) @db.UnsignedInt
-  cidade                                              String?            @db.VarChar(30)
-  uf                                                  String?            @db.Char(2)
-  Face                                                String?            @db.VarChar(20)
-  Urbanizado                                          String?            @db.Char(1)
-  Iluminado                                           String?            @db.Char(1)
-  LinkGoogleMaps                                      String?            @db.VarChar(50)
-  disponibilidades                                    disponibilidades[]
-  clientes                                            clientes           @relation(fields: [id_Proprietario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk1")
-  empresas_inventarios_id_EmpresaNegocioToempresas    empresas           @relation("inventarios_id_EmpresaNegocioToempresas", fields: [id_EmpresaNegocio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk2")
-  empresas_inventarios_id_EmpresaContaPagarToempresas empresas           @relation("inventarios_id_EmpresaContaPagarToempresas", fields: [id_EmpresaContaPagar], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk3")
-  tipoinventarios                                     tipoinventarios    @relation(fields: [id_TipoInventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk4")
-  dimensoes                                           dimensoes?         @relation(fields: [id_dimensao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk5")
+  id                                                  Int             @id @db.UnsignedInt
+  id_Proprietario                                     Int             @db.UnsignedInt
+  id_EmpresaNegocio                                   Int             @default(1) @db.UnsignedInt
+  id_EmpresaContaPagar                                Int             @default(1) @db.UnsignedInt
+  id_TipoInventario                                   Int             @default(1) @db.UnsignedInt
+  Localizacao                                         String?         @db.VarChar(100)
+  ativo                                               Boolean?        @default(true)
+  id_dimensao                                         Int?            @default(0) @db.UnsignedInt
+  cidade                                              String?         @db.VarChar(30)
+  uf                                                  String?         @db.Char(2)
+  Face                                                String?         @db.VarChar(20)
+  Urbanizado                                          String?         @db.Char(1)
+  Iluminado                                           String?         @db.Char(1)
+  LinkGoogleMaps                                      String?         @db.VarChar(50)
+  alugadas                                            alugadas[]
+  clientes                                            clientes        @relation(fields: [id_Proprietario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk1")
+  empresas_inventarios_id_EmpresaNegocioToempresas    empresas        @relation("inventarios_id_EmpresaNegocioToempresas", fields: [id_EmpresaNegocio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk2")
+  empresas_inventarios_id_EmpresaContaPagarToempresas empresas        @relation("inventarios_id_EmpresaContaPagarToempresas", fields: [id_EmpresaContaPagar], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk3")
+  tipoinventarios                                     tipoinventarios @relation(fields: [id_TipoInventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk4")
+  dimensoes                                           dimensoes?      @relation(fields: [id_dimensao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk5")
 
   @@index([id_Proprietario], map: "inventarios_fk1")
   @@index([id_EmpresaNegocio], map: "inventarios_fk2")
@@ -147,22 +147,21 @@ model tipoinventarios {
 }
 
 model bisemanas {
-  id               Int                @id @default(autoincrement()) @db.UnsignedInt
-  numero           String             @db.Char(2)
-  ano              String             @db.Char(4)
-  dtInicio         DateTime           @db.Date
-  dtFinal          DateTime           @db.Date
-  disponibilidades disponibilidades[]
+  id       Int        @id @default(autoincrement()) @db.UnsignedInt
+  numero   String     @db.Char(2)
+  ano      String     @db.Char(4)
+  dtInicio DateTime   @db.Date
+  dtFinal  DateTime   @db.Date
+  alugadas alugadas[]
 }
 
-model disponibilidades {
+model alugadas {
   id          Int         @id @default(autoincrement()) @db.UnsignedInt
   inventario  Int         @db.UnsignedInt
   id_bisemana Int         @db.UnsignedInt
-  disponivel  Boolean?    @default(false)
-  inventarios inventarios @relation(fields: [inventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "disponibilidades_fk1")
-  bisemanas   bisemanas   @relation(fields: [id_bisemana], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "disponibilidades_fk2")
+  inventarios inventarios @relation(fields: [inventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk1")
+  bisemanas   bisemanas   @relation(fields: [id_bisemana], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk2")
 
-  @@index([inventario], map: "disponibilidades_fk1")
-  @@index([id_bisemana], map: "disponibilidades_fk2")
+  @@index([inventario], map: "alugadas_fk1")
+  @@index([id_bisemana], map: "alugadas_fk2")
 }

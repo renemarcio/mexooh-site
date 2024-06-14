@@ -16,6 +16,7 @@ import Map from "../Map";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
 import { CartContext } from "@/contexts/CartContext";
 import { modals } from "@mantine/modals";
+import { CartEntry } from "@/types/cartEntry";
 
 type Props = {
   billboard: inventarios;
@@ -45,7 +46,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   }, []);
 
   async function fetchFortnights() {
-    const res = await fetch("http://localhost:3000/api/fortnights", {
+    const res = await fetch("/api/fortnights", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,11 +57,12 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   }
 
   async function handleSubmit() {
-    const billboardWithFortnights = {
-      ...billboard,
-      fortnights: selectedFortnights,
+    const newCartEntry: CartEntry = {
+      item: billboard,
+      value: billboard.Iluminado ? 1190 : 1090,
+      fortnightIDs: selectedFortnights,
     };
-    cart.setCart([...cart.cart, billboardWithFortnights]);
+    cart.setCart([...cart.cart, newCartEntry]);
     closeFn();
   }
 
@@ -83,7 +85,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
         </Center>
         <MultiSelect
           label="Selecione as Bi-Semanas."
-          // description="O aluguel deve ser realizado 10 dias antes do inicio da bisemana, estas são as bisemanas disponíveis."
           description="Bi-Semanas disponíveis"
           data={fortnightsData}
           value={selectedFortnights}

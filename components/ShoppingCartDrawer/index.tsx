@@ -28,13 +28,12 @@ export default function ShoppingCartDrawer({
   const cartContext = useCartContext();
   //const result = numbers.reduce((sum, num) => sum + num, 0);
   const total = cartContext.cart.reduce(
-    //@ts-ignore
-    (sum, cartItem) => sum + cartItem.valor * cartItem.fortnights.length,
+    (sum, cartItem) => sum + cartItem.value * cartItem.fortnightIDs.length,
     0
   );
 
-  const billboardList = cartContext.cart.map((billboard) => (
-    <CartEntry key={billboard.id} billboard={billboard} />
+  const billboardList = cartContext.cart.map((entry) => (
+    <CartEntry key={entry.item.id} entry={entry} />
     // <Paper withBorder p={"sm"} my={"sm"} key={billboard.id} pos={"relative"}>
     //   <ActionIcon
     //     //disabled={if is paying already, disable removal, make them leave the payment page}

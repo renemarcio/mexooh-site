@@ -1,10 +1,11 @@
+import { CartEntry } from "@/types/cartEntry";
 import { useLocalStorage } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 type CartContextType = {
-  cart: inventarios[];
-  setCart: React.Dispatch<React.SetStateAction<inventarios[]>>;
+  cart: CartEntry[];
+  setCart: React.Dispatch<React.SetStateAction<CartEntry[]>>;
 };
 
 export const CartContext = createContext<CartContextType>({
@@ -16,7 +17,7 @@ export const useCartContext = () => useContext(CartContext);
 
 export function CartProvider({ children }: any) {
   // const [cart, setCart] = useState<inventarios[]>([]);
-  const [cart, setCart] = useLocalStorage<inventarios[]>({
+  const [cart, setCart] = useLocalStorage<CartEntry[]>({
     key: "cart",
     defaultValue: [],
   });
