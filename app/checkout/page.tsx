@@ -9,11 +9,12 @@ import {
   Space,
   Stepper,
 } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import BillboardTable from "../../components/BillboardTable";
 import CheckoutForm from "@/components/CheckoutForm";
+import { getSession } from "next-auth/react";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,6 +30,17 @@ export default function Checkout() {
   function handlePrevious() {
     handleStepSwitch(currentStep - 1);
   }
+
+  async function skipLogin() {
+    const isLogged = await getSession();
+    if (isLogged) {
+      handleStepSwitch(1);
+    }
+  }
+
+  useEffect(() => {
+    skipLogin();
+  }, []);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import ShoppingCartDoneMail from "@/components/ShoppingCartDoneMail";
+import { ShoppingCartDoneMail } from "@/components/ShoppingCartDoneMail";
 import { resend } from "@/utils/resend";
 
 export async function POST() {
@@ -7,7 +7,8 @@ export async function POST() {
       from: "Não Responda <naoresponda@mexooh.com>",
       to: ["brunoscachetti@hotmail.com"],
       subject: "Teste de envio de e-mail",
-      react: ShoppingCartDoneMail({ name: "Teste" }),
+      react: ShoppingCartDoneMail({ name: "Bruno" }),
+      text: "Teste de envio de e-mail",
     });
 
     if (error) {
