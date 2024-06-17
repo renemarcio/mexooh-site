@@ -5,7 +5,9 @@ import {
   Button,
   Card,
   Center,
+  Code,
   Group,
+  LoadingOverlay,
   Space,
   Stepper,
 } from "@mantine/core";
@@ -14,10 +16,11 @@ import LoginForm from "../../components/LoginForm";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import BillboardTable from "../../components/BillboardTable";
 import CheckoutForm from "@/components/CheckoutForm";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
+  const session = useSession();
 
   function handleStepSwitch(step: number) {
     setCurrentStep(Math.min(Math.max(step, 0), 3));
@@ -31,19 +34,17 @@ export default function Checkout() {
     handleStepSwitch(currentStep - 1);
   }
 
-  async function skipLogin() {
-    const isLogged = await getSession();
-    if (isLogged) {
-      handleStepSwitch(1);
-    }
-  }
-
   useEffect(() => {
-    skipLogin();
-  }, []);
+    if (session.status === "authenticated") {
+      handleStepSwitch(1);
+    } else {
+      handleStepSwitch(0);
+    }
+  }, [session]);
 
   return (
     <>
+      <LoadingOverlay visible={session.status === "loading"} />
       <Space h={"100px"} />
       <Center>
         <Card w={"auto"} withBorder m={"xl"}>
@@ -58,20 +59,6 @@ export default function Checkout() {
             </Stepper>
           </Card.Section>
           <Card.Section p={"xl"}>
-            {/* {currentStep > 0 && (
-              <Anchor
-                // pos={"absolute"}
-                href="#"
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleStepSwitch(currentStep - 1);
-                }}
-                style={{ zIndex: 10 }}
-              >
-                <IconChevronLeft size={15} />
-                Anterior
-              </Anchor>
-            )} */}
             {currentStep === 0 && <LoginForm nextStepFn={handleNext} />}
             {currentStep === 1 && (
               <>
@@ -89,7 +76,7 @@ export default function Checkout() {
             {currentStep === 2 && (
               <>
                 {/* <LoginForm nextStepFn={handleNext} /> */}
-                <CheckoutForm />
+                <CheckoutForm session={session.data} />
                 <Button
                   rightSection={<IconChevronLeft size={15} />}
                   onClick={handlePrevious}

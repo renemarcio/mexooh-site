@@ -6,17 +6,16 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import React, { useState } from "react";
 
-export default function CheckoutForm() {
+type Props = {
+  session: any;
+};
+
+export default function CheckoutForm({ session }: Props) {
   const [payment, setPayment] = useState("Credito");
   const cartContext = React.useContext(CartContext);
-  //   const form = useForm({
-  //     initialValues: {
-  //       card: "",
-  //     },
-  //   });
+
   return (
     <form>
       <Paper p={"xl"}>
@@ -72,7 +71,10 @@ export default function CheckoutForm() {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ name: "Test", cart: cartContext.cart }),
+              body: JSON.stringify({
+                user: session,
+                cart: cartContext.cart,
+              }),
             });
           }}
         >

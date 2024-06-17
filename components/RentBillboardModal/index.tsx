@@ -40,7 +40,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     };
   });
 
-  console.log(fortnightsData);
   useEffect(() => {
     fetchFortnights();
   }, []);

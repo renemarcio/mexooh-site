@@ -5,6 +5,7 @@ import React from "react";
 import { theme } from "../theme";
 import { CityProvider } from "./CityContext";
 import { CartProvider } from "./CartContext";
+import { SessionProvider } from "next-auth/react";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -13,11 +14,13 @@ type ProvidersProps = {
 export default function Providers({ children }: ProvidersProps) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <CityProvider>
-        <CartProvider>
-          <ModalsProvider>{children}</ModalsProvider>
-        </CartProvider>
-      </CityProvider>
+      <SessionProvider>
+        <CityProvider>
+          <CartProvider>
+            <ModalsProvider>{children}</ModalsProvider>
+          </CartProvider>
+        </CityProvider>
+      </SessionProvider>
     </MantineProvider>
   );
 }

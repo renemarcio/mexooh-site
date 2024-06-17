@@ -5,6 +5,7 @@ export async function GET(req: NextRequest) {
   const address = searchParams.get("endereco") || undefined;
   const city = searchParams.get("cidade") || undefined;
   const page = searchParams.get("p") || undefined;
+  const fortnight = searchParams.get("fortnight") || undefined;
   const perPage = 11;
 
   const billboards = await prisma.inventarios.findMany({
