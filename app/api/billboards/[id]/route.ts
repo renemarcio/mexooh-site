@@ -14,10 +14,24 @@ export async function GET(
     },
   });
 
+  const availableFortnights = await prisma.bisemanas.findMany({
+    where: {
+      NOT: {
+        alugadas: {
+          some: {
+            inventario: Number(id),
+          },
+        },
+      },
+    },
+  });
+
   const command = new GetObjectCommand({
     Bucket: "mexooh-webapp-system-files",
     Key: `Photos/Outdoor/${id}.jpg`,
   });
   const signedUrl = await getSignedUrl(bucket, command, { expiresIn: 5 });
-  return new Response(JSON.stringify({ ...billboard, signedUrl }));
+  return new Response(
+    JSON.stringify({ ...billboard, signedUrl, availableFortnights })
+  );
 }

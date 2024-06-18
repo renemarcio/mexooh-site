@@ -40,7 +40,7 @@ export default function BillboardTable() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [activeBillboard, setActiveBillboard] = useState<inventarios>();
   const [fortnights, setFortnights] = useState<bisemanas[]>([]);
-  const [selectedFortnight, setSelectedFortnight] = useState<string | null>();
+  const [selectedFortnight, setSelectedFortnight] = useState<string>("");
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
@@ -99,7 +99,7 @@ export default function BillboardTable() {
 
   useEffect(() => {
     setPage(1);
-  }, [city]);
+  }, [city, address, selectedFortnight]);
 
   useEffect(() => {
     fetchFortnights();
@@ -179,7 +179,7 @@ export default function BillboardTable() {
                     placeholder="Bi-Semana..."
                     data={fortnightsData}
                     onChange={(value) => {
-                      setSelectedFortnight(value);
+                      setSelectedFortnight(value ?? "");
                     }}
                   />
                   <Select

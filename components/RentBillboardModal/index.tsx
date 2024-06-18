@@ -26,6 +26,7 @@ type Props = {
 export default function RentBillboardModal({ billboard, closeFn }: Props) {
   const [fortnights, setFortnights] = useState<bisemanas[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
+  const [availableFortnights, setAvailableFortnights] = useState<Number[]>([]);
   const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
@@ -37,11 +38,16 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
         new Date(fortnight.dtInicio).toLocaleDateString("pt-BR") +
         " - " +
         new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
+      disabled: !availableFortnights.includes(fortnight.id), //TODO: check if it's available
     };
   });
 
+  console.log("billboard");
+  console.log(billboard);
+
   useEffect(() => {
     fetchFortnights();
+    fetchAvailableFortnights();
   }, []);
 
   async function fetchFortnights() {
@@ -52,7 +58,29 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
       },
     });
     const data = await res.json();
+    console.log("data from fetchFortnights()");
+    console.log(data);
     setFortnights(data);
+  }
+
+  async function fetchAvailableFortnights() {
+    const res = await fetch("/api/billboards/" + billboard.id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log("data from fetchAvailableFortnights()");
+    console.log(data.availableFortnights);
+    const availableFortnightsIDs = data.availableFortnights.map(
+      (obj: { id: number }) => obj.id
+    );
+    console.log("availableFortnightsIDs");
+    console.log(availableFortnightsIDs);
+    setAvailableFortnights(availableFortnightsIDs);
+
+    // setSelectedFortnights(data.fortnights);
   }
 
   async function handleSubmit() {
