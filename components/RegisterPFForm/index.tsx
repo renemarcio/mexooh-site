@@ -11,6 +11,7 @@ export default function RegisterPFForm() {
       cpf: "",
       password: "",
       confirmarSenha: "",
+      telefone: "",
     },
 
     validate: {
@@ -47,6 +48,7 @@ export default function RegisterPFForm() {
           <TextInput required {...form.getInputProps("nome")} label="Nome" />
           <TextInput required {...form.getInputProps("email")} label="Email" />
           <TextInput required {...form.getInputProps("cpf")} label="CPF" />
+          <TextInput {...form.getInputProps("telefone")} label="Telefone" />
           <PasswordInput
             required
             {...form.getInputProps("password")}

@@ -12,6 +12,7 @@ export default function RegisterPJForm() {
       cnpj: "",
       password: "",
       confirmarSenha: "",
+      telefone: "",
     },
 
     validate: {
@@ -57,6 +58,7 @@ export default function RegisterPJForm() {
           />
           <TextInput required {...form.getInputProps("email")} label="Email" />
           <TextInput required {...form.getInputProps("cnpj")} label="CNPJ" />
+          <TextInput {...form.getInputProps("telefone")} label="Telefone" />
           <PasswordInput
             required
             {...form.getInputProps("password")}

@@ -5,15 +5,58 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
 
+  const userPF = {
+    nome: data.nome,
+    email: data.email,
+    senha: data.senha,
+    pessoa: data.pessoa,
+    fantasia: data.nome,
+    cnpj_cpf: data.cpf,
+  };
+
+  const userPJ = {
+    nome: data.nome,
+    email: data.email,
+    senha: data.senha,
+    pessoa: data.pessoa,
+    fantasia: data.fantasia,
+    cnpj_cpf: data.cnpj,
+  };
+
+  async function createPhoneNumber(id: number) {
+    //First, check if the phone already exists
+    const phone = await prisma.telefones_clientes.findFirst({
+      where: {
+        cliente_id: id,
+        Numero: data.telefone,
+      },
+    });
+    //if it exists, do nothing, else, create it
+    if (!phone) {
+      const entry = await prisma.telefones_clientes.create({
+        data: {
+          cliente_id: id,
+          Tipo: "0",
+          Numero: data.telefone,
+        },
+      });
+    }
+  }
+
   // If there is a cpf coming in, pessoa == F, else pessoa == J
   delete data.confirmarSenha;
 
+  let userData;
   if (data.cpf) {
+    userData = userPF;
+    userData.pessoa = "F";
     data.pessoa = "F";
     data.fantasia = data.nome;
     data.cnpj_cpf = data.cpf;
     delete data.cpf;
   } else {
+    userData = userPJ;
+    userData.pessoa = "J";
     data.pessoa = "J";
     data.cnpj_cpf = data.cnpj;
     delete data.cnpj;
@@ -39,6 +82,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           password: data.password ? await bcrypt.hash(data.password, 10) : null,
         },
       });
+      await createPhoneNumber(dbUser.id);
       return NextResponse.json(user, { status: 200 });
     } else {
       console.log(
@@ -60,40 +104,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.log("Client does not exist with the same document");
     const user = await prisma.clientes.create({
       data: {
-        ...data,
+        ...userData,
         password: data.password ? await bcrypt.hash(data.password, 10) : null,
       },
     });
+    await createPhoneNumber(user.id);
     return NextResponse.json(user, { status: 201 });
   }
-
-  //   try {
-  //     const user = await prisma.clientes.create({
-  //       data: {
-  //         ...data,
-  //         password: data.senha ? await bcrypt.hash(data.senha, 10) : null,
-  //       },
-  //     });
-
-  //     return NextResponse.json(user, { status: 201 });
-  //   } catch (err: any) {
-  //     if (err instanceof PrismaClientKnownRequestError) {
-  //       const errorMessage = JSON.stringify({
-  //         error: "Prisma Error: " + err.message,
-  //       });
-  //       return new NextResponse(errorMessage, {
-  //         status: 500,
-  //         headers: { "Content-Type": "application/json" },
-  //       });
-  //     }
-
-  //     // Handle other errors
-  //     const errorMessage = JSON.stringify({
-  //       error: "Unknown Error: " + (err.message || "Unknown error"),
-  //     });
-  //     return new NextResponse(errorMessage, {
-  //       status: 500,
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //   }
 }
