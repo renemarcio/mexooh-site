@@ -75,6 +75,8 @@ export default function BillboardTable() {
     try {
       const response = await fetch(`/api/billboards/${id}`);
       const data = await response.json();
+      console.log("data from handleBillboardFetch()");
+      console.log(data);
       setThumbnailUrl(data.signedUrl);
     } catch {
       console.log("Couldn't fetch billboard.");
@@ -156,7 +158,15 @@ export default function BillboardTable() {
         <Grid p={"sm"}>
           <Grid.Col span={5}>
             <Stack h={"100%"} gap={0}>
-              <Image src={thumbnailUrl} height={"300px"} />
+              {/* <Image src={thumbnailUrl} height={"300px"} /> */}
+              <Image
+                src={thumbnailUrl}
+                height={"300px"}
+                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+                onError={() =>
+                  console.log("Ooops, you have to put the CD in your computer.")
+                }
+              />
               <Map lat={lat} long={long} />
             </Stack>
           </Grid.Col>

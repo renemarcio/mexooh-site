@@ -38,7 +38,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
         new Date(fortnight.dtInicio).toLocaleDateString("pt-BR") +
         " - " +
         new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
-      disabled: !availableFortnights.includes(fortnight.id), //TODO: check if it's available
+      disabled: !availableFortnights.includes(fortnight.id),
     };
   });
 

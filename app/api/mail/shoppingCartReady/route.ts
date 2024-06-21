@@ -1,18 +1,17 @@
 import ShoppingCartReadyEmail from "@/emails/ShoppingCartReady";
 import { resend } from "@/utils/resend";
-import { getSession } from "next-auth/react";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const reqData = await req.json();
-  const { cart, user } = reqData;
+  const { cart, user, service, telephones } = reqData;
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Não Responda <naoresponda@mexooh.com>",
+      from: "Mex <naoresponda@mexooh.com>",
       to: ["brunoscachetti@hotmail.com"],
       subject: "[Site Mex] Cliente fechou o carrinho!",
-      react: ShoppingCartReadyEmail({ user, cart }),
+      react: ShoppingCartReadyEmail({ user, cart, service, telephones }),
     });
 
     if (error) {

@@ -6,6 +6,7 @@ import { theme } from "../theme";
 import { CityProvider } from "./CityContext";
 import { CartProvider } from "./CartContext";
 import { SessionProvider } from "next-auth/react";
+import { ServiceProvider } from "./ServiceContext";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -17,7 +18,9 @@ export default function Providers({ children }: ProvidersProps) {
       <SessionProvider>
         <CityProvider>
           <CartProvider>
-            <ModalsProvider>{children}</ModalsProvider>
+            <ServiceProvider>
+              <ModalsProvider>{children}</ModalsProvider>
+            </ServiceProvider>
           </CartProvider>
         </CityProvider>
       </SessionProvider>

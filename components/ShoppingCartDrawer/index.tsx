@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Drawer,
+  Highlight,
   NumberFormatter,
   ScrollArea,
   Stack,
@@ -14,6 +15,7 @@ import { modals } from "@mantine/modals";
 import Link from "next/link";
 import React from "react";
 import CartEntry from "./CartEntry";
+import ServiceButton from "../ServiceButton";
 
 type ShoppingCartDrawerProps = {
   opened: boolean;
@@ -26,7 +28,6 @@ export default function ShoppingCartDrawer({
   close,
 }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
-  //const result = numbers.reduce((sum, num) => sum + num, 0);
   const total = cartContext.cart.reduce(
     (sum, cartItem) => sum + cartItem.value * cartItem.fortnightIDs.length,
     0
@@ -34,46 +35,6 @@ export default function ShoppingCartDrawer({
 
   const billboardList = cartContext.cart.map((entry) => (
     <CartEntry key={entry.item.id} entry={entry} />
-    // <Paper withBorder p={"sm"} my={"sm"} key={billboard.id} pos={"relative"}>
-    //   <ActionIcon
-    //     //disabled={if is paying already, disable removal, make them leave the payment page}
-    //     pos={"absolute"}
-    //     top={0}
-    //     right={0}
-    //     onClick={() =>
-    //       cartContext.setCart(
-    //         cartContext.cart.filter((b) => b.id !== billboard.id)
-    //       )
-    //     }
-    //     // variant="transparent"
-    //     color="red"
-    //     size="sm"
-    //   >
-    //     <IconTrash />
-    //   </ActionIcon>
-    //   <Text size="sm">{billboard.Localizacao}</Text>
-    //   <Group grow gap={0}>
-    //     <Text size="sm">
-    //       {/* R$ {billboard.Iluminado == "S" ? 1190 : 1090},00 / bisemana */}
-    //       {/* @ts-ignore */}
-    //       R$ {billboard.valor},00 / bisemana
-    //     </Text>
-    //     <NumberInput defaultValue={1} size="xs" min={1} />
-    //   </Group>
-    //   <Center>
-    //     <Text size="lg" fw={700} c={"midiagreen.8"}>
-    //       <NumberFormatter
-    //         prefix="R$ "
-    //         thousandSeparator="."
-    //         decimalSeparator=","
-    //         decimalScale={2}
-    //         fixedDecimalScale
-    //         // @ts-ignore (Also, change 1 to quantity of fortnights)
-    //         value={billboard.valor * 1}
-    //       />
-    //     </Text>
-    //   </Center>
-    // </Paper>
   ));
 
   return (
@@ -84,10 +45,11 @@ export default function ShoppingCartDrawer({
       position="right"
       // size={"sm"}
     >
-      <Stack justify="space-between" h={"calc(100vh - 70px)"}>
-        <Box style={{ flexGrow: 1 }}>
+      <Stack justify="space-between" h={"600px"} gap={0} m={0}>
+        {/* <Box style={{ flexGrow: 1 }}> */}
+        <Box>
           {cartContext.cart.length > 0 ? (
-            <ScrollArea h={"80vh"} pr={"sm"}>
+            <ScrollArea h={"68vh"} pr={"sm"}>
               {billboardList}
             </ScrollArea>
           ) : (
@@ -120,42 +82,63 @@ export default function ShoppingCartDrawer({
             />
           </Text>
         )}
-        <Button component={Link} href="/checkout" onClick={close} fullWidth>
-          Ir para Checkout
-        </Button>
         {cartContext.cart.length > 0 && (
-          <Button
-            color="red"
-            // component={Link}
-            // href="/checkout"
-            onClick={() =>
-              modals.openConfirmModal({
-                title: "Limpar o carrinho?",
-                centered: true,
-                groupProps: { justify: "center" },
-                children: (
-                  <Text ta={"center"}>
-                    Tem certeza que deseja limpar o carrinho?
-                  </Text>
-                ),
-                labels: {
-                  confirm: "Sim, limpar o carrinho",
-                  cancel: "Não, quero voltar",
-                },
-                confirmProps: {
-                  color: "red",
-                },
-                onCancel: () => {},
-                onConfirm: () => {
-                  cartContext.setCart([]);
-                  close();
-                },
-              })
-            }
-            fullWidth
-          >
-            Limpar o Carrinho
-          </Button>
+          <Text ta={"center"}>
+            O valor acima{" "}
+            <Text
+              size={"lg"}
+              component="span"
+              fw={800}
+              variant="gradient"
+              gradient={{
+                from: "var(--mantine-primary-color-9)",
+                to: "var(--mantine-primary-color-6)",
+                deg: 45,
+              }}
+            >
+              NÃO
+            </Text>{" "}
+            inclui impressão da lona ou papel. Para contratar este serviço,
+            clique no botão "Serviço", abaixo.
+          </Text>
+        )}
+        {cartContext.cart.length > 0 && (
+          <Button.Group orientation="vertical">
+            <ServiceButton />
+            <Button component={Link} href="/checkout" onClick={close} fullWidth>
+              Ir para Checkout
+            </Button>
+            <Button
+              color="red"
+              onClick={() =>
+                modals.openConfirmModal({
+                  title: "Limpar o carrinho?",
+                  centered: true,
+                  groupProps: { justify: "center" },
+                  children: (
+                    <Text ta={"center"}>
+                      Tem certeza que deseja limpar o carrinho?
+                    </Text>
+                  ),
+                  labels: {
+                    confirm: "Sim, limpar o carrinho",
+                    cancel: "Não, quero voltar",
+                  },
+                  confirmProps: {
+                    color: "red",
+                  },
+                  onCancel: () => {},
+                  onConfirm: () => {
+                    cartContext.setCart([]);
+                    close();
+                  },
+                })
+              }
+              fullWidth
+            >
+              Limpar o Carrinho
+            </Button>
+          </Button.Group>
         )}
       </Stack>
     </Drawer>

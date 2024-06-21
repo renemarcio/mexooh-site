@@ -20,9 +20,16 @@ import { imageBase64 } from "@/public/logos/base64logo";
 interface Props {
   user: any;
   cart: CartEntry[];
+  service: boolean;
+  telephones: string[];
 }
 
-export default function ShoppingCartReadyEmail({ user, cart }: Props) {
+export default function ShoppingCartReadyEmail({
+  user,
+  cart,
+  service,
+  telephones,
+}: Props) {
   const main: React.CSSProperties = {
     fontWeight: 300,
     textAlign: "center",
@@ -92,11 +99,19 @@ export default function ShoppingCartReadyEmail({ user, cart }: Props) {
                 {cartList}
               </div>
             </>
+            <Text style={main}>
+              O cliente {service ? "REQUER" : "NÃO REQUER"} impressão.
+            </Text>
             <Text style={main} className="font-bold mt-4">
               Total: R$ {total},00
             </Text>
             <Text style={main}>E-mail do cliente: {user?.email}</Text>
-
+            <Text style={main}>
+              Telefones:{" "}
+              {telephones.length > 0
+                ? telephones.join(", ")
+                : "Nenhum telefone cadastrado"}
+            </Text>
             <div className="flex justify-center">
               <Button
                 className="bg-green-500 text-white outline font-bold py-2 px-4 rounded"

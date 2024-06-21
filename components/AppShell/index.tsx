@@ -3,11 +3,12 @@
 import {
   ActionIcon,
   AppShell,
+  Avatar,
   Box,
   Center,
   Divider,
   Group,
-  Stack,
+  Tooltip,
 } from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import React from "react";
@@ -17,6 +18,7 @@ import Link from "next/link";
 import Logo from "../Logo";
 import ShoppingCartDrawer from "../ShoppingCartDrawer";
 import { useDisclosure } from "@mantine/hooks";
+import { signOut, useSession } from "next-auth/react";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -24,6 +26,7 @@ type AppShellProps = {
 
 export default function MyAppShell({ children }: AppShellProps) {
   const [opened, { open, close }] = useDisclosure(false);
+  const session = useSession();
   return (
     <>
       <ShoppingCartDrawer opened={opened} close={close} />
@@ -40,14 +43,23 @@ export default function MyAppShell({ children }: AppShellProps) {
             <Group>
               <ThemeToggleIcon />
               <Divider orientation="vertical" />
-              <ActionIcon variant="default">
-                <IconLogin2 size={14} />
-              </ActionIcon>
-              {/* <Link href={"/checkout"}> */}
+              {session.status === "unauthenticated" ? (
+                <ActionIcon variant="default">
+                  <IconLogin2 size={14} />
+                </ActionIcon>
+              ) : (
+                <Tooltip //@ts-ignore
+                  label={`Logado como ${session.data?.fantasia}, clique para sair.`}
+                >
+                  <Avatar
+                    color="midiagreen"
+                    onClick={() => signOut({ redirect: false })}
+                  />
+                </Tooltip>
+              )}
               <ActionIcon variant="default" onClick={open}>
                 <IconShoppingCart size={14} />
               </ActionIcon>
-              {/* </Link> */}
             </Group>
           </Group>
         </AppShell.Header>

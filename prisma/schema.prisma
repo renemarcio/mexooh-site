@@ -33,6 +33,7 @@ model clientes {
   segmentos          segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
   enderecos_clientes enderecos_clientes[]
   inventarios        inventarios[]
+  telefones_clientes telefones_clientes[]
 
   @@index([segmento_id], map: "clientes_fk2")
 }
@@ -164,4 +165,15 @@ model alugadas {
 
   @@index([inventario], map: "alugadas_fk1")
   @@index([id_bisemana], map: "alugadas_fk2")
+}
+
+model telefones_clientes {
+  id         Int      @default(autoincrement()) @db.UnsignedInt
+  cliente_id Int      @db.UnsignedInt
+  Numero     String   @db.Char(16)
+  Tipo       String   @db.Char(1)
+  clientes   clientes @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "telefone_Clientes_fk1")
+
+  @@id([id, cliente_id])
+  @@index([cliente_id], map: "telefone_Clientes_fk1")
 }

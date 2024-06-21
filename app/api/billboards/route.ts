@@ -8,9 +8,6 @@ export async function GET(req: NextRequest) {
   const fortnight = searchParams.get("fortnight") || undefined;
   const perPage = 11;
 
-  console.log("fortnight");
-  console.log(fortnight);
-
   const whereConditions: any = [
     {
       tipoinventarios: {
@@ -33,8 +30,6 @@ export async function GET(req: NextRequest) {
   ];
 
   if (fortnight !== undefined) {
-    console.log(fortnight);
-    console.log("owo");
     whereConditions.push({
       NOT: {
         alugadas: {
@@ -50,38 +45,6 @@ export async function GET(req: NextRequest) {
     where: {
       AND: whereConditions,
     },
-    //   where: {
-    //     AND: [
-    //       {
-    //         tipoinventarios: {
-    //           id: 1,
-    //         },
-    //       },
-    //       {
-    //         ativo: true,
-    //       },
-    //       {
-    //         Localizacao: {
-    //           contains: address,
-    //         },
-    //       },
-    //       {
-    //         cidade: {
-    //           contains: city,
-    //         },
-    //       },
-    //       {
-    //         NOT: {
-    //           alugadas: {
-    //             some: {
-    //               id_bisemana: fortnight ? Number(fortnight) : undefined,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // where: whereConditions,
     select: {
       id: true,
       Localizacao: true,
@@ -96,37 +59,6 @@ export async function GET(req: NextRequest) {
   });
 
   const totalBillboards = await prisma.inventarios.count({
-    // where: {
-    //   AND: [
-    //     {
-    //       tipoinventarios: {
-    //         id: 1,
-    //       },
-    //     },
-    //     {
-    //       ativo: true,
-    //     },
-    //     {
-    //       Localizacao: {
-    //         contains: address,
-    //       },
-    //     },
-    //     {
-    //       cidade: {
-    //         contains: city,
-    //       },
-    //     },
-    //     {
-    //       NOT: {
-    //         alugadas: {
-    //           some: {
-    //             id_bisemana: fortnight ? Number(fortnight) : undefined,
-    //           },
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
     where: { AND: whereConditions },
   });
 

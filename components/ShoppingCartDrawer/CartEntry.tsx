@@ -21,7 +21,15 @@ type ShoppingCartDrawerProps = {
 export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
   return (
-    <Paper withBorder p={"sm"} my={"sm"} key={entry.item.id} pos={"relative"}>
+    <Paper
+      withBorder
+      p={"sm"}
+      my={"sm"}
+      key={entry.item.id}
+      pos={"relative"}
+      w={"100%"}
+      m={"auto"}
+    >
       <ActionIcon
         //disabled={if is paying already, disable removal, make them leave the payment page}
         pos={"absolute"}

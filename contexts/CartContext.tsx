@@ -1,6 +1,5 @@
 import { CartEntry } from "@/types/cartEntry";
 import { useLocalStorage } from "@mantine/hooks";
-import { inventarios } from "@prisma/client";
 import { createContext, useContext } from "react";
 
 type CartContextType = {
