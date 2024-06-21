@@ -2,17 +2,12 @@ import { CartContext } from "@/contexts/CartContext";
 import { ServiceContext } from "@/contexts/ServiceContext";
 import {
   Button,
-  Code,
   Paper,
   SegmentedControl,
   TextInput,
-  Text,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { modals } from "@mantine/modals";
 import React, { useContext, useEffect, useState } from "react";
-import PhoneForm from "../PhoneForm";
 
 type Props = {
   session: any;
@@ -22,22 +17,7 @@ export default function CheckoutForm({ session }: Props) {
   const [payment, setPayment] = useState("Credito");
   const cartContext = React.useContext(CartContext);
   const serviceContext = useContext(ServiceContext);
-  const [isPhoneModalOpen, { open, close }] = useDisclosure(false);
-  const [telephones, setTelephones] = useState<string[]>([]);
   const [phone, setPhone] = useState("");
-
-  async function handleFetchPhones() {
-    const response = await fetch(`/api/phones/${session.id}`);
-    const data = await response.json();
-    console.log("Phones: ", data.phones);
-    const phoneNumbers = data.phones.map((phone: any) => phone.Numero);
-
-    // if (data.phones.length === 0) {
-
-    // } else {
-    //   sendMail();
-    // }
-  }
 
   async function sendMail() {
     const response = await fetch(`/api/phones/${session.id}`);

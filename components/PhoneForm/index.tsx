@@ -1,11 +1,7 @@
-import { CartContext } from "@/contexts/CartContext";
-import { ServiceContext } from "@/contexts/ServiceContext";
 import { Button, Modal, Text, TextInput, Group } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
-import { error } from "console";
 import { useSession } from "next-auth/react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -16,29 +12,6 @@ type Props = {
 export default function PhoneForm({ isOpen, onConclude, closeFn }: Props) {
   const [phone, setPhone] = useState("");
   const session = useSession();
-  // const cartContext = React.useContext(CartContext);
-  // const serviceContext = useContext(ServiceContext);
-  // const session = useSession();
-  // async function sendMail() {
-  //   console.log("Fetching user's phones...:");
-  //   const phoneResponse = await fetch(`/api/phones/${session.data?.user?.id}`);
-  //   const phoneData = await phoneResponse.json();
-  //   const phoneNumbers = phoneData.phones.map((phone: any) => phone.Numero);
-  //   console.log("Sending mail... Telephones: ", phoneNumbers);
-  //   fetch("/api/mail/shoppingCartReady", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       user: session,
-  //       cart: cartContext.cart,
-  //       service: serviceContext.service,
-  //       telephones: phoneNumbers,
-  //     }),
-  //   });
-  // }
-
   async function addPhoneNumber() {
     console.log("Adding phone number: ", phone);
     try {
