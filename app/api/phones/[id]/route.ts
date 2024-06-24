@@ -29,7 +29,6 @@ export async function POST(
       data: {
         cliente_id: Number(id),
         Numero: body.phone,
-        Tipo: "0",
       },
     });
 

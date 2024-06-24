@@ -7,15 +7,11 @@ export async function GET(
 ) {
   const id = params.id;
   try {
-    const availableFortnightsIDs = await prisma.disponibilidades.findMany({
+    const availableFortnightsIDs = await prisma.alugadas.findMany({
       where: {
         AND: [
           {
             inventario: Number(id),
-          },
-          {
-            // disponivel: true, //godamnit dad, put the things as true...
-            disponivel: false,
           },
         ],
       },
