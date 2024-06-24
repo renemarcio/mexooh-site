@@ -1,7 +1,15 @@
-import { Paper, Stack, TextInput, PasswordInput, Button } from "@mantine/core";
+import {
+  Paper,
+  Stack,
+  TextInput,
+  PasswordInput,
+  Button,
+  InputBase,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import React from "react";
+import { IMaskInput } from "react-imask";
 
 export default function RegisterPJForm() {
   const form = useForm({
@@ -57,7 +65,17 @@ export default function RegisterPJForm() {
             label="Nome fantasia da empresa"
           />
           <TextInput required {...form.getInputProps("email")} label="Email" />
-          <TextInput required {...form.getInputProps("cnpj")} label="CNPJ" />
+          {/* <TextInput required {...form.getInputProps("cnpj")} label="CNPJ" /> */}
+          <InputBase
+            required
+            {...form.getInputProps("cnpj")}
+            component={IMaskInput}
+            mask={"00.000.000/0000-00"}
+            unmask={true}
+            label="CNPJ"
+            onChange={() => {}}
+            onAccept={(value) => form.setFieldValue("cnpj", value)}
+          />
           <TextInput {...form.getInputProps("telefone")} label="Telefone" />
           <PasswordInput
             required

@@ -36,7 +36,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       const entry = await prisma.telefones_clientes.create({
         data: {
           cliente_id: id,
-          Tipo: "0",
           Numero: data.telefone,
         },
       });

@@ -1,7 +1,15 @@
-import { Paper, Stack, TextInput, Button, PasswordInput } from "@mantine/core";
+import {
+  Paper,
+  Stack,
+  TextInput,
+  Button,
+  PasswordInput,
+  InputBase,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useForm } from "@mantine/form";
 import React from "react";
+import { IMaskInput } from "react-imask";
 
 export default function RegisterPFForm() {
   const form = useForm({
@@ -47,7 +55,16 @@ export default function RegisterPFForm() {
         <Stack>
           <TextInput required {...form.getInputProps("nome")} label="Nome" />
           <TextInput required {...form.getInputProps("email")} label="Email" />
-          <TextInput required {...form.getInputProps("cpf")} label="CPF" />
+          <InputBase
+            required
+            {...form.getInputProps("cpf")}
+            component={IMaskInput}
+            mask={"000.000.000-00"}
+            unmask={true}
+            label="CPF"
+            onChange={() => {}}
+            onAccept={(value) => form.setFieldValue("cpf", value)}
+          />
           <TextInput {...form.getInputProps("telefone")} label="Telefone" />
           <PasswordInput
             required
