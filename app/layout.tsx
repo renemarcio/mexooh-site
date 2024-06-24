@@ -25,6 +25,10 @@ export default function RootLayout({ children }: { children: any }) {
           http-equiv="Content-Security-Policy"
           content="script-src 'self' https://maps.googleapis.com"
         /> */}
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
       </head>
       <body>
         <Providers>
