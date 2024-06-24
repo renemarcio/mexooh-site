@@ -8,6 +8,7 @@ import {
   Center,
   Divider,
   Group,
+  Modal,
   Tooltip,
 } from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
@@ -19,17 +20,26 @@ import Logo from "../Logo";
 import ShoppingCartDrawer from "../ShoppingCartDrawer";
 import { useDisclosure } from "@mantine/hooks";
 import { signOut, useSession } from "next-auth/react";
+import LoginForm from "../LoginForm";
 
 type AppShellProps = {
   children: React.ReactNode;
 };
 
 export default function MyAppShell({ children }: AppShellProps) {
-  const [opened, { open, close }] = useDisclosure(false);
+  const [
+    shoppingCartDrawerOpened,
+    { open: shoppingCartDrawerOpen, close: shoppingCartDrawerClose },
+  ] = useDisclosure(false);
+  const [loginModalOpened, { open: loginModalOpen, close: loginModalClose }] =
+    useDisclosure(false);
   const session = useSession();
   return (
     <>
-      <ShoppingCartDrawer opened={opened} close={close} />
+      <ShoppingCartDrawer
+        opened={shoppingCartDrawerOpened}
+        close={shoppingCartDrawerClose}
+      />
       <AppShell header={{ height: 70 }}>
         <AppShell.Header>
           <Group justify="space-between" maw={"1960px"} px={"60"} mx={"auto"}>
@@ -44,7 +54,7 @@ export default function MyAppShell({ children }: AppShellProps) {
               <ThemeToggleIcon />
               <Divider orientation="vertical" />
               {session.status === "unauthenticated" ? (
-                <ActionIcon variant="default">
+                <ActionIcon variant="default" onClick={loginModalOpen}>
                   <IconLogin2 size={14} />
                 </ActionIcon>
               ) : (
@@ -57,13 +67,21 @@ export default function MyAppShell({ children }: AppShellProps) {
                   />
                 </Tooltip>
               )}
-              <ActionIcon variant="default" onClick={open}>
+              <ActionIcon variant="default" onClick={shoppingCartDrawerOpen}>
                 <IconShoppingCart size={14} />
               </ActionIcon>
             </Group>
           </Group>
         </AppShell.Header>
-        <AppShell.Main>{children}</AppShell.Main>
+        <AppShell.Main>
+          <Modal
+            opened={loginModalOpened}
+            onClose={loginModalClose}
+            centered
+            children={<LoginForm nextStepFn={loginModalClose} />}
+          />
+          {children}
+        </AppShell.Main>
         <AppShell.Footer zIndex={-10}>
           <Footer />
         </AppShell.Footer>
