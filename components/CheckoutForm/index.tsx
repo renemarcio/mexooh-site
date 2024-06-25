@@ -6,6 +6,7 @@ import {
   SegmentedControl,
   TextInput,
   Title,
+  Text,
 } from "@mantine/core";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -42,23 +43,10 @@ export default function CheckoutForm({ session }: Props) {
   useEffect(() => {
     sendMail();
   }, []);
-  function onPhoneModalConfirm() {
-    fetch(`/api/phones/${session.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone,
-      }),
-    });
-    sendMail();
-    close();
-  }
 
   return (
     <>
-      <form>
+      {/* <form>
         <Paper p={"xl"}>
           <SegmentedControl
             fullWidth
@@ -114,7 +102,12 @@ export default function CheckoutForm({ session }: Props) {
             Enviar e-mail de teste
           </Button>
         </Paper>
-      </form>
+      </form> */}
+      <Title ta={"center"}>Obrigado por mostrar interesse!</Title>
+      <Text ta={"center"}>
+        Recebemos uma notificação denotando o seu interesse e logo entraremos em
+        contato, para a negociação e o planejamento.
+      </Text>
     </>
   );
 }
