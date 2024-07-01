@@ -1,10 +1,11 @@
 import React from "react";
-import { ColorSchemeScript, Box } from "@mantine/core";
+import { ColorSchemeScript, Box, Button } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import classes from "./styles.module.css";
 import Providers from "../contexts/providers";
+import { modals } from "@mantine/modals";
 
 export const metadata = {
   title: "Mex",
@@ -25,10 +26,6 @@ export default function RootLayout({ children }: { children: any }) {
           http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
-        {/* <meta
-          http-equiv="Content-Security-Policy"
-          content="script-src 'self' https://maps.googleapis.com"
-        /> */}
       </head>
       <body>
         <Providers>
