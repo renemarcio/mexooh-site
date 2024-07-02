@@ -1,9 +1,7 @@
 import React from "react";
 import { ColorSchemeScript, Box, Button } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
-import "@mantine/core/styles.css";
-import "@mantine/carousel/styles.css";
-import classes from "./styles.module.css";
+
 import Providers from "../contexts/providers";
 import { modals } from "@mantine/modals";
 
@@ -30,7 +28,12 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <Providers>
           <MyAppShell>
-            <Box className={classes.body} mb={"330px"}>
+            <Box
+              style={{
+                backgroundColor: "var(--mantine-color-body)",
+              }}
+              mb={"330px"}
+            >
               {children}
             </Box>
           </MyAppShell>

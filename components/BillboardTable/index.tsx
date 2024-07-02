@@ -25,9 +25,9 @@ import {
   IconShoppingCartMinus,
   IconShoppingCartPlus,
 } from "@tabler/icons-react";
-import classes from "./styles.module.css";
 import { modals } from "@mantine/modals";
 import RentBillboardModal from "../RentBillboardModal";
+import classes from "./styles.module.css";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);

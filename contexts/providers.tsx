@@ -7,6 +7,8 @@ import { CityProvider } from "./CityContext";
 import { CartProvider } from "./CartContext";
 import { SessionProvider } from "next-auth/react";
 import { ServiceProvider } from "./ServiceContext";
+import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 
 type ProvidersProps = {
   children: React.ReactNode;
