@@ -3,7 +3,15 @@
 }
 
 .inCart:hover {
-  background: var(--mantine-primary-color-light-hover);
+  background-color: var(--mantine-primary-color-light-hover);
+}
+
+.selected {
+  background-color: var(--mantine-color-red-light);
+}
+
+.selected:hover {
+  background-color: var(--mantine-color-red-light-hover);
 }
 
 .pillsList {

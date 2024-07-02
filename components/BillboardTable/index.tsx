@@ -25,7 +25,7 @@ import {
   IconShoppingCartMinus,
   IconShoppingCartPlus,
 } from "@tabler/icons-react";
-import classes from "./styles.module.css";
+import classes from "./Styles.module.css";
 import { modals } from "@mantine/modals";
 import RentBillboardModal from "../RentBillboardModal";
 
@@ -44,13 +44,25 @@ export default function BillboardTable() {
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label:
-        "BI-" +
-        fortnight.numero +
-        " - " +
-        new Date(fortnight.dtInicio).toLocaleDateString("pt-BR") +
-        " - " +
-        new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
+      label: `BI-${fortnight.numero} -
+      ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${Number(
+        new Date(fortnight.dtInicio).getUTCMonth() + 1
+      ).toLocaleString("pt-BR", {
+        minimumIntegerDigits: 2,
+      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
+    ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString("pt-BR", {
+      minimumIntegerDigits: 2,
+    })}/${Number(new Date(fortnight.dtFinal).getUTCMonth() + 1).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
     };
   });
   const { city, setCity } = useCityContext();
@@ -109,6 +121,11 @@ export default function BillboardTable() {
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
+      // bg={
+      //   activeBillboard?.id === billboard.id
+      //     ? "var(--mantine-color-red-light)"
+      //     : ""
+      // }
       key={billboard.id}
       onClick={() => {
         setLat(Number(billboard.LinkGoogleMaps?.split(",")[0]));
@@ -120,7 +137,9 @@ export default function BillboardTable() {
       // className={cartContext.cart.includes(billboard) ? classes.inCart : ""}
       // (vendors.find(e => e.Name === 'Magenic')
       className={
-        cartContext.cart.find((e) => e.item.id === billboard.id)
+        activeBillboard?.id === billboard.id
+          ? classes.selected
+          : cartContext.cart.find((e) => e.item.id === billboard.id)
           ? classes.inCart
           : ""
       }
