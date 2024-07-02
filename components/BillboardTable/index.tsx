@@ -25,7 +25,7 @@ import {
   IconShoppingCartMinus,
   IconShoppingCartPlus,
 } from "@tabler/icons-react";
-import classes from "./Styles.module.css";
+import classes from "./styles.module.css";
 import { modals } from "@mantine/modals";
 import RentBillboardModal from "../RentBillboardModal";
 
