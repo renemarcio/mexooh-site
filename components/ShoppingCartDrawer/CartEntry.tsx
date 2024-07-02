@@ -31,7 +31,6 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       m={"auto"}
     >
       <ActionIcon
-        //disabled={if is paying already, disable removal, make them leave the payment page}
         pos={"absolute"}
         top={0}
         right={0}
@@ -40,7 +39,6 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
             cartContext.cart.filter((b) => b.item.id !== entry.item.id)
           )
         }
-        // variant="transparent"
         color="red"
         size="sm"
       >
@@ -48,11 +46,11 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       </ActionIcon>
       <Text size="sm">{entry.item.Localizacao}</Text>
       <Group grow gap={0}>
-        <Text size="sm">R$ {entry.value},00 / bisemana</Text>
+        <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
         <Text ta={"right"}>
           {entry.fortnightIDs.length > 1
-            ? `${entry.fortnightIDs.length} bisemanas`
-            : `${entry.fortnightIDs.length} bisemana`}
+            ? `${entry.fortnightIDs.length} Bi-Semanas`
+            : `${entry.fortnightIDs.length} Bi-Semana`}
         </Text>
       </Group>
       <Center>

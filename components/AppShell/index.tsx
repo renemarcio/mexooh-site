@@ -8,6 +8,7 @@ import {
   Center,
   Divider,
   Group,
+  Indicator,
   Modal,
   Tooltip,
 } from "@mantine/core";
@@ -21,6 +22,7 @@ import ShoppingCartDrawer from "../ShoppingCartDrawer";
 import { useDisclosure } from "@mantine/hooks";
 import { signOut, useSession } from "next-auth/react";
 import LoginForm from "../LoginForm";
+import { useCartContext } from "@/contexts/CartContext";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -34,6 +36,7 @@ export default function MyAppShell({ children }: AppShellProps) {
   const [loginModalOpened, { open: loginModalOpen, close: loginModalClose }] =
     useDisclosure(false);
   const session = useSession();
+  const cartContext = useCartContext();
   return (
     <>
       <ShoppingCartDrawer
@@ -67,9 +70,15 @@ export default function MyAppShell({ children }: AppShellProps) {
                   />
                 </Tooltip>
               )}
-              <ActionIcon variant="default" onClick={shoppingCartDrawerOpen}>
-                <IconShoppingCart size={14} />
-              </ActionIcon>
+              <Indicator
+                label={cartContext.cart.length.toString()}
+                size={"xs"}
+                disabled={cartContext.cart.length === 0}
+              >
+                <ActionIcon variant="default" onClick={shoppingCartDrawerOpen}>
+                  <IconShoppingCart size={14} />
+                </ActionIcon>
+              </Indicator>
             </Group>
           </Group>
         </AppShell.Header>

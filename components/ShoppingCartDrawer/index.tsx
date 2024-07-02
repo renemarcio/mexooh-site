@@ -99,7 +99,7 @@ export default function ShoppingCartDrawer({
               NÃO
             </Text>{" "}
             inclui impressão da lona ou papel. Para contratar este serviço,
-            clique no botão "Serviço", abaixo.
+            clique no botão "Produção", abaixo.
           </Text>
         )}
         {cartContext.cart.length > 0 && (

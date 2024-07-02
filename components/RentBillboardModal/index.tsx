@@ -31,19 +31,31 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label:
-        "BI-" +
-        fortnight.numero +
-        " - " +
-        new Date(fortnight.dtInicio).toLocaleDateString("pt-BR") +
-        " - " +
-        new Date(fortnight.dtFinal).toLocaleDateString("pt-BR"),
+      label: `BI-${fortnight.numero} -
+        ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+          "pt-BR",
+          {
+            minimumIntegerDigits: 2,
+          }
+        )}/${Number(
+        new Date(fortnight.dtInicio).getUTCMonth() + 1
+      ).toLocaleString("pt-BR", {
+        minimumIntegerDigits: 2,
+      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
+      ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${Number(new Date(fortnight.dtFinal).getUTCMonth() + 1).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
       disabled: !availableFortnights.includes(fortnight.id),
     };
   });
-
-  console.log("billboard");
-  console.log(billboard);
 
   useEffect(() => {
     fetchFortnights();

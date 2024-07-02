@@ -22,13 +22,15 @@ export default function Panels() {
   return (
     <Box pb={"100px"}>
       <Title my={"lg"} ta={"center"}>
-        Interessado em painéis?
+        Nossos Paineis
       </Title>
       <Text ta={"center"} size="lg" px={"10vw"}>
-        Não encontrou uma localização interessante acima? Então provavelmente o
+        {/* Não encontrou uma localização interessante acima? Então provavelmente o
         que você precisa é de um painél! Possuímos vários painéis para locação,
         é só dar uma olhada nos locais que temos à oferecer e entrar em contato
-        para efetuar a negociação!
+        para efetuar a negociação! */}
+        Nossos paineis de locação são de qualidade e atendem o que você precisa.
+        Encontre a localização desejada ou solicite suporte.
       </Text>
       <Center>
         <Stack gap={0} align="center" my={"md"}>

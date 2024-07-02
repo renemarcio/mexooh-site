@@ -16,7 +16,7 @@ export default function Info() {
     <Center my={"xl"}>
       <Box maw={"1920px"} w={"100%"} p={"lg"}>
         <Center>
-          <Title>Quem somos</Title>
+          <Title>Quem Somos</Title>
         </Center>
         <Group gap={0} mt={"lg"}>
           {/* <Image

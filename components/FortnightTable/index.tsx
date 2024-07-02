@@ -34,10 +34,28 @@ export default function FortnightTable() {
       <Table.Tr>
         <Table.Td ta={"center"}>{fortnight.numero}</Table.Td>
         <Table.Td ta={"center"}>
-          {new Date(fortnight.dtInicio).toLocaleDateString("pt-br")}
+          {`${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+            "pt-BR",
+            {
+              minimumIntegerDigits: 2,
+            }
+          )}/${Number(
+            new Date(fortnight.dtInicio).getUTCMonth() + 1
+          ).toLocaleString("pt-BR", {
+            minimumIntegerDigits: 2,
+          })}/${new Date(fortnight.dtInicio).getUTCFullYear()}`}
         </Table.Td>
         <Table.Td ta={"center"}>
-          {new Date(fortnight.dtFinal).toLocaleDateString("pt-br")}
+          {`${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+            "pt-BR",
+            {
+              minimumIntegerDigits: 2,
+            }
+          )}/${Number(
+            new Date(fortnight.dtFinal).getUTCMonth() + 1
+          ).toLocaleString("pt-BR", {
+            minimumIntegerDigits: 2,
+          })}/${new Date(fortnight.dtFinal).getUTCFullYear()}`}
         </Table.Td>
       </Table.Tr>
     );
