@@ -48,9 +48,9 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       <Group grow gap={0}>
         <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
         <Text ta={"right"}>
-          {entry.fortnightIDs.length > 1
-            ? `${entry.fortnightIDs.length} Bi-Semanas`
-            : `${entry.fortnightIDs.length} Bi-Semana`}
+          {entry.fortnights.length > 1
+            ? `${entry.fortnights.length} Bi-Semanas`
+            : `${entry.fortnights.length} Bi-Semana`}
         </Text>
       </Group>
       <Center>
@@ -61,7 +61,7 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
             decimalSeparator=","
             decimalScale={2}
             fixedDecimalScale
-            value={entry.value * entry.fortnightIDs.length}
+            value={entry.value * entry.fortnights.length}
           />
         </Text>
       </Center>

@@ -95,10 +95,16 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   }
 
   async function handleSubmit() {
+    if (selectedFortnights.length <= 0) {
+      return;
+    }
+    const rentedFortnights = fortnights.filter((fortnight) =>
+      selectedFortnights.includes(fortnight.id.toString())
+    );
     const newCartEntry: CartEntry = {
       item: billboard,
       value: billboard.Iluminado ? 1190 : 1090,
-      fortnightIDs: selectedFortnights,
+      fortnights: rentedFortnights, //fortnights that match selectedFortnights IDS
     };
     cart.setCart([...cart.cart, newCartEntry]);
     closeFn();

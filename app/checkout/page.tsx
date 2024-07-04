@@ -10,8 +10,10 @@ import {
   LoadingOverlay,
   Space,
   Stepper,
+  Title,
+  Text,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LoginForm from "../../components/LoginForm";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import BillboardTable from "../../components/BillboardTable";
@@ -19,12 +21,15 @@ import CheckoutForm from "@/components/CheckoutForm";
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@mantine/hooks";
 import PhoneForm from "@/components/PhoneForm";
+import ShoppingCartSubmissionConfirmation from "@/components/ShoppingCartSubmissionConfirmation";
+import { CartContext } from "@/contexts/CartContext";
 
 export default function Checkout() {
   const [currentStep, setCurrentStep] = useState(0);
   const session = useSession();
   const [needPhones, setNeedPhones] = useState(false);
   const [isPhoneModalOpen, { open, close }] = useDisclosure(false);
+  const cartContext = useContext(CartContext);
   async function fetchPhones() {
     //@ts-ignore
     const phoneResponse = await fetch(`/api/phones/${session.data?.id}`);
@@ -76,18 +81,17 @@ export default function Checkout() {
                 label="Etapa 2"
                 description="Selecione os pontos de interesse"
               />
-              <Stepper.Step label="Etapa 3" description="Método de Pagamento" />
+              <Stepper.Step label="Etapa 3" description="Envio de pedido" />
             </Stepper>
           </Card.Section>
           <Card.Section p={"xl"}>
             {currentStep === 0 && <LoginForm nextStepFn={handleNext} />}
             {currentStep === 1 && (
               <>
-                <BillboardTable />
-                <Group justify="flex-end" mt="md">
+                <ShoppingCartSubmissionConfirmation />
+                {/* <Group justify="flex-end" mt="md">
                   <Button
                     rightSection={<IconChevronRight size={15} />}
-                    // onClick={handleNext}
                     onClick={() => {
                       if (needPhones) {
                         open();
@@ -96,20 +100,35 @@ export default function Checkout() {
                       }
                     }}
                   >
-                    Avançar
+                    Finalizar carrinho
                   </Button>
-                </Group>
+                </Group> */}
+                <Button
+                  disabled={cartContext.cart.length <= 0}
+                  my={"lg"}
+                  fullWidth
+                  rightSection={<IconChevronRight size={15} />}
+                  onClick={() => {
+                    if (needPhones) {
+                      open();
+                    } else {
+                      handleNext();
+                    }
+                  }}
+                >
+                  Finalizar carrinho
+                </Button>
               </>
             )}
             {currentStep === 2 && (
               <>
                 <CheckoutForm session={session.data} />
-                <Button
+                {/* <Button
                   rightSection={<IconChevronLeft size={15} />}
                   onClick={handlePrevious}
                 >
                   Voltar
-                </Button>
+                </Button> */}
               </>
             )}
           </Card.Section>

@@ -29,7 +29,7 @@ export default function ShoppingCartDrawer({
 }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
   const total = cartContext.cart.reduce(
-    (sum, cartItem) => sum + cartItem.value * cartItem.fortnightIDs.length,
+    (sum, cartItem) => sum + cartItem.value * cartItem.fortnights.length,
     0
   );
 
