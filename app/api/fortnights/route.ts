@@ -15,8 +15,10 @@ export async function GET(req: NextRequest) {
   } else {
     fortnights = await prisma.bisemanas.findMany({
       where: {
-        dtInicio: {
-          gt: new Date(),
+        NOT: {
+          dtFinal: {
+            lt: new Date(),
+          },
         },
       },
     });

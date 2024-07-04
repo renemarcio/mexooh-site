@@ -31,7 +31,16 @@ export default function FortnightTable() {
 
   const rows = fortnights.map((fortnight) => {
     return (
-      <Table.Tr>
+      <Table.Tr
+        key={fortnight.id}
+        bg={
+          new Date().getTime() > new Date(fortnight.dtFinal).getTime()
+            ? "var(--mantine-color-red-light)"
+            : new Date().getTime() > new Date(fortnight.dtInicio).getTime()
+            ? "var(--mantine-color-green-light)"
+            : ""
+        }
+      >
         <Table.Td ta={"center"}>{fortnight.numero}</Table.Td>
         <Table.Td ta={"center"}>
           {`${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(

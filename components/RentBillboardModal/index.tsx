@@ -15,7 +15,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Map from "../Map";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
 import { CartContext } from "@/contexts/CartContext";
-import { modals } from "@mantine/modals";
 import { CartEntry } from "@/types/cartEntry";
 
 type Props = {

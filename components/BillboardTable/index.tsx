@@ -121,11 +121,6 @@ export default function BillboardTable() {
 
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
-      // bg={
-      //   activeBillboard?.id === billboard.id
-      //     ? "var(--mantine-color-red-light)"
-      //     : ""
-      // }
       key={billboard.id}
       onClick={() => {
         setLat(Number(billboard.LinkGoogleMaps?.split(",")[0]));
