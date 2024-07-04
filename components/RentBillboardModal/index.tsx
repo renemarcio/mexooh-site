@@ -90,8 +90,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     console.log("availableFortnightsIDs");
     console.log(availableFortnightsIDs);
     setAvailableFortnights(availableFortnightsIDs);
-
-    // setSelectedFortnights(data.fortnights);
   }
 
   async function handleSubmit() {

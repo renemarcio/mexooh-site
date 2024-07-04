@@ -46,7 +46,9 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       </ActionIcon>
       <Text size="sm">{entry.item.Localizacao}</Text>
       <Group grow gap={0}>
-        <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
+        {entry.value > 0 && (
+          <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
+        )}
         <Text ta={"right"}>
           {entry.fortnights.length > 1
             ? `${entry.fortnights.length} Bi-Semanas`
@@ -55,14 +57,16 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       </Group>
       <Center>
         <Text size="lg" fw={700} c={"midiagreen.8"}>
-          <NumberFormatter
-            prefix="R$ "
-            thousandSeparator="."
-            decimalSeparator=","
-            decimalScale={2}
-            fixedDecimalScale
-            value={entry.value * entry.fortnights.length}
-          />
+          {entry.value > 0 && (
+            <NumberFormatter
+              prefix="R$ "
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={2}
+              fixedDecimalScale
+              value={entry.value * entry.fortnights.length}
+            />
+          )}
         </Text>
       </Center>
     </Paper>

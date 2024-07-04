@@ -17,6 +17,8 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
+import { modals } from "@mantine/modals";
+import PanelRentForm from "../PanelRentForm";
 
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
@@ -58,6 +60,11 @@ export default function PanelTable() {
       onClick={() => {
         setLat(Number(panel.LinkGoogleMaps?.split(",")[0]));
         setLong(Number(panel.LinkGoogleMaps?.split(",")[1]));
+        modals.open({
+          children: (
+            <PanelRentForm panel={panel} closeFn={() => modals.closeAll()} />
+          ),
+        });
       }}
       style={{ cursor: "pointer" }}
     >

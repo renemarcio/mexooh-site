@@ -9,7 +9,6 @@ import {
   Html,
   Img,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text,
@@ -39,17 +38,20 @@ export default function ShoppingCartReadyEmail({
   let total = 0;
 
   const cartList = cart?.map((entry, index) => {
-    total += entry.value * entry.fortnightIDs.length;
+    total += entry.value * entry.fortnights.length;
     if (index % 2 === 1) {
       return (
         <div className="flex w-full">
           <div className="p-4 basis-2/5">{entry.item.Localizacao}</div>
           <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
           <div className="p-4 basis-1/5">
-            {entry.fortnightIDs.length} Bi-Semanas
+            {entry.fortnights.length} Bi-Semanas
           </div>
           <div className="p-4 basis-1/5">
-            R${entry.value * entry.fortnightIDs.length},00
+            {entry.value > 0
+              ? "R$" + entry.value * entry.fortnights.length + ",00"
+              : "Á NEGOCIAR"}
+            {/* R${entry.value * entry.fortnights.length},00 */}
           </div>
         </div>
       );
@@ -59,10 +61,12 @@ export default function ShoppingCartReadyEmail({
           <div className="p-4 basis-2/5">{entry.item.Localizacao}</div>
           <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
           <div className="p-4 basis-1/5">
-            {entry.fortnightIDs.length} Bi-Semanas
+            {entry.fortnights.length} Bi-Semanas
           </div>
           <div className="p-4 basis-1/5">
-            R${entry.value * entry.fortnightIDs.length},00
+            {entry.value > 0
+              ? "R$" + entry.value * entry.fortnights.length + ",00"
+              : "PAINEL"}
           </div>
         </div>
       );
@@ -108,8 +112,23 @@ export default function ShoppingCartReadyEmail({
             <Text style={main}>E-mail do cliente: {user?.email}</Text>
             <Text style={main}>
               Telefones:{" "}
+              {telephones.length > 0 && (
+                <Text style={main}>
+                  Clique no número para tentar contato por WhatsApp
+                </Text>
+              )}
               {telephones.length > 0
-                ? telephones.join(", ")
+                ? // ? telephones.join()
+                  telephones.map((telephone) => (
+                    <div className="flex justify-center">
+                      <Button
+                        className="bg-green-500 text-white outline font-bold py-2 mb-2 px-4 rounded"
+                        href={`https://wa.me/55${telephone}`}
+                      >
+                        {telephone}
+                      </Button>
+                    </div>
+                  ))
                 : "Nenhum telefone cadastrado"}
             </Text>
             <div className="flex justify-center">
@@ -117,7 +136,7 @@ export default function ShoppingCartReadyEmail({
                 className="bg-green-500 text-white outline font-bold py-2 px-4 rounded"
                 href={`mailto:${user?.email}`}
               >
-                Clique aqui para entrar em contato
+                Clique aqui para entrar em contato por e-mail
               </Button>
             </div>
           </Section>

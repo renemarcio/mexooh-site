@@ -61,7 +61,7 @@ export default function ShoppingCartSubmissionConfirmation() {
           </HoverCard.Dropdown>
         </HoverCard>
         <Table.Td ta={"center"}>
-          {
+          {entry.value > 0 ? (
             <>
               <NumberFormatter
                 value={entry.value * entry.fortnights.length}
@@ -84,7 +84,14 @@ export default function ShoppingCartSubmissionConfirmation() {
                 por Bi-Semana)
               </Text>
             </>
-          }
+          ) : (
+            <>
+              <Text>Painel</Text>
+              <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
+                À negociar.
+              </Text>
+            </>
+          )}
         </Table.Td>
       </Table.Tr>
     );
