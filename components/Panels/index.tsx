@@ -25,21 +25,17 @@ export default function Panels() {
         Nossos Paineis
       </Title>
       <Text ta={"center"} size="lg" px={"10vw"}>
-        {/* Não encontrou uma localização interessante acima? Então provavelmente o
-        que você precisa é de um painél! Possuímos vários painéis para locação,
-        é só dar uma olhada nos locais que temos à oferecer e entrar em contato
-        para efetuar a negociação! */}
         Nossos paineis de locação são de qualidade e atendem o que você precisa.
         Encontre a localização desejada ou solicite suporte.
       </Text>
       <Center>
         <Stack gap={0} align="center" my={"md"}>
           <Group wrap="nowrap" gap={10}>
-            <Tooltip label="Entre em contato pelo Whatsapp!">
+            {/* <Tooltip label="Entre em contato pelo Whatsapp!">
               <ActionIcon
                 radius={"xl"}
                 size={"lg"}
-                color={"#25D366"} //Whatsapp's official color...
+                color={"#25D366"}
                 component={Link}
                 href={
                   "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
@@ -50,8 +46,7 @@ export default function Panels() {
               >
                 <IconBrandWhatsapp size={25} />
               </ActionIcon>
-            </Tooltip>
-            {/* </Paper> */}
+            </Tooltip> */}
             <Tooltip label="Mande um e-mail!">
               <ActionIcon
                 radius={"xl"}
@@ -65,9 +60,47 @@ export default function Panels() {
                 <IconMail size={25} />
               </ActionIcon>
             </Tooltip>
+            Entre em contato por e-mail!
           </Group>
-
-          <Group wrap="nowrap" gap={10} mt={5}>
+          <Group gap={0}>
+            <Tooltip label="Entre em contato pelo Whatsapp!">
+              <ActionIcon
+                radius={"xl"}
+                size={"lg"}
+                color={"#25D366"}
+                component={Link}
+                href={
+                  "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                }
+                target={"_blank"}
+                rel="noreferrer"
+                variant="subtle"
+              >
+                <IconBrandWhatsapp size={25} />
+              </ActionIcon>
+            </Tooltip>
+            <Text ta={"center"}>(11) 97230-1116</Text>
+          </Group>
+          <Group gap={0}>
+            <Tooltip label="Entre em contato pelo Whatsapp!">
+              <ActionIcon
+                radius={"xl"}
+                size={"lg"}
+                color={"#25D366"}
+                component={Link}
+                href={
+                  "https://wa.me/5515998140546?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                }
+                target={"_blank"}
+                rel="noreferrer"
+                variant="subtle"
+              >
+                <IconBrandWhatsapp size={25} />
+              </ActionIcon>
+            </Tooltip>
+            <Text ta={"center"}>(15) 99814-0546 </Text>
+          </Group>
+          <Group wrap="nowrap" gap={5} mt={5}>
             <IconPhoneCall
               size={25}
               color="var(--mantine-primary-color-filled)"

@@ -6,7 +6,7 @@ import Providers from "../contexts/providers";
 import { modals } from "@mantine/modals";
 
 export const metadata = {
-  title: "Mex",
+  title: "Mex OOH",
   description: "Locação de painéis e outdoors é aqui!",
 };
 

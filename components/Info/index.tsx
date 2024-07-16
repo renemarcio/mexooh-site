@@ -64,7 +64,7 @@ export default function Info() {
                     fontFamily: `${handelGoth.style.fontFamily}, sans-serif`,
                   }}
                 >
-                  MEX
+                  MEX OOH
                 </Text>
                 <Text component="span" size={"lg"}>
                   , o seu parceiro confiável em mídia externa na vibrante região

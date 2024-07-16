@@ -102,9 +102,12 @@ export default function BillboardTable() {
         "Content-Type": "application/json",
       },
     });
-    const data = await res.json();
-
-    setFortnights(data);
+    if (res) {
+      const data = await res.json();
+      setFortnights(data);
+    } else {
+      console.log("Server unreachable.");
+    }
   }
 
   useEffect(() => {

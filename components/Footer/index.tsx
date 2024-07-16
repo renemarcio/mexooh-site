@@ -24,13 +24,18 @@ export function Footer() {
     <footer className={classes.footer}>
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          Mídia Painéis
+          Mex OOH
           <Text size="xs" c="dimmed" className={classes.description}>
-            R. João Evangelista, 380
+            {/* R. João Evangelista, 380
             <br />
             Centro, Itapetininga - SP
             <br />
-            18200-055
+            18200-055 */}
+            Av. Prof Jacob Bazarian, 200
+            <br />
+            CEP 18204-121 • Vale San Fernando
+            <br />
+            Itapetininga, SP
           </Text>
         </div>
         {/* <div className={classes.groups}>{groups}</div> */}
