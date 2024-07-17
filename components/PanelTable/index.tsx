@@ -12,6 +12,7 @@ import {
   Grid,
   Stack,
   Image,
+  ComboboxData,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
@@ -26,10 +27,12 @@ export default function PanelTable() {
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
   const [panels, setPanels] = useState<inventarios[]>([]);
+  const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const { city, setCity } = useCityContext();
+  const [city, setCity] = useState<string>("");
+  // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
     try {
@@ -46,6 +49,17 @@ export default function PanelTable() {
     }
   }
 
+  async function fetchCities() {
+    try {
+      const response = await fetch("/api/cities/select?type=2");
+      const data = await response.json();
+      setCities(data);
+    } catch {
+      setCities([]);
+      console.log("Couldn't fetch cities.");
+    }
+  }
+
   useEffect(() => {
     fetchPanels();
   }, [debouncedAddress, city, activePage]);
@@ -53,6 +67,10 @@ export default function PanelTable() {
   useEffect(() => {
     setPage(1);
   }, [city]);
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
 
   const tableRows = panels.map((panel) => (
     <Table.Tr
@@ -118,7 +136,8 @@ export default function PanelTable() {
                           <Select
                             flex={1}
                             placeholder="Cidade..."
-                            data={["Itapetininga", "Sorocaba", "Tatuí"]}
+                            data={cities}
+                            searchable
                             onChange={(value) => {
                               setCity(value!);
                               fetchPanels();

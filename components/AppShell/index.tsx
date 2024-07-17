@@ -126,7 +126,7 @@ export default function MyAppShell({ children }: AppShellProps) {
             <Group>
               <ThemeToggleIcon />
               <Divider orientation="vertical" />
-              {session.status === "unauthenticated" ? (
+              {session.status !== "authenticated" ? (
                 <ActionIcon variant="default" onClick={loginModalOpen}>
                   <IconLogin2 size={14} />
                 </ActionIcon>

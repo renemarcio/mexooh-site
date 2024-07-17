@@ -9,7 +9,7 @@ export default function FortnightCalendarButton() {
       variant="default"
       onClick={() => {
         modals.open({
-          title: "Confira aqui o calendáiro de Bi-Semanas!",
+          title: "Confira aqui o calendário de Bi-Semanas!",
           children: <FortnightTable />,
           centered: true,
           size: "auto",
@@ -18,7 +18,7 @@ export default function FortnightCalendarButton() {
         });
       }}
     >
-      Confira aqui o calendáiro de Bi-Semanas!
+      Confira aqui o calendário de Bi-Semanas!
     </Button>
   );
 }

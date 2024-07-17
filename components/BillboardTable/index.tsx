@@ -14,6 +14,7 @@ import {
   Button,
   NumberFormatter,
   MultiSelect,
+  ComboboxData,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { bisemanas, inventarios } from "@prisma/client";
@@ -41,6 +42,7 @@ export default function BillboardTable() {
   const [activeBillboard, setActiveBillboard] = useState<inventarios>();
   const [fortnights, setFortnights] = useState<bisemanas[]>([]);
   const [selectedFortnight, setSelectedFortnight] = useState<string>("");
+  const [cities, setCities] = useState<ComboboxData>([]);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
@@ -65,7 +67,8 @@ export default function BillboardTable() {
       )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
     };
   });
-  const { city, setCity } = useCityContext();
+  // const { city, setCity } = useCityContext();
+  const [city, setCity] = useState("");
   const cartContext = useCartContext();
 
   async function handleBillboardsFetch() {
@@ -110,6 +113,20 @@ export default function BillboardTable() {
     }
   }
 
+  async function fetchCities() {
+    const res = await fetch("/api/cities/select?type=1", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res) {
+      const data = await res.json();
+      setCities(data);
+    } else {
+      console.log("Server unreachable.");
+    }
+  }
   useEffect(() => {
     handleBillboardsFetch();
   }, [debouncedAddress, city, activePage, selectedFortnight]);
@@ -120,6 +137,7 @@ export default function BillboardTable() {
 
   useEffect(() => {
     fetchFortnights();
+    fetchCities();
   }, []);
 
   const tableRows = billboards.map((billboard) => (
@@ -213,7 +231,9 @@ export default function BillboardTable() {
                     flex={1}
                     placeholder="Cidade..."
                     value={city}
-                    data={["Itapetininga", "Sorocaba", "Tatuí"]}
+                    // data={["Itapetininga", "Sorocaba", "Tatuí"]} // ADICIONAR CIDADES
+                    data={cities}
+                    searchable
                     allowDeselect={false}
                     onChange={(value) => {
                       setCity(value!);
