@@ -14,7 +14,7 @@ import { handelGoth } from "@/styles/fonts/fonts";
 export default function Info() {
   return (
     <Center my={"xl"}>
-      <Box maw={"1920px"} w={"100%"} p={"lg"}>
+      <Box maw={"1920px"} w={"100%"} p={"lg"} id="info">
         <Center>
           <Title>Quem Somos</Title>
         </Center>
@@ -46,9 +46,9 @@ export default function Info() {
               (São Paulo), possibilitando uma grande exposição da sua marca
               junto aos consumidores.
               </Text> */}
-              <Box>
+              <Box style={{ textAlign: "justify" }}>
                 <Text size={"lg"} component="span">
-                  Bem-vindo à{" "}
+                  A{" "}
                 </Text>
                 <Text
                   size={"lg"}
@@ -67,16 +67,35 @@ export default function Info() {
                   MEX OOH
                 </Text>
                 <Text component="span" size={"lg"}>
-                  , o seu parceiro confiável em mídia externa na vibrante região
-                  de Itapetininga, Sorocaba, São Paulo e arredores! Nós somos
-                  mais do que apenas uma empresa de aluguel de outdoors e
-                  painéis; somos impulsionadores de marcas, contadores de
-                  histórias e conectores de comunidades. Desde a nossa humilde
-                  origem, temos crescido de forma constante e rápida,
-                  alimentados pela paixão em oferecer soluções de publicidade
-                  externa que realmente fazem a diferença.
+                  {" "}
+                  atua há mais de 30 anos com mídia exterior, veiculando
+                  anúncios em painéis rodoviários nas principais rodovias do
+                  Estado e Outdoors na região metropolitana de Sorocaba e
+                  Adjacências. De forma rápida, objetiva e constante a mídia
+                  exterior abrange democraticamente todos os públicos. Está nas
+                  ruas, avenidas em tudo que cerca o deslocamento das pessoas,
+                  inclusive aquelas com poder de decisão, sendo assim
+                  classificado como veículo de comunicação abrangente. Além de
+                  forte presença no cotidiano de todos, possui grande poder de
+                  fixação e proporciona aos anunciantes retorno desejado.
                 </Text>
                 <Text size={"lg"}>
+                  Disponibilizamos excelentes pontos de painéis no Estado de São
+                  Paulo nas principais rodovias sendo a região metropolitana da
+                  capital paulista o maior potencial de consumo do país. A
+                  Ligação entre a capital e o interior dá - se predominantemente
+                  pelo modo rodoviário, através das principais auto-estradas
+                  radiais do estado. O tráfego dessas rodovias é composto em
+                  média de 30% de veículos de carga e 70% de veículos de passeio
+                  conforme dados estatístico do DER/SP e ARTESP. São efetuadas
+                  milhões de viagens a negócio, trabalho ou lazer, sendo assim
+                  ter a sua marca e produto nessas rodovias, significa estar
+                  sendo visto e lembrado nesse mercado por esse público de alto
+                  poder aquisitivo. Um bom planejamento de OOH consiste em
+                  veicular publicidade através de painéis rodoviários nas
+                  principais rodovias São Paulo.
+                </Text>
+                {/* <Text size={"lg"}>
                   O que nos diferencia? É o nosso compromisso com a excelência,
                   desde a seleção estratégica de locais premium até a execução
                   impecável de cada campanha. Com uma equipe experiente e
@@ -113,7 +132,7 @@ export default function Info() {
                 <Text size={"xs"} ta={"center"} c={"dimmed"}>
                   Texto feito por IA e é apenas um placeholder, trocar antes de
                   realizar o deploy!
-                </Text>
+                </Text> */}
               </Box>
             </Stack>
           </Container>

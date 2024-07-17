@@ -18,8 +18,8 @@ export default function Hero({ slides }: HeroProps) {
 
   const cardsData: SlideData[] = [
     {
-      src: "https://picsum.photos/1920/600",
-      alt: "Anuncie em Itapetininga!",
+      src: "slides/testbanner.jpeg",
+      alt: "TESTE 1",
       button: {
         text: "Veja as opções",
         link: "#rent",
@@ -29,8 +29,8 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
-      src: "https://picsum.photos/1920/600?&random=2",
-      alt: "Anuncie em Tatuí!",
+      src: "slides/testbanner2.jpeg",
+      alt: "TESTE 2",
       button: {
         text: "Veja as opções",
         link: "#rent",

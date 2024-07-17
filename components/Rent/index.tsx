@@ -2,6 +2,7 @@ import { Box, Center, Title } from "@mantine/core";
 import React from "react";
 import BillboardTable from "../BillboardTable";
 import classes from "./styles.module.css";
+import FortnightCalendarButton from "../FortnightCalendarButton";
 
 // type Props = {
 //   city: string;
@@ -13,6 +14,9 @@ export default function Rent() {
     <Box w={"100%"} className={classes.background} p={"lg"} id="rent">
       <Center my={"lg"}>
         <Title className={classes.title}>Reserve Outdoor Aqui!</Title>
+      </Center>
+      <Center>
+        <FortnightCalendarButton />
       </Center>
       <Center>
         <BillboardTable />

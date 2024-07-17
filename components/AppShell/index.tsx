@@ -23,6 +23,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { signOut, useSession } from "next-auth/react";
 import LoginForm from "../LoginForm";
 import { useCartContext } from "@/contexts/CartContext";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -37,6 +39,7 @@ export default function MyAppShell({ children }: AppShellProps) {
     useDisclosure(false);
   const session = useSession();
   const cartContext = useCartContext();
+  const pathname = usePathname();
   return (
     <>
       <ShoppingCartDrawer
@@ -52,6 +55,73 @@ export default function MyAppShell({ children }: AppShellProps) {
                   <Logo />
                 </Box>
               </Link>
+              <Group gap={"sm"}>
+                <Divider orientation="vertical" color="midiagreen" my="lg" />
+                <Link
+                  href={"/"}
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--mantine-color-text)",
+                    fontWeight: "600",
+                  }}
+                >
+                  Home
+                </Link>
+                {pathname === "/" && (
+                  <>
+                    <Divider
+                      orientation="vertical"
+                      color="midiagreen"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#info"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Sobre
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="midiagreen"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#rent"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Outdoor
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="midiagreen"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#panels"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Painéis
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="midiagreen"
+                      my="lg"
+                    />
+                  </>
+                )}
+              </Group>
             </Center>
             <Group>
               <ThemeToggleIcon />

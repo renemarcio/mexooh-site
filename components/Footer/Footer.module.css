@@ -2,16 +2,18 @@
   margin-top: rem(120px);
   padding-top: calc(var(--mantine-spacing-xl) * 2);
   padding-bottom: calc(var(--mantine-spacing-xl) * 2);
-  background-color: light-dark(
+  /* background-color: light-dark(
     var(--mantine-color-gray-0),
     var(--mantine-color-dark-6)
-  );
+  ); */
+  background-color: var(--mantine-primary-color-filled);
   border-top: rem(1px) solid
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  /* color: white; */
 }
 
 .logo {
-  max-width: rem(200px);
+  /* max-width: rem(500px); */
 
   @media (max-width: $mantine-breakpoint-sm) {
     display: flex;
@@ -22,7 +24,6 @@
 
 .description {
   margin-top: rem(5px);
-
   @media (max-width: $mantine-breakpoint-sm) {
     margin-top: var(--mantine-spacing-xs);
     text-align: center;
@@ -75,14 +76,14 @@
 
 .afterFooter {
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   align-items: center;
   margin-top: var(--mantine-spacing-xl);
   padding-top: var(--mantine-spacing-xl);
   padding-bottom: var(--mantine-spacing-xl);
   border-top: rem(1px) solid
-    light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
-
+    /* light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4)); */
+    var(--mantine-color-text);
   @media (max-width: $mantine-breakpoint-sm) {
     flex-direction: column;
   }

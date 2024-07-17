@@ -6,6 +6,7 @@ import FortnightTable from "../FortnightTable";
 export default function FortnightCalendarButton() {
   return (
     <Button
+      variant="default"
       onClick={() => {
         modals.open({
           title: "Confira aqui o calendáiro de Bi-Semanas!",

@@ -78,8 +78,27 @@ export default function PanelTable() {
 
   return (
     <>
-      <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} mt={"lg"}>
+      <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
         <Grid>
+          <Grid.Col span={5}>
+            <Stack h={"100%"} gap={0}>
+              <Image
+                src={thumbnailUrl}
+                height={"300px"}
+                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+                lightHidden
+                h={"50%"}
+              />
+              <Image
+                src={thumbnailUrl}
+                height={"300px"}
+                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+                darkHidden
+                h={"50%"}
+              />
+              {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
+            </Stack>
+          </Grid.Col>
           <Grid.Col span={7}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Table>
@@ -137,25 +156,6 @@ export default function PanelTable() {
                   onChange={setPage}
                 />
               </Center>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={5}>
-            <Stack h={"100%"} gap={0}>
-              <Image
-                src={thumbnailUrl}
-                height={"300px"}
-                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                lightHidden
-                h={"50%"}
-              />
-              <Image
-                src={thumbnailUrl}
-                height={"300px"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                darkHidden
-                h={"50%"}
-              />
-              {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
             </Stack>
           </Grid.Col>
         </Grid>
