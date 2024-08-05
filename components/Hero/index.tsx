@@ -26,19 +26,19 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
+      src: "slides/MEX_SITE_mup_fix.jpg",
+      alt: "",
+      button: {
+        text: "Veja as opções",
+        link: "#mup",
+      },
+    },
+    {
       src: "slides/testbanner.jpeg",
       alt: "Outdoors",
       button: {
         text: "Veja as opções",
         link: "#rent",
-      },
-    },
-    {
-      src: "slides/mup2.jpeg",
-      alt: "",
-      button: {
-        text: "Veja as opções",
-        link: "#mup",
       },
     },
   ];

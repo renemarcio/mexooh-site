@@ -51,12 +51,10 @@ export function Footer() {
       </Container>
       <Container className={classes.afterFooter}>
         <Group>
-          <Link href={"https://www.sepexsp.com.br/"} target="_blank">
-            {/* <Image src={"/sepex.svg"} bg={"white"} radius={5} p={5} /> */}
+          <Link href={"https://iconeooh.com.br/"} target="_blank">
             <Image src={"/icone.png"} h={"80px"} />
           </Link>
-          <Link href={"https://fenapex.org.br/"} target="_blank">
-            {/* <Image src={"/fenapex.svg"} bg={"white"} radius={5} p={5} /> */}
+          <Link href={"https://www.infooh.com.br/"} target="_blank">
             <Image src={"/infooh.png"} h={"80px"} />
           </Link>
         </Group>
