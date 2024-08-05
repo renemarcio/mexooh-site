@@ -25,6 +25,7 @@ import LoginForm from "../LoginForm";
 import { useCartContext } from "@/contexts/CartContext";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import FortnightCalendarButton from "../FortnightCalendarButton";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -56,7 +57,11 @@ export default function MyAppShell({ children }: AppShellProps) {
                 </Box>
               </Link>
               <Group gap={"sm"}>
-                <Divider orientation="vertical" color="midiagreen" my="lg" />
+                <Divider
+                  orientation="vertical"
+                  color="var(--mantine-primary-color-filled)"
+                  my="lg"
+                />
                 <Link
                   href={"/"}
                   style={{
@@ -71,7 +76,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                   <>
                     <Divider
                       orientation="vertical"
-                      color="midiagreen"
+                      color="var(--mantine-primary-color-filled)"
                       my="lg"
                     />
                     <Link
@@ -86,7 +91,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                     </Link>
                     <Divider
                       orientation="vertical"
-                      color="midiagreen"
+                      color="var(--mantine-primary-color-filled)"
                       my="lg"
                     />
                     <Link
@@ -101,7 +106,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                     </Link>
                     <Divider
                       orientation="vertical"
-                      color="midiagreen"
+                      color="var(--mantine-primary-color-filled)"
                       my="lg"
                     />
                     <Link
@@ -116,7 +121,37 @@ export default function MyAppShell({ children }: AppShellProps) {
                     </Link>
                     <Divider
                       orientation="vertical"
-                      color="midiagreen"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#mup"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Mobiliário Urbano
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Audiência
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
                       my="lg"
                     />
                   </>
@@ -124,6 +159,8 @@ export default function MyAppShell({ children }: AppShellProps) {
               </Group>
             </Center>
             <Group>
+              <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
+              <Divider orientation="vertical" />
               <ThemeToggleIcon />
               <Divider orientation="vertical" />
               {session.status !== "authenticated" ? (
@@ -135,7 +172,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                   label={`Logado como ${session.data?.fantasia}, clique para sair.`}
                 >
                   <Avatar
-                    color="midiagreen"
+                    color="var(--mantine-primary-color-filled)"
                     onClick={() => signOut({ redirect: false })}
                   />
                 </Tooltip>

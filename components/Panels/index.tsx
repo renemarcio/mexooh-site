@@ -20,7 +20,7 @@ import PanelTable from "../PanelTable";
 
 export default function Panels() {
   return (
-    <Box pb={"100px"} id="panels">
+    <Box id="panels">
       <Title my={"lg"} ta={"center"}>
         Painéis Rodoviários
       </Title>

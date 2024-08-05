@@ -86,7 +86,6 @@ export default function ShoppingCartSubmissionConfirmation() {
             </>
           ) : (
             <>
-              <Text>Painel</Text>
               <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
                 À negociar.
               </Text>

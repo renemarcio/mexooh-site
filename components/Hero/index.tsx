@@ -14,40 +14,31 @@ type HeroProps = {
 export default function Hero({ slides }: HeroProps) {
   const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
 
-  const { city, setCity } = useCityContext();
+  // const { city, setCity } = useCityContext();
 
   const cardsData: SlideData[] = [
     {
+      src: "slides/MEX_SITE_painel_fix.jpg",
+      alt: "",
+      button: {
+        text: "Veja as opções",
+        link: "#panels",
+      },
+    },
+    {
       src: "slides/testbanner.jpeg",
-      alt: "TESTE 1",
+      alt: "Outdoors",
       button: {
         text: "Veja as opções",
         link: "#rent",
-        onClick: () => {
-          setCity("Itapetininga");
-        },
       },
     },
     {
-      src: "slides/testbanner2.jpeg",
-      alt: "TESTE 2",
+      src: "slides/mup2.jpeg",
+      alt: "",
       button: {
         text: "Veja as opções",
-        link: "#rent",
-        onClick: () => {
-          setCity("Tatuí");
-        },
-      },
-    },
-    {
-      src: "https://picsum.photos/1920/600?random=3",
-      alt: "Anuncie em Sorocaba!",
-      button: {
-        text: "Veja as opções",
-        link: "#rent",
-        onClick: () => {
-          setCity("Sorocaba");
-        },
+        link: "#mup",
       },
     },
   ];

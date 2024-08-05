@@ -123,6 +123,7 @@ export default function BillboardTable() {
     if (res) {
       const data = await res.json();
       setCities(data);
+      setCity(data[0].value);
     } else {
       console.log("Server unreachable.");
     }
@@ -150,8 +151,6 @@ export default function BillboardTable() {
         setActiveBillboard(billboard);
       }}
       style={{ cursor: "pointer" }}
-      // className={cartContext.cart.includes(billboard) ? classes.inCart : ""}
-      // (vendors.find(e => e.Name === 'Magenic')
       className={
         activeBillboard?.id === billboard.id
           ? classes.selected
@@ -166,11 +165,7 @@ export default function BillboardTable() {
           {billboard.Localizacao?.toLowerCase()}
         </Text>
       </Table.Td>
-      {/* <Table.Td ta={"center"}>
-        <Text lineClamp={1} tt={"capitalize"}>
-          {billboard.cidade?.toLowerCase()}
-        </Text>
-      </Table.Td> */}
+
       <Table.Td ta={"center"} w={"200px"}>
         <Text lineClamp={1}>
           <NumberFormatter

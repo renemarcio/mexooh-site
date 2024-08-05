@@ -3,13 +3,22 @@ import { modals } from "@mantine/modals";
 import React from "react";
 import FortnightTable from "../FortnightTable";
 
-export default function FortnightCalendarButton() {
+type Props = {
+  variant?: "default" | "subtle" | "light" | "outline" | "filled";
+  title?: string;
+};
+
+export default function FortnightCalendarButton({
+  variant = "default",
+  title = "Confira aqui o calendáiro de Bi-Semanas!",
+}: Props) {
   return (
     <Button
-      variant="default"
+      variant={variant}
+      title={title}
       onClick={() => {
         modals.open({
-          title: "Confira aqui o calendário de Bi-Semanas!",
+          title: "Bi-Semanas",
           children: <FortnightTable />,
           centered: true,
           size: "auto",
@@ -18,7 +27,7 @@ export default function FortnightCalendarButton() {
         });
       }}
     >
-      Confira aqui o calendário de Bi-Semanas!
+      {title}
     </Button>
   );
 }

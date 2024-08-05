@@ -1,6 +1,7 @@
 "use client";
 import Hero from "@/components/Hero";
 import Info from "@/components/Info";
+import MUP from "@/components/MUP";
 import Panels from "@/components/Panels";
 import Rent from "@/components/Rent";
 
@@ -10,6 +11,7 @@ export default function HomePage() {
       <Hero />
       <Info />
       <Rent />
+      <MUP />
       <Panels />
     </>
   );

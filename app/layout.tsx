@@ -32,6 +32,7 @@ export default function RootLayout({ children }: { children: any }) {
               style={{
                 backgroundColor: "var(--mantine-color-body)",
               }}
+              pb={"100px"}
               mb={"360px"}
             >
               {children}
