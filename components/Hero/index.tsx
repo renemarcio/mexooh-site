@@ -18,7 +18,7 @@ export default function Hero({ slides }: HeroProps) {
 
   const cardsData: SlideData[] = [
     {
-      src: "slides/MEX_SITE_painel_fix.jpg",
+      src: "slides/MEX_SITE_painel.jpg",
       alt: "",
       button: {
         text: "Veja as opções",
@@ -59,7 +59,6 @@ export default function Hero({ slides }: HeroProps) {
       classNames={classes}
     >
       {cards}
-      {/* ...other slides */}
     </Carousel>
   );
 }

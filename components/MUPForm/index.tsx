@@ -79,13 +79,13 @@ export default function MUPForm({ mup, closeFn }: Props) {
         Os valores dos painéis são negociáveis, coloque no carrinho para que
         possamos entrar em contato e reservar seu painel.
       </Text> */}
-      <MultiSelect
+      {/* <MultiSelect
         label="Selecione as Bi-Semanas."
         description="Bi-Semanas disponíveis"
         data={fortnightsData}
         value={selectedFortnights}
         onChange={setSelectedFortnights}
-      />
+      /> */}
       <Button
         fullWidth
         onClick={() => {

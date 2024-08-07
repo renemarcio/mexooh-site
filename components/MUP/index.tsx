@@ -9,7 +9,7 @@ export default function MUP() {
       py={20}
       id="mup"
     >
-      <Title ta={"center"}>Mobiliários Urbanos</Title>
+      <Title ta={"center"}>Mobiliário Urbano</Title>
       <Text ta={"center"}>Confira aqui nossos Mobiliários Urbanos</Text>
       <MUPTable />
     </Box>
