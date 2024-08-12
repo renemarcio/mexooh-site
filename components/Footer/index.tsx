@@ -52,7 +52,7 @@ export function Footer() {
       <Container className={classes.afterFooter}>
         <Group>
           <Link href={"https://iconeooh.com.br/"} target="_blank">
-            <Image src={"/logo_icone.png"} h={"80px"} />
+            <Image src={"/icone.png"} h={"80px"} />
           </Link>
           <Link href={"https://www.infooh.com.br/"} target="_blank">
             <Image src={"/infooh.png"} h={"80px"} />

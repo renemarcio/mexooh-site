@@ -114,7 +114,7 @@ export default function LEDPanelTable() {
                 darkHidden
                 h={"50%"}
               /> */}
-              <video loop muted controls height={"300px"}>
+              <video loop muted height={"300px"}>
                 <source src={videoURL} type="video/mp4" />
                 <Image
                   height={"300px"}
