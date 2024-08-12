@@ -110,21 +110,6 @@ export default function MyAppShell({ children }: AppShellProps) {
                       my="lg"
                     />
                     <Link
-                      href={"#panels"}
-                      style={{
-                        textDecoration: "none",
-                        color: "var(--mantine-color-text)",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Painéis
-                    </Link>
-                    <Divider
-                      orientation="vertical"
-                      color="var(--mantine-primary-color-filled)"
-                      my="lg"
-                    />
-                    <Link
                       href={"#mup"}
                       style={{
                         textDecoration: "none",
@@ -133,6 +118,36 @@ export default function MyAppShell({ children }: AppShellProps) {
                       }}
                     >
                       Mobiliário Urbano
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#ledpanels"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Painéis de LED
+                    </Link>
+                    <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#panels"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Painéis
                     </Link>
                     <Divider
                       orientation="vertical"
