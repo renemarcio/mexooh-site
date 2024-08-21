@@ -34,8 +34,8 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
-      src: "slides/testbanner.jpeg",
-      alt: "Outdoors",
+      src: "slides/outdoor.jpeg",
+      alt: "",
       button: {
         text: "Veja as opções",
         link: "#rent",
