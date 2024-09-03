@@ -11,10 +11,10 @@ export default function HomePage() {
     <>
       <Hero />
       <Info />
-      <Rent />
-      <MUP />
-      <LEDPanel />
       <Panels />
+      <MUP />
+      <Rent />
+      <LEDPanel />
     </>
   );
 }

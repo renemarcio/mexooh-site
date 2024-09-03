@@ -54,8 +54,8 @@ export default function PanelTable() {
       const response = await fetch("/api/cities/select?type=2");
       const data = await response.json();
       setCities(data);
-      setCity("OSASCO");
-      // setCity(data[0].value);
+      setCity("SOROCABA"); //Seems like we don't have a record within Alphaville. I'll rewrite this to "Alphaville" once we do.
+      setCity(data[0].value);
     } catch {
       setCities([]);
       console.log("Couldn't fetch cities.");

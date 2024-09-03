@@ -68,7 +68,7 @@ export default function Info() {
                 </Text>
                 <Text component="span" size={"lg"}>
                   {" "}
-                  atua há mais de 30 anos com mídia exterior, veiculando
+                  atua há mais de 35 anos com mídia exterior, veiculando
                   anúncios em painéis rodoviários nas principais rodovias do
                   Estado e Outdoors na região metropolitana de Sorocaba e
                   Adjacências. De forma rápida, objetiva e constante a mídia

@@ -20,7 +20,7 @@ import PanelTable from "../PanelTable";
 
 export default function Panels() {
   return (
-    <Box id="panels">
+    <Box id="panels" bg={"var(--mantine-primary-color-filled)"} p={"lg"}>
       <Title my={"lg"} ta={"center"}>
         Painéis Rodoviários
       </Title>
@@ -96,7 +96,7 @@ export default function Panels() {
             <Text fw={700}>Itapetininga:</Text>
             <IconPhoneCall
               size={25}
-              color="var(--mantine-primary-color-filled)"
+              // color="var(--mantine-primary-color-filled)"
             />
             <Text ta={"center"}>(15) 3272-4413</Text>
           </Group>

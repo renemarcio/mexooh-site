@@ -95,14 +95,14 @@ export default function MyAppShell({ children }: AppShellProps) {
                       my="lg"
                     />
                     <Link
-                      href={"#rent"}
+                      href={"#panels"}
                       style={{
                         textDecoration: "none",
                         color: "var(--mantine-color-text)",
                         fontWeight: "600",
                       }}
                     >
-                      Outdoor
+                      Rodovia
                     </Link>
                     <Divider
                       orientation="vertical"
@@ -125,6 +125,36 @@ export default function MyAppShell({ children }: AppShellProps) {
                       my="lg"
                     />
                     <Link
+                      href={"#rent"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Outdoor
+                    </Link>
+                    {/* <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
+                      href={"#"}
+                      style={{
+                        textDecoration: "none",
+                        color: "var(--mantine-color-text)",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Front Light
+                    </Link> */}
+                    <Divider
+                      orientation="vertical"
+                      color="var(--mantine-primary-color-filled)"
+                      my="lg"
+                    />
+                    <Link
                       href={"#ledpanels"}
                       style={{
                         textDecoration: "none",
@@ -133,21 +163,6 @@ export default function MyAppShell({ children }: AppShellProps) {
                       }}
                     >
                       Painéis de LED
-                    </Link>
-                    <Divider
-                      orientation="vertical"
-                      color="var(--mantine-primary-color-filled)"
-                      my="lg"
-                    />
-                    <Link
-                      href={"#panels"}
-                      style={{
-                        textDecoration: "none",
-                        color: "var(--mantine-color-text)",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Painéis
                     </Link>
                     <Divider
                       orientation="vertical"

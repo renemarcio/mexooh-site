@@ -4,7 +4,7 @@ import LEDPanelTable from "../LEDPanelTable";
 
 export default function LEDPanel() {
   return (
-    <Box id="ledpanels">
+    <Box id="ledpanels" p={"lg"}>
       <Center>
         <Title>Painéis de LED</Title>
       </Center>

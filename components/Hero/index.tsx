@@ -34,7 +34,7 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
-      src: "slides/outdoor.jpeg",
+      src: "slides/MEX_SITE_OUTDOOR.jpg",
       alt: "",
       button: {
         text: "Veja as opções",

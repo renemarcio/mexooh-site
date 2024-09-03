@@ -50,7 +50,9 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
           <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
         )}
         <Text ta={"right"}>
-          {entry.fortnights.length > 1
+          {entry.fortnights.length === 0
+            ? null
+            : entry.fortnights.length > 1
             ? `${entry.fortnights.length} Bi-Semanas`
             : `${entry.fortnights.length} Bi-Semana`}
         </Text>
