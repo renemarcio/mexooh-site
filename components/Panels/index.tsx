@@ -20,7 +20,12 @@ import PanelTable from "../PanelTable";
 
 export default function Panels() {
   return (
-    <Box id="panels" bg={"var(--mantine-primary-color-filled)"} p={"lg"}>
+    <Box
+      id="panels"
+      bg={"var(--mantine-primary-color-filled)"}
+      p={"lg"}
+      c={"white"}
+    >
       <Title my={"lg"} ta={"center"}>
         Painéis Rodoviários
       </Title>
