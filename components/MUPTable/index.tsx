@@ -32,12 +32,15 @@ export default function MUPTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const { city, setCity } = useCityContext();
+  const [city, setCity] = useState<string | null>("");
+  // const { city, setCity } = useCityContext();
 
   async function fetchMUPs() {
     try {
       const response = await fetch(
-        `/api/mup?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/mup?p=${activePage}&endereco=${address}&cidade=${
+          city === null ? "" : city
+        }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -139,7 +142,7 @@ export default function MUPTable() {
                               setCity(value!);
                               fetchMUPs();
                             }}
-                            allowDeselect={false}
+                            allowDeselect={true}
                             value={city}
                           />
                         </Group>

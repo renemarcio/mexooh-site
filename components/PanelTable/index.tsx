@@ -31,13 +31,15 @@ export default function PanelTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [city, setCity] = useState<string>("");
+  const [city, setCity] = useState<string | null>("");
   // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
     try {
       const response = await fetch(
-        `/api/panels?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/panels?p=${activePage}&endereco=${address}&cidade=${
+          city === null ? "" : city
+        }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -64,9 +66,10 @@ export default function PanelTable() {
 
   useEffect(() => {
     fetchPanels();
-  }, [debouncedAddress, city, activePage]);
+  }, [debouncedAddress, activePage]);
 
   useEffect(() => {
+    fetchPanels();
     setPage(1);
   }, [city]);
 
@@ -141,10 +144,10 @@ export default function PanelTable() {
                             data={cities}
                             searchable
                             onChange={(value) => {
-                              setCity(value!);
+                              setCity(value);
                               fetchPanels();
                             }}
-                            allowDeselect={false}
+                            allowDeselect={true}
                             value={city}
                           />
                         </Group>

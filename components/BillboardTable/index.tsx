@@ -73,8 +73,13 @@ export default function BillboardTable() {
 
   async function handleBillboardsFetch() {
     try {
+      // `/api/panels?p=${activePage}&endereco=${address}&cidade=${
+      //   city === null ? "" : city
+      // }`
       const response = await fetch(
-        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${city}&fortnight=${selectedFortnight}`
+        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${
+          city === null ? "" : city
+        }&fortnight=${selectedFortnight}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -230,7 +235,7 @@ export default function BillboardTable() {
                     // data={["Itapetininga", "Sorocaba", "Tatuí"]} // ADICIONAR CIDADES
                     data={cities}
                     searchable
-                    allowDeselect={false}
+                    allowDeselect={true}
                     onChange={(value) => {
                       setCity(value!);
                       handleBillboardsFetch();
