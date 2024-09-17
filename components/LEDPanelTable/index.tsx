@@ -114,7 +114,14 @@ export default function LEDPanelTable() {
                 darkHidden
                 h={"50%"}
               /> */}
-              <video loop muted height={"300px"}>
+              <Image
+                src={"photos/led.jpeg"}
+                // w={"auto"}
+                // fit="contain"
+
+                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+              />
+              {/* <video loop muted height={"300px"}> //Reenable when we have videos for this.
                 <source src={videoURL} type="video/mp4" />
                 <Image
                   height={"300px"}
@@ -129,7 +136,7 @@ export default function LEDPanelTable() {
                   h={"50%"}
                 />
                 Vídeo indisponível
-              </video>
+              </video> */}
               {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
             </Stack>
           </Grid.Col>

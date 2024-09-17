@@ -41,6 +41,14 @@ export default function Hero({ slides }: HeroProps) {
         link: "#rent",
       },
     },
+    {
+      src: "slides/MEX_SITE_PAINEL_LED.jpg",
+      alt: "",
+      button: {
+        text: "Veja as opções",
+        link: "#ledpanels",
+      },
+    },
   ];
 
   const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);

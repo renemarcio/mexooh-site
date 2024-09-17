@@ -1,4 +1,4 @@
-import { Box, Center, Text, Title } from "@mantine/core";
+import { Box, Button, Center, Text, Title } from "@mantine/core";
 import React from "react";
 import LEDPanelTable from "../LEDPanelTable";
 
@@ -13,6 +13,16 @@ export default function LEDPanel() {
         animações sejam utilizadas.
       </Text>
       <LEDPanelTable />
+      <Center>
+        <Button
+          mt={"lg"}
+          component="a"
+          href="downloads/apresentacao_painel_digital.pdf"
+          download
+        >
+          Mídia Kit
+        </Button>
+      </Center>
     </Box>
   );
 }
