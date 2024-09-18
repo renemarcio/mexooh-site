@@ -197,13 +197,12 @@ export default function BillboardTable() {
               {/* <Image src={thumbnailUrl} height={"300px"} /> */}
               <Image
                 src={thumbnailUrl}
-                height={"300px"}
+                height={"600px"}
                 fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                onError={() =>
-                  console.log("Ooops, you have to put the CD in your computer.")
-                }
               />
-              <Map lat={lat} long={long} />
+              <Box h={"250px"}>
+                <Map lat={lat} long={long} />
+              </Box>
             </Stack>
           </Grid.Col>
           <Grid.Col span={7}>

@@ -50,7 +50,7 @@ export function Footer() {
         </div>
       </Container>
       <Container className={classes.afterFooter}>
-        <Group>
+        <Group style={{ zIndex: 2 }}>
           <Link href={"https://iconeooh.com.br/"} target="_blank">
             <Image src={"/icone.png"} h={"60px"} />
           </Link>
@@ -59,6 +59,7 @@ export function Footer() {
           </Link>
         </Group>
         <Group
+          style={{ zIndex: 2 }}
           gap={5}
           className={classes.social}
           justify="flex-end"
@@ -84,6 +85,15 @@ export function Footer() {
           </ActionIcon>
         </Group>
       </Container>
+      <Box
+        pos={"fixed"}
+        bg={"white"}
+        w={"100%"}
+        h={"190px"}
+        bottom={0}
+        style={{ zIndex: 0 }}
+        // right={0}
+      />
     </footer>
   );
 }

@@ -5,12 +5,15 @@ import {
   AppShell,
   Avatar,
   Box,
+  Text,
   Center,
   Divider,
   Group,
   Indicator,
   Modal,
   Tooltip,
+  UnstyledButton,
+  Menu,
 } from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import React from "react";
@@ -26,6 +29,8 @@ import { useCartContext } from "@/contexts/CartContext";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import FortnightCalendarButton from "../FortnightCalendarButton";
+import { FaChevronCircleDown } from "react-icons/fa";
+import { RiDownload2Line } from "react-icons/ri";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -184,6 +189,60 @@ export default function MyAppShell({ children }: AppShellProps) {
                       color="var(--mantine-primary-color-filled)"
                       my="lg"
                     />
+                    <Menu
+                      trigger="hover"
+                      openDelay={100}
+                      closeDelay={400}
+                      shadow="md"
+                    >
+                      <Menu.Target>
+                        <UnstyledButton
+                          style={{
+                            textDecoration: "none",
+                            color: "var(--mantine-color-text)",
+                            fontWeight: "600",
+                            pointerEvents: "all",
+                          }}
+                        >
+                          Saiba mais {"  "}
+                          <FaChevronCircleDown size={14} />
+                        </UnstyledButton>
+                      </Menu.Target>
+                      <Menu.Dropdown>
+                        <Menu.Item
+                          component={Link}
+                          href={"downloads/apresentacao_painel_digital.pdf"}
+                          target="_blank"
+                          leftSection={<RiDownload2Line />}
+                        >
+                          Midia Kit Painéis
+                        </Menu.Item>
+                        <Menu.Item
+                          component={Link}
+                          href={"downloads/apresentacao_painel_digital.pdf"}
+                          target="_blank"
+                          leftSection={<RiDownload2Line />}
+                        >
+                          Midia Kit MUP
+                        </Menu.Item>
+                        <Menu.Item
+                          component={Link}
+                          href={"downloads/apresentacao_painel_digital.pdf"}
+                          target="_blank"
+                          leftSection={<RiDownload2Line />}
+                        >
+                          Midia Kit Outdoor
+                        </Menu.Item>
+                        <Menu.Item
+                          component={Link}
+                          href={"downloads/apresentacao_painel_digital.pdf"}
+                          target="_blank"
+                          leftSection={<RiDownload2Line />}
+                        >
+                          Midia Kit Painel de LED
+                        </Menu.Item>
+                      </Menu.Dropdown>
+                    </Menu>
                   </>
                 )}
               </Group>

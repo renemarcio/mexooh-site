@@ -56,8 +56,8 @@ export default function PanelTable() {
       const response = await fetch("/api/cities/select?type=2");
       const data = await response.json();
       setCities(data);
-      setCity("SOROCABA"); //Seems like we don't have a record within Alphaville. I'll rewrite this to "Alphaville" once we do.
-      setCity(data[0].value);
+      setCity("ALPHAVILLE");
+      // setCity(data[0].value);
     } catch {
       setCities([]);
       console.log("Couldn't fetch cities.");
@@ -107,19 +107,19 @@ export default function PanelTable() {
             <Stack h={"100%"} gap={0}>
               <Image
                 src={thumbnailUrl}
-                height={"300px"}
+                height={"600px"}
                 fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
                 lightHidden
-                h={"50%"}
               />
               <Image
                 src={thumbnailUrl}
-                height={"300px"}
+                height={"600px"}
                 fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
                 darkHidden
-                h={"50%"}
               />
-              {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
+              <Box h={"250px"}>
+                <Map lat={lat} long={long} />
+              </Box>
             </Stack>
           </Grid.Col>
           <Grid.Col span={7}>

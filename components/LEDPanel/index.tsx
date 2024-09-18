@@ -12,17 +12,21 @@ export default function LEDPanel() {
         Os painéis de LED garantem uma ótima visualização, e permitem que
         animações sejam utilizadas.
       </Text>
-      <LEDPanelTable />
+      <Text ta={"center"} pt={"1vw"}>
+        Clique para saber mais:
+      </Text>
       <Center>
         <Button
           mt={"lg"}
           component="a"
           href="downloads/apresentacao_painel_digital.pdf"
-          download
+          target="_blank"
+          // download
         >
           Mídia Kit
         </Button>
       </Center>
+      <LEDPanelTable />
     </Box>
   );
 }
