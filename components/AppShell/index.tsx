@@ -14,6 +14,7 @@ import {
   Tooltip,
   UnstyledButton,
   Menu,
+  Button,
 } from "@mantine/core";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import React from "react";
@@ -249,6 +250,14 @@ export default function MyAppShell({ children }: AppShellProps) {
             </Center>
             <Group>
               <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
+              {/* <Divider orientation="vertical" /> */}
+              {pathname === "/" && (
+                <>
+                  <Button variant="filled" component={Link} href="/admin">
+                    Área de Colaboradores
+                  </Button>
+                </>
+              )}
               <Divider orientation="vertical" />
               <ThemeToggleIcon />
               <Divider orientation="vertical" />

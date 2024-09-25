@@ -37,7 +37,7 @@ export default function LEDPanelTable() {
   async function fetchLEDPanels() {
     try {
       const response = await fetch(
-        `/api/LEDPanels?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/LEDpanels?p=${activePage}&endereco=${address}&cidade=${city}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -57,7 +57,7 @@ export default function LEDPanelTable() {
       setCity(data[0].value);
     } catch {
       setCities([]);
-      console.log("Couldn't fetch cities.");
+      console.log("LED PANEL Couldn't fetch cities.");
     }
   }
   useEffect(() => {
