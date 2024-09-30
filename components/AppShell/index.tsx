@@ -32,6 +32,8 @@ import { usePathname } from "next/navigation";
 import FortnightCalendarButton from "../FortnightCalendarButton";
 import { FaChevronCircleDown } from "react-icons/fa";
 import { RiDownload2Line } from "react-icons/ri";
+import { modals } from "@mantine/modals";
+import StaffLogin from "../StaffLogin";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -253,7 +255,20 @@ export default function MyAppShell({ children }: AppShellProps) {
               {/* <Divider orientation="vertical" /> */}
               {pathname === "/" && (
                 <>
-                  <Button variant="filled" component={Link} href="/admin">
+                  <Button
+                    variant="filled"
+                    // component={Link} href="/admin"
+                    onClick={() =>
+                      modals.open({
+                        title: "Login",
+                        centered: true,
+                        children: <StaffLogin />,
+                        size: "auto",
+                        closeOnClickOutside: true,
+                        onClose: () => modals.closeAll(),
+                      })
+                    }
+                  >
                     Área de Colaboradores
                   </Button>
                 </>
