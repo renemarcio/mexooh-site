@@ -5,7 +5,7 @@ import React from "react";
 export default function admin() {
   return (
     <Center>
-      <Paper withBorder p={"md"}>
+      <Paper p={"md"}>
         <AdminDashboard />
       </Paper>
     </Center>
