@@ -226,7 +226,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                           target="_blank"
                           leftSection={<RiDownload2Line />}
                         >
-                          Midia Kit MUP
+                          Midia Kit Mobiliário Urbano
                         </Menu.Item>
                         <Menu.Item
                           component={Link}

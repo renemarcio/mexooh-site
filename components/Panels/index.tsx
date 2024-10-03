@@ -66,7 +66,7 @@ export default function Panels() {
                 color={"#25D366"}
                 component={Link}
                 href={
-                  "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                  "https://wa.me/5511972301116?text=Ol%C3%A1%2C%20solicito%20mais%20informa%C3%A7%C3%B5es%21"
                 }
                 target={"_blank"}
                 rel="noreferrer"
@@ -86,7 +86,7 @@ export default function Panels() {
                 color={"#25D366"}
                 component={Link}
                 href={
-                  "https://wa.me/5515998140546?text=Ol%C3%A1%2C%20estou%20interessado%28a%29%20em%20alugar%20alguns%20pain%C3%A9is%21"
+                  "https://wa.me/5515998140546?text=Ol%C3%A1%2C%20solicito%20mais%20informa%C3%A7%C3%B5es%21"
                 }
                 target={"_blank"}
                 rel="noreferrer"
@@ -98,7 +98,7 @@ export default function Panels() {
             <Text ta={"center"}>(15) 99814-0546 </Text>
           </Group>
           <Group wrap="nowrap" gap={5} mt={5}>
-            <Text fw={700}>Itapetininga:</Text>
+            <Text fw={700}>PABX:</Text>
             <IconPhoneCall
               size={25}
               // color="var(--mantine-primary-color-filled)"

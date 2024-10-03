@@ -27,12 +27,18 @@ export function Footer() {
       <Container className={classes.inner}>
         <div className={classes.logo}>
           <Title>Mex OOH</Title>
-          <Text fw={400} className={classes.description}>
+          <Text
+            // fw={400}
+            size="xs"
+            c={"rgba(255, 255, 255, 0.6)"}
+            className={classes.description}
+            // c={"dimmed"}
+          >
             Av. Prof Jacob Bazarian, 200
             <br />
             CEP 18204-121 • Vale San Fernando
-            <br />
-            Itapetininga, SP
+            {/* <br />
+            Itapetininga, SP */}
           </Text>
         </div>
         <div className={classes.wrapper}>
@@ -52,7 +58,7 @@ export function Footer() {
       <Container className={classes.afterFooter}>
         <Group style={{ zIndex: 2 }}>
           <Link href={"https://iconeooh.com.br/"} target="_blank">
-            <Image src={"/icone.png"} h={"60px"} />
+            <Image src={"/icone.png"} h={"45px"} />
           </Link>
           <Link href={"https://www.infooh.com.br/"} target="_blank">
             <Image src={"/infooh.png"} h={"60px"} />

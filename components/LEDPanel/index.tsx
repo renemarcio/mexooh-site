@@ -8,10 +8,10 @@ export default function LEDPanel() {
       <Center>
         <Title>Painéis de LED</Title>
       </Center>
-      <Text ta={"center"} px={"10vw"}>
+      {/* <Text ta={"center"} px={"10vw"}>
         Os painéis de LED garantem uma ótima visualização, e permitem que
         animações sejam utilizadas.
-      </Text>
+      </Text> */}
       <Text ta={"center"} pt={"1vw"}>
         Clique para saber mais:
       </Text>
