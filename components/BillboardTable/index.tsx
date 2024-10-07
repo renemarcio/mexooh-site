@@ -15,6 +15,7 @@ import {
   NumberFormatter,
   MultiSelect,
   ComboboxData,
+  Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { bisemanas, inventarios } from "@prisma/client";
@@ -203,6 +204,11 @@ export default function BillboardTable() {
               <Box h={"250px"}>
                 <Map lat={lat} long={long} />
               </Box>
+              <Paper withBorder h={"300px"}>
+                <Center h={"100%"}>
+                  <Title c={"dimmed"}>InfoOOH</Title>
+                </Center>
+              </Paper>
             </Stack>
           </Grid.Col>
           <Grid.Col span={7}>

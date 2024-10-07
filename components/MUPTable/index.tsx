@@ -13,6 +13,7 @@ import {
   Stack,
   Image,
   ComboboxData,
+  Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { inventarios } from "@prisma/client";
@@ -116,6 +117,11 @@ export default function MUPTable() {
               <Box h={"250px"}>
                 <Map lat={lat} long={long} />
               </Box>
+              <Paper withBorder h={"300px"}>
+                <Center h={"100%"}>
+                  <Title c={"dimmed"}>InfoOOH</Title>
+                </Center>
+              </Paper>
             </Stack>
           </Grid.Col>
           <Grid.Col span={7}>
