@@ -12,6 +12,7 @@ import {
   Grid,
   Center,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import {
   IconChevronDown,
   IconChevronRight,
@@ -22,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import React, { useMemo } from "react";
+import PIForm from "./PIForm";
 export default function AdminDashboard() {
   const tree = useTree();
   const data = useMemo<TreeNodeData[]>(
@@ -146,6 +148,13 @@ export default function AdminDashboard() {
             <Image src="/EMLogo.png" h={"100%"} p={"xs"} />
           </Button>
           <Button onClick={FetchBucket}>Fetch do Bucket</Button>
+          <Button
+            onClick={() =>
+              modals.open({ title: "Imprimir PI", children: <PIForm /> })
+            }
+          >
+            Imprimir PI
+          </Button>
         </Group>
       </Center>
       <Grid columns={3}>

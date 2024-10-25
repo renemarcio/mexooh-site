@@ -24,6 +24,12 @@
       "@/fonts": ["./styles/fonts"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "PDFTemplates/PI/PIPDF.tsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -117,9 +117,6 @@ export default function LEDPanelTable() {
               /> */}
               <Image
                 src={"photos/led.jpeg"}
-                // w={"auto"}
-                // fit="contain"
-
                 fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
               />
               {/* <video loop muted height={"300px"}> //Reenable when we have videos for this.
