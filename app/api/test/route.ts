@@ -1,31 +1,3 @@
-// import prisma from "@/utils/prisma";
-// import { bisemanas } from "@prisma/client";
-// import { NextRequest, NextResponse } from "next/server";
-
-// export async function GET(req: NextRequest) {
-//   const searchParams = req.nextUrl.searchParams;
-//   const year = searchParams.get("ano") || undefined;
-//   let fortnights: bisemanas[] = [];
-//   if (year) {
-//     fortnights = await prisma.bisemanas.findMany({
-//       where: {
-//         ano: year,
-//       },
-//     });
-//   } else {
-//     fortnights = await prisma.bisemanas.findMany({
-//       where: {
-//         NOT: {
-//           dtFinal: {
-//             lt: new Date(),
-//           },
-//         },
-//       },
-//     });
-//   }
-//   return NextResponse.json(fortnights);
-// }
-
 import db from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
@@ -40,8 +12,8 @@ export async function GET(req: NextRequest) {
 
   //Valid Params
   const SQLConditions: { [key: string]: (value: string) => string } = {
-    id: (value: string) => `bi_codigo = ${value}`,
-    number: (value: string) => `bi_numero = ${value}`,
+    id: (value: string) => `bi_codigo IN(${value})`,
+    number: (value: string) => `bi_numero IN(${value})`,
     years: (value: string) => `bi_ano IN(${value})`,
   };
 
@@ -53,10 +25,14 @@ export async function GET(req: NextRequest) {
   );
 
   try {
-    let totalPages = 0;
     if (pageSize) {
+      console.log("Tamanho da página: ", pageSize);
       const [totalResults] = await db.query<RowDataPacket[]>(FilteredSQL);
-      totalPages = Math.ceil(totalResults.length / pageSize);
+      console.log("Resultados totais: ", totalResults.length);
+      console.log(
+        "Número total de páginas: ",
+        Math.ceil(totalResults.length / pageSize)
+      );
     }
     let resultingSQL = FilteredSQL;
     pageSize
@@ -65,6 +41,7 @@ export async function GET(req: NextRequest) {
           ` LIMIT ${pageSize} OFFSET ${pageSize * (activePage - 1)}`)
       : null;
 
+    console.log("SQL resultante: ", resultingSQL);
     const [response] = await db.query<RowDataPacket[]>(resultingSQL);
     const fortnights: Bisemana[] = response.map((fortnight) => ({
       id: fortnight.codigo,
@@ -75,7 +52,6 @@ export async function GET(req: NextRequest) {
     }));
     const result = {
       data: fortnights,
-      totalPages: totalPages,
     };
     return NextResponse.json(result);
   } catch (error) {

@@ -12,7 +12,10 @@ export default function FortnightTable() {
   async function fetchFortnights() {
     try {
       const response = await fetch(
-        "/api/fortnights?ano=" + new Date().getFullYear() + "",
+        "/api/fortnights?years=" +
+          new Date().getFullYear() +
+          ", " +
+          (new Date().getFullYear() + 1),
         {
           method: "GET",
           headers: {
@@ -21,11 +24,9 @@ export default function FortnightTable() {
         }
       );
       const data = await response.json();
-      console.log(data);
-      console.log(new Date().getFullYear());
       setFortnights(data);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

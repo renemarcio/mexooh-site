@@ -18,7 +18,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { bisemanas, inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
@@ -36,36 +35,37 @@ export default function BillboardTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [billboards, setBillboards] = useState<inventarios[]>([]);
+  const [billboards, setBillboards] = useState<any[]>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [activeBillboard, setActiveBillboard] = useState<inventarios>();
-  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [activeBillboard, setActiveBillboard] = useState<any>();
+  const [fortnights, setFortnights] = useState<any[]>([]);
   const [selectedFortnight, setSelectedFortnight] = useState<string>("");
   const [cities, setCities] = useState<ComboboxData>([]);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label: `BI-${fortnight.numero} -
-      ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+      label: `BI-${fortnight.number} -
+      ${Number(new Date(fortnight.inicio).getUTCDate()).toLocaleString(
         "pt-BR",
         {
           minimumIntegerDigits: 2,
         }
-      )}/${Number(
-        new Date(fortnight.dtInicio).getUTCMonth() + 1
-      ).toLocaleString("pt-BR", {
-        minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
-    ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString("pt-BR", {
+      )}/${Number(new Date(fortnight.inicio).getUTCMonth() + 1).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${new Date(fortnight.inicio).getUTCFullYear()} -
+    ${Number(new Date(fortnight.fim).getUTCDate()).toLocaleString("pt-BR", {
       minimumIntegerDigits: 2,
-    })}/${Number(new Date(fortnight.dtFinal).getUTCMonth() + 1).toLocaleString(
+    })}/${Number(new Date(fortnight.fim).getUTCMonth() + 1).toLocaleString(
         "pt-BR",
         {
           minimumIntegerDigits: 2,
         }
-      )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
+      )}/${new Date(fortnight.fim).getUTCFullYear()}`,
     };
   });
   // const { city, setCity } = useCityContext();
