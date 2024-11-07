@@ -43,8 +43,8 @@ export async function GET(req: NextRequest) {
 
     console.log("SQL resultante: ", resultingSQL);
     const [response] = await db.query<RowDataPacket[]>(resultingSQL);
-    const fortnights: Bisemana[] = response.map((fortnight) => ({
-      id: fortnight.codigo,
+    const fortnights: Bisemana[] = response.map((fortnight: Bisemana) => ({
+      id: fortnight.bi_codigo,
       numero: fortnight.bi_numero,
       ano: fortnight.bi_ano,
       inicio: fortnight.bi_inicio,
