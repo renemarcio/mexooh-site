@@ -3,6 +3,7 @@ import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 import { Bisemana } from "@/types/databaseTypes";
 import { SELECTBuilder } from "@/lib/SQLBuilder";
+import { Fortnight } from "@/types/websiteTypes";
 
 export async function GET(req: NextRequest) {
   //SQL Base
@@ -43,12 +44,13 @@ export async function GET(req: NextRequest) {
 
     console.log("SQL resultante: ", resultingSQL);
     const [response] = await db.query<RowDataPacket[]>(resultingSQL);
-    const fortnights: Bisemana[] = response.map((fortnight: Bisemana) => ({
+    const bisemanas = response as Bisemana[];
+    const fortnights: Fortnight[] = bisemanas.map((fortnight: Bisemana) => ({
       id: fortnight.bi_codigo,
-      numero: fortnight.bi_numero,
-      ano: fortnight.bi_ano,
-      inicio: fortnight.bi_inicio,
-      fim: fortnight.bi_final,
+      number: fortnight.bi_numero,
+      year: fortnight.bi_ano,
+      start: fortnight.bi_inicio,
+      finish: fortnight.bi_final,
     }));
     const result = {
       data: fortnights,

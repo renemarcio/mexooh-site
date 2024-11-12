@@ -8,6 +8,13 @@
 //   const fortnight = searchParams.get("fortnight") || undefined;
 //   const perPage = 11;
 
+import { SELECTBuilder, WHEREBuilder } from "@/lib/SQLBuilder";
+import { Pontos, Tabelas } from "@/types/databaseTypes";
+import { Billboard } from "@/types/websiteTypes";
+import db from "@/utils/mysqlConnection";
+import { RowDataPacket } from "mysql2";
+import { NextRequest, NextResponse } from "next/server";
+
 //   const whereConditions: any = [
 //     {
 //       tipoinventarios: {
@@ -77,45 +84,62 @@
 //   return NextResponse.json(res);
 // }
 
-import { SELECTBuilder } from "@/lib/SQLBuilder";
-import db from "@/utils/mysqlConnection";
-import { RowDataPacket } from "mysql2";
-import { NextRequest } from "next/server";
-
 export async function GET(req: NextRequest) {
+  //SQL Base
   const searchParams = req.nextUrl.searchParams;
   const activePage = Number(searchParams.get("activePage"));
   const pageSize = Number(searchParams.get("pageSize"));
 
   //Valid Params
   const SQLConditions: { [key: string]: (value: string) => string } = {
-    id: (value: string) => `pon_codigo IN(${value})`,
-    company: (value: string) => `Empresas_Emp_codigo IN(${value})`,
+    id: (value: string) => `pon_codigo = IN(${value})`,
+    address: (value: string) => `pon_compl LIKE '%${value}%'`,
+    city: (value: string) => `Cidades_cid_codigo IN(${value})`,
+    fortnight: (value: string) => `NOT alugadas.id_bisemana = ${value}`,
   };
 
-  //SQL with filter
-  const FilteredSQL = SELECTBuilder(
-    searchParams,
-    "pontos",
-    undefined,
-    SQLConditions
-  );
+  // SELECT DISTINCT pon_codigo, pon_compl, LinkMapa, pon_iluminado FROM pontos
+  // LEFT JOIN Cidades ON pontos.Cidades_cid_codigo = Cidades_cid_codigo
+  // left join alugadas on alugadas.inventario = pontos.pon_codigo
+  // WHERE pon_outd_pain = 'O' and not alugadas.id_bisemana = 572
+  // order by alugadas.inventario ASC
+
+  const SQL =
+    `SELECT DISTINCT pon_codigo, pon_compl, LinkMapa, pon_iluminado FROM pontos LEFT JOIN Cidades ON pontos.Cidades_cid_codigo = Cidades_cid_codigo LEFT JOIN alugadas on alugadas.inventario = pontos.pon_codigo ` +
+    WHEREBuilder(searchParams, SQLConditions) +
+    ` ORDER BY pon_compl`;
 
   try {
     let totalPages = 0;
-    let resultingSQL = FilteredSQL;
     if (pageSize) {
-      const [totalResults] = await db.query<RowDataPacket[]>(FilteredSQL);
+      const [totalResults] = await db.query<RowDataPacket[]>(SQL);
       totalPages = Math.ceil(totalResults.length / pageSize);
-      resultingSQL += ` LIMIT ${pageSize} OFFSET ${
-        pageSize * (activePage - 1)
-      }`;
     }
+    let resultingSQL = SQL;
+    pageSize
+      ? (resultingSQL =
+          SQL +
+          ` LIMIT ${pageSize} OFFSET ${
+            pageSize * (activePage - 1 <= 0 ? 0 : activePage - 1)
+          }`)
+      : null;
+
     const [response] = await db.query<RowDataPacket[]>(resultingSQL);
-    const billboards = response.map((billboard) => ({
-      id: billboard.id,
+    const outdoors = response as Pontos[];
+    const billboards: Billboard[] = outdoors.map((outdoor) => ({
+      id: outdoor.pon_codigo,
+      address: outdoor.pon_compl,
+      coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
+      value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
     }));
+    const result = {
+      data: billboards,
+      totalPages: totalPages,
+    };
+    return NextResponse.json(result);
   } catch (error) {
-    throw error;
+    return NextResponse.json({
+      error: error || "An unknown error has occurred",
+    });
   }
 }

@@ -9,12 +9,12 @@ import Rent from "@/components/Rent";
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <Info />
-      <Panels />
-      <MUP />
+      {/* <Hero /> */}
+      {/* <Info /> */}
+      {/* <Panels />; */}
+      {/* <MUP /> */}
       <Rent />
-      <LEDPanel />
+      {/* <LEDPanel /> */}
     </>
   );
 }

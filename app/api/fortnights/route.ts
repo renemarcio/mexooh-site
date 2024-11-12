@@ -1,36 +1,9 @@
-// import prisma from "@/utils/prisma";
-// import { bisemanas } from "@prisma/client";
-// import { NextRequest, NextResponse } from "next/server";
-
-// export async function GET(req: NextRequest) {
-//   const searchParams = req.nextUrl.searchParams;
-//   const year = searchParams.get("ano") || undefined;
-//   let fortnights: bisemanas[] = [];
-//   if (year) {
-//     fortnights = await prisma.bisemanas.findMany({
-//       where: {
-//         ano: year,
-//       },
-//     });
-//   } else {
-//     fortnights = await prisma.bisemanas.findMany({
-//       where: {
-//         NOT: {
-//           dtFinal: {
-//             lt: new Date(),
-//           },
-//         },
-//       },
-//     });
-//   }
-//   return NextResponse.json(fortnights);
-// }
-
 import db from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 import { Bisemana } from "@/types/databaseTypes";
 import { SELECTBuilder } from "@/lib/SQLBuilder";
+import { Fortnight } from "@/types/websiteTypes";
 
 export async function GET(req: NextRequest) {
   //SQL Base
@@ -43,6 +16,7 @@ export async function GET(req: NextRequest) {
     id: (value: string) => `bi_codigo = ${value}`,
     number: (value: string) => `bi_numero = ${value}`,
     years: (value: string) => `bi_ano IN(${value})`,
+    currentDate: (value: string) => `bi_final > '${value}'`,
   };
 
   const FilteredSQL = SELECTBuilder(
@@ -62,16 +36,19 @@ export async function GET(req: NextRequest) {
     pageSize
       ? (resultingSQL =
           FilteredSQL +
-          ` LIMIT ${pageSize} OFFSET ${pageSize * (activePage - 1)}`)
+          ` LIMIT ${pageSize} OFFSET ${
+            pageSize * (pageSize * (activePage - 1 <= 0 ? 0 : activePage - 1))
+          }`)
       : null;
 
     const [response] = await db.query<RowDataPacket[]>(resultingSQL);
-    const fortnights: Bisemana[] = response.map((fortnight) => ({
-      id: fortnight.codigo,
-      numero: fortnight.bi_numero,
-      ano: fortnight.bi_ano,
-      inicio: fortnight.bi_inicio,
-      fim: fortnight.bi_final,
+    const bisemanas = response as Bisemana[];
+    const fortnights: Fortnight[] = bisemanas.map((fortnight) => ({
+      id: fortnight.bi_codigo,
+      number: fortnight.bi_numero,
+      year: fortnight.bi_ano,
+      start: fortnight.bi_inicio,
+      finish: fortnight.bi_final,
     }));
     const result = {
       data: fortnights,

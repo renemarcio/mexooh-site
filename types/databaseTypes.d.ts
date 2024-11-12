@@ -1,61 +1,73 @@
+export enum Tabelas {
+  bisemana = "bisemana",
+  pontos = "pontos",
+  cadGeral = "cadGeral",
+}
+
 export interface Bisemana {
   //bisemana
-  id: number;
-  numero: number;
-  ano: number;
-  inicio: Date;
-  fim: Date;
+  bi_codigo: number;
+  bi_numero: number;
+  bi_ano: number;
+  bi_inicio: Date;
+  bi_final: Date;
 }
 
 export interface Pontos {
   //pontos
   //pon_out_pain P = Painel | O = Outdoor | L = LED | M = MUP
-  id: number;
-  empresaPertencenteID: number; //Empresas_Emp_codigo
-  empresaPaganteID: number; //EmpresaCtaPagar
-  proprietarioID: number; //Cadgeral_Cad_codigo
-  cidadeID: number; //Cidades_cid_codigo
-  lonaDimensoesID?: number; //DimLonas_lon_codigo
-  estruturaID: number; //Estruturas_est_codigo
-  dimensaoEstruturaID: number; //Dimensoes_dim_codigo
-  parceria: boolean; //Parceria
-  address: string; //pon_compl
-  isUrban: boolean; //pon_urbana
-  isLit: boolean; //pon_iluminado
-  publico?: number; //pon_publico
-  referencias?: string; //Referencias
-  observacoes?: string; //pon_obs
-  isAtivo: boolean; //pon_alugado
-  valorAluguel: number; //Aluguel (OBS: Aluguel para o Proprietário)
-  pagarSoComAnuncio: boolean; //PagarSohComAnuncio
+  pon_codigo: number;
+  Empresas_Emp_codigo: number; //Empresas_Emp_codigo
+  EmpresaCtaPagar: number; //EmpresaCtaPagar
+  Cadgeral_Cad_codigo: number; //Cadgeral_Cad_codigo
+  Cidades_cid_codigo: number; //Cidades_cid_codigo
+  DimLonas_lon_codigo?: number; //DimLonas_lon_codigo
+  Estruturas_est_codigo: number; //Estruturas_est_codigo
+  Dimensoes_dim_codigo: number; //Dimensoes_dim_codigo
+  Parceria: boolean; //Parceria
+  pon_compl: string; //pon_compl
+  pon_urbana: boolean; //pon_urbana
+  pon_iluminado: string; //pon_iluminado
+  pon_publico?: number; //pon_publico
+  Referencias?: string; //Referencias
+  pon_obs?: string; //pon_obs
+  pon_alugado: boolean; //pon_alugado
+  Aluguel: number; //Aluguel (OBS: Aluguel para o Proprietário)
+  PagarSohComAnuncio: boolean; //PagarSohComAnuncio
   pon_alu_vei_sim: number; // ???
   pon_alu_vei_nao: number; // ???
   temIPTU: boolean; //pon_IPTU
-  temEnergia: boolean; //pon_energia
+  pon_energia: boolean; //pon_energia
   reservado: boolean; //pon_reservado (Vendedor reservou para o cliente)
-  negocioID: number; //pon_nr_codigo
+  pon_nr_codigo: number; //pon_nr_codigo
   dataFimDaReserva?: Date;
-  permuta: boolean; //Permuta
-  permutaID: number; //PermutaCodigo
-  pagamentoTipoID: number; //TpPagamentos_idTPPagamentos
+  Permuta: boolean; //Permuta
+  PermutaCodigo: number; //PermutaCodigo
+  TpPagamentos_idTPPagamentos: number; //TpPagamentos_idTPPagamentos
   frequencia: number; //frequencia
-  proximoPagamento: Date; //ProxPagto
-  diaPagamento: number; //DiaPagto
-  identificacao?: string; //Identificacao
-  mesReajuste: boolean; //pon_mes_reajuste
-  indiceReajudeID: number; //indices_codigo
-  ultimoReajuste: Date; //UltReajuste
-  valorMesAnterior?: number; //vlrMesAnterior
-  sequenciaDoCheckIn?: number; //SCheckin
-  coordenadas?: string; //LinkMapa
-  dataDeInserção: Date; //dtaInsercao
-  dataDeAtivação: Date; //dtaAtivacao
-  ultimoUsuarioAAlterar: number; //UserID
-  podeUsarBisemanaImpar: boolean; //BiImpar
-  face?: string; //pon_face
-  valorInventario?: number; //VlrInventario
-  valorDepreciacao?: number; //VlrDepreciacao
-  valorNegocio?: number; //VlrNegocio
+  ProxPagto: Date; //ProxPagto
+  DiaPagto: number; //DiaPagto
+  Identificacao?: string; //Identificacao
+  pon_mes_reajuste: boolean; //pon_mes_reajuste
+  indices_codigo: number; //indices_codigo
+  UltReajuste: Date; //UltReajuste
+  vlrMesAnterior?: number; //vlrMesAnterior
+  SCheckin?: number; //SCheckin
+  LinkMapa?: string; //LinkMapa
+  dtaInsercao: Date; //dtaInsercao
+  dtaAtivacao: Date; //dtaAtivacao
+  UserID: number; //UserID
+  BiImpar: boolean; //BiImpar
+  pon_face?: string; //pon_face
+  VlrInventario?: number; //VlrInventario
+  VlrDepreciacao?: number; //VlrDepreciacao
+  VlrNegocio?: number; //VlrNegocio
+}
+
+export interface Cidade {
+  cid_codigo: number;
+  cid_nome: string;
+  cid_uf: string;
 }
 
 export interface Cliente {}

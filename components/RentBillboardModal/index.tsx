@@ -10,72 +10,77 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { bisemanas, inventarios } from "@prisma/client";
+// import { bisemanas, inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
 import Map from "../Map";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
 import { CartContext } from "@/contexts/CartContext";
 import { CartEntry } from "@/types/cartEntry";
+import { Billboard, Fortnight } from "@/types/websiteTypes";
 
 type Props = {
-  billboard: inventarios;
+  billboard: Billboard;
   closeFn: () => void;
 };
 
 export default function RentBillboardModal({ billboard, closeFn }: Props) {
-  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
   const [availableFortnights, setAvailableFortnights] = useState<Number[]>([]);
   const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label: `BI-${fortnight.numero} -
-        ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+      label: `BI-${fortnight.number} -
+        ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
           "pt-BR",
           {
             minimumIntegerDigits: 2,
           }
-        )}/${Number(
-        new Date(fortnight.dtInicio).getUTCMonth() + 1
-      ).toLocaleString("pt-BR", {
-        minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
-      ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+        )}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
         "pt-BR",
         {
           minimumIntegerDigits: 2,
         }
-      )}/${Number(new Date(fortnight.dtFinal).getUTCMonth() + 1).toLocaleString(
+      )}/${new Date(fortnight.start).getUTCFullYear()} -
+      ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
         "pt-BR",
         {
           minimumIntegerDigits: 2,
         }
-      )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
+      )}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
+        "pt-BR",
+        {
+          minimumIntegerDigits: 2,
+        }
+      )}/${new Date(fortnight.finish).getUTCFullYear()}`,
       disabled: !availableFortnights.includes(fortnight.id),
     };
   });
 
   useEffect(() => {
     fetchFortnights();
-    fetchAvailableFortnights();
+    fetchRentedFortnights();
   }, []);
 
   async function fetchFortnights() {
-    const res = await fetch("/api/fortnights", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      "/api/fortnights?currentDate=" + new Date().toISOString(),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await res.json();
     console.log("data from fetchFortnights()");
-    console.log(data);
-    setFortnights(data);
+    console.log(data.data);
+    setFortnights(data.data);
   }
 
-  async function fetchAvailableFortnights() {
-    const res = await fetch("/api/billboards/" + billboard.id, {
+  async function fetchRentedFortnights() {
+    const res = await fetch("/api/fortnights/available?id=" + billboard.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -83,12 +88,12 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     });
     const data = await res.json();
     console.log("data from fetchAvailableFortnights()");
-    console.log(data.availableFortnights);
+    console.log(data);
     const availableFortnightsIDs = data.availableFortnights.map(
       (obj: { id: number }) => obj.id
     );
-    console.log("availableFortnightsIDs");
-    console.log(availableFortnightsIDs);
+    // console.log("availableFortnightsIDs");
+    // console.log(availableFortnightsIDs);
     setAvailableFortnights(availableFortnightsIDs);
   }
 
@@ -101,7 +106,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     );
     const newCartEntry: CartEntry = {
       item: billboard,
-      value: billboard.Iluminado ? 1190 : 1090,
+      value: billboard.value,
       fortnights: rentedFortnights, //fortnights that match selectedFortnights IDS
     };
     cart.setCart([...cart.cart, newCartEntry]);
@@ -115,13 +120,13 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
         handleSubmit();
       }}
     >
-      <Title ta={"center"}>{billboard.Localizacao}</Title>
+      <Title ta={"center"}>{billboard.address}</Title>
       <Stack gap={"md"}>
         <Center>
           <Box h={"400px"} w={"100%"}>
             <Map
-              lat={Number(billboard.LinkGoogleMaps?.split(",")[0])}
-              long={Number(billboard.LinkGoogleMaps?.split(",")[1])}
+              lat={Number(billboard.coordinates?.split(",")[0])}
+              long={Number(billboard.coordinates?.split(",")[1])}
             />
           </Box>
         </Center>
@@ -132,7 +137,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
           value={selectedFortnights}
           onChange={setSelectedFortnights}
         />
-
+        <Code>{JSON.stringify(availableFortnights, null, 2)}</Code>
         <Button
           fullWidth
           leftSection={<IconShoppingCartPlus />}
