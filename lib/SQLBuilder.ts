@@ -22,7 +22,7 @@ export function SELECTBuilder(
   //   SQL += " WHERE " + SQLConditions.join(" AND ");
   // }
 
-  SQL += WHEREBuilder(searchParams, validParams);
+  SQL += "WHERE " + ConditionsBuilder(searchParams, validParams);
 
   console.log("sorting", sorting);
   if (sorting != undefined) {
@@ -33,7 +33,7 @@ export function SELECTBuilder(
 }
 
 //I feel like the previous function is "too smart". Can't be reused as much.
-export function WHEREBuilder(
+export function ConditionsBuilder(
   searchParams: URLSearchParams,
   validParams?: { [key: string]: (value: string) => string }
 ) {
@@ -48,7 +48,7 @@ export function WHEREBuilder(
   }
   console.log("Resulting SQLConditions: ", SQLConditions);
   if (SQLConditions.length > 0) {
-    return " WHERE " + SQLConditions.join(" AND ");
+    return "AND " + SQLConditions.join(" AND ");
   } else {
     return "";
   }

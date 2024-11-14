@@ -1,20 +1,3 @@
-// import { NextResponse, NextRequest } from "next/server";
-// import prisma from "../../../utils/prisma";
-// export async function GET(req: NextRequest) {
-//   const allCitiesResults = await prisma.inventarios.findMany({
-//     distinct: ["cidade"],
-//     orderBy: {
-//       cidade: "asc",
-//     },
-//     select: {
-//       cidade: true,
-//     },
-//   });
-//   const cities = allCitiesResults.map((city) => city.cidade);
-//   return NextResponse.json(cities);
-// }
-
-import { SELECTBuilder, WHEREBuilder } from "@/lib/SQLBuilder";
 import { Cidade } from "@/types/databaseTypes";
 import { City } from "@/types/websiteTypes";
 import db from "@/utils/mysqlConnection";
@@ -22,6 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
+  const id = searchParams.get("id") || null;
+  const name = searchParams.get("name") || null;
+  const state = searchParams.get("state") || null;
+  const type = searchParams.get("type") || null;
   const validParams: { [key: string]: (value: string) => string } = {
     id: (value: string) => `cid_codigo = ${value}`,
     name: (value: string) => `cid_nome = '${value}'`,
@@ -31,26 +18,28 @@ export async function GET(req: NextRequest) {
 
   console.log("searchParams type", searchParams.get("type"));
 
-  const SQL =
-    `SELECT DISTINCT cid_nome, cid_codigo, cid_uf FROM cidades RIGHT JOIN pontos ON pontos.Cidades_cid_codigo = cid_codigo` +
-    WHEREBuilder(searchParams, validParams) +
-    " ORDER BY cid_nome ASC";
+  let SQL = `SELECT DISTINCT cid_nome, cid_codigo, cid_uf FROM cidades RIGHT JOIN pontos ON pontos.Cidades_cid_codigo = cid_codigo `;
 
-  console.log("Test", SQL);
-  let tables = "cidades";
+  const conditions = [];
+  if (id !== null) {
+    conditions.push("cid_codigo IN( " + id + " )");
+  }
+  if (name !== null) {
+    conditions.push("cid_nome LIKE %" + name + "%");
+  }
+  if (state !== null) {
+    conditions.push("cid_uf IN(" + state + ")");
+  }
+  if (type !== null) {
+    conditions.push("pontos.pon_outd_pain IN(" + type + ")");
+  }
+  // +`ORDER BY cid_nome ASC`;
 
-  if (searchParams.get("type") !== null) {
-    tables += ` RIGHT JOIN pontos ON pontos.Cidades_cid_codigo = cid_codigo`;
+  if (conditions.length > 0) {
+    SQL += " WHERE " + conditions.join(" AND ");
   }
 
-  const FilteredSQL = SELECTBuilder(
-    searchParams,
-    tables,
-    undefined,
-    validParams,
-    "NOT cid_nome = ''",
-    "cid_nome ASC"
-  );
+  SQL += "ORDER BY cid_nome ASC";
 
   const [response] = await db.query(SQL);
   const cidades = response as Cidade[];

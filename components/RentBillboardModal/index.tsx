@@ -26,7 +26,7 @@ type Props = {
 export default function RentBillboardModal({ billboard, closeFn }: Props) {
   const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
-  const [availableFortnights, setAvailableFortnights] = useState<Number[]>([]);
+  const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
   const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
@@ -54,7 +54,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
           minimumIntegerDigits: 2,
         }
       )}/${new Date(fortnight.finish).getUTCFullYear()}`,
-      disabled: !availableFortnights.includes(fortnight.id),
+      disabled: rentedFortnights.includes(fortnight.id),
     };
   });
 
@@ -80,7 +80,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   }
 
   async function fetchRentedFortnights() {
-    const res = await fetch("/api/fortnights/available?id=" + billboard.id, {
+    const res = await fetch("/api/fortnights/rented?id=" + billboard.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -89,12 +89,9 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     const data = await res.json();
     console.log("data from fetchAvailableFortnights()");
     console.log(data);
-    const availableFortnightsIDs = data.availableFortnights.map(
-      (obj: { id: number }) => obj.id
-    );
     // console.log("availableFortnightsIDs");
     // console.log(availableFortnightsIDs);
-    setAvailableFortnights(availableFortnightsIDs);
+    setRentedFortnights(data.data);
   }
 
   async function handleSubmit() {
@@ -137,7 +134,7 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
           value={selectedFortnights}
           onChange={setSelectedFortnights}
         />
-        <Code>{JSON.stringify(availableFortnights, null, 2)}</Code>
+        <Code>{JSON.stringify(rentedFortnights, null, 2)}</Code>
         <Button
           fullWidth
           leftSection={<IconShoppingCartPlus />}

@@ -6,12 +6,10 @@ import { SELECTBuilder } from "@/lib/SQLBuilder";
 import { Fortnight } from "@/types/websiteTypes";
 
 export async function GET(req: NextRequest) {
-  //SQL Base
   const searchParams = req.nextUrl.searchParams;
   const activePage = Number(searchParams.get("activePage"));
   const pageSize = Number(searchParams.get("pageSize"));
 
-  //Valid Params
   const SQLConditions: { [key: string]: (value: string) => string } = {
     id: (value: string) => `bi_codigo = ${value}`,
     number: (value: string) => `bi_numero = ${value}`,
