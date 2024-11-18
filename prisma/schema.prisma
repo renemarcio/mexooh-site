@@ -13,31 +13,6 @@ model cargos {
   funcionarios funcionarios[]
 }
 
-model clientes {
-  id                 Int                  @id @default(autoincrement()) @db.UnsignedInt
-  pessoa             String               @db.Char(1)
-  cnpj_cpf           String               @unique(map: "cnpj_cpf") @db.VarChar(14)
-  email              String?              @unique(map: "email") @db.VarChar(100)
-  password           String?              @default("") @db.VarChar(100)
-  nome               String               @db.VarChar(80)
-  fantasia           String               @db.VarChar(80)
-  ins_est_rg         String?              @db.Char(18)
-  segmento_id        Int                  @default(1) @db.UnsignedInt
-  cheque_nominal     Boolean              @default(false)
-  cheque_cruzado     Boolean              @default(false)
-  fornecedor         Boolean?             @default(false)
-  proprietario       Boolean?             @default(false)
-  socio              Boolean?             @default(false)
-  funcionario        Boolean?             @default(false)
-  agencia            Boolean?             @default(false)
-  segmentos          segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
-  enderecos_clientes enderecos_clientes[]
-  inventarios        inventarios[]
-  telefones_clientes telefones_clientes[]
-
-  @@index([segmento_id], map: "clientes_fk2")
-}
-
 model empresas {
   id                                                     Int            @id @default(autoincrement()) @db.UnsignedInt
   cnpj                                                   String         @unique(map: "cnpj") @db.VarChar(14)
@@ -54,50 +29,7 @@ model empresas {
   funcionarios                                           funcionarios[]
   inventarios_inventarios_id_EmpresaNegocioToempresas    inventarios[]  @relation("inventarios_id_EmpresaNegocioToempresas")
   inventarios_inventarios_id_EmpresaContaPagarToempresas inventarios[]  @relation("inventarios_id_EmpresaContaPagarToempresas")
-}
-
-model enderecos_clientes {
-  id          Int      @default(autoincrement()) @db.UnsignedInt
-  cliente_id  Int      @db.UnsignedInt
-  cep         String?  @db.Char(10)
-  endereco    String?  @db.VarChar(50)
-  numero      String?  @db.Char(5)
-  complemento String?  @db.VarChar(20)
-  bairro      String?  @db.VarChar(30)
-  cidade      String?  @db.VarChar(30)
-  uf          String?  @db.Char(2)
-  clientes    clientes @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "endereco_Clientes_fk1")
-
-  @@id([id, cliente_id])
-  @@index([cliente_id], map: "endereco_Clientes_fk1")
-}
-
-model funcionarios {
-  id            Int       @id @default(autoincrement()) @db.UnsignedInt
-  cpf           String    @unique(map: "cpf") @db.VarChar(14)
-  nome          String    @db.VarChar(80)
-  ativo         Boolean?  @default(true)
-  data_admissao DateTime? @db.Date
-  data_demissao DateTime? @db.Date
-  empresa_id    Int?      @db.UnsignedInt
-  cargo_id      Int?      @db.UnsignedInt
-  login         String?   @unique(map: "login") @db.VarChar(10)
-  trocar_senha  Boolean?  @default(true)
-  senha         String?   @db.VarChar(100)
-  data_senha    DateTime? @db.Date
-  nivel         Int?      @db.UnsignedInt
-  CEP           String?   @db.Char(10)
-  Endereco      String?   @db.VarChar(50)
-  Numero        String?   @db.Char(5)
-  complemento   String?   @db.VarChar(20)
-  Bairro        String?   @db.VarChar(30)
-  cidade        String?   @db.VarChar(30)
-  uf            String?   @db.Char(2)
-  empresas      empresas? @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk0")
-  cargos        cargos?   @relation(fields: [cargo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk2")
-
-  @@index([empresa_id], map: "funcionarios_fk0")
-  @@index([cargo_id], map: "funcionarios_fk2")
+  negocios                                               negocios[]
 }
 
 model segmentos {
@@ -110,6 +42,257 @@ model dimensoes {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
   dimensao    String?       @db.VarChar(25)
   inventarios inventarios[]
+}
+
+model alugadas {
+  id          Int         @id @default(autoincrement()) @db.UnsignedInt
+  inventario  Int         @db.UnsignedInt
+  id_bisemana Int         @db.UnsignedInt
+  inventarios inventarios @relation(fields: [inventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk1")
+  bisemanas   bisemanas   @relation(fields: [id_bisemana], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk2")
+
+  @@index([inventario], map: "alugadas_fk1")
+  @@index([id_bisemana], map: "alugadas_fk2")
+}
+
+model faturas {
+  id                      Int       @id @default(autoincrement()) @db.UnsignedInt
+  Negocios_Codigo         Int       @db.UnsignedInt
+  NrParcela               Int
+  Vencimento              DateTime? @db.Date
+  Valor                   Decimal   @db.Decimal(11, 2)
+  QtdeBoletos             Int       @default(1)
+  desc_Parcela            Decimal?  @default(0.00) @db.Decimal(11, 2)
+  Desc_Motivo             String?   @db.VarChar(80)
+  ComissaoAge             Decimal?  @default(0.00) @db.Decimal(11, 2)
+  ComissaoAgeMostrar      String    @default("N") @db.Char(1)
+  AgeMidia_Valor          Decimal?  @default(0.00) @db.Decimal(11, 2)
+  AgeMidia_Mostrar        String    @default("N") @db.Char(1)
+  Parceria_Valor          Decimal   @default(0.00) @db.Decimal(11, 2)
+  dtRecebimento           DateTime? @db.Date
+  vlrJuros                Decimal?  @default(0.00) @db.Decimal(11, 2)
+  vlrDesconto             Decimal?  @default(0.00) @db.Decimal(11, 2)
+  vlrRecebido             Decimal?  @default(0.00) @db.Decimal(11, 2)
+  ImprimirCorpoNotaManual Int       @default(0)
+  CorpoNotaManual         String?   @db.LongText
+  PeriodoINI              DateTime? @db.Date
+  PeriodoFIM              DateTime? @db.Date
+  Emitida                 String    @default("N") @db.Char(1)
+  DtAtualizacao           DateTime  @db.Date
+  UserId                  Int       @db.UnsignedInt
+  Observacoes             String?   @db.LongText
+  negocios                negocios  @relation(fields: [Negocios_Codigo], references: [codigo], onDelete: Cascade, map: "faturas_ibfk_1")
+  notas                   notas[]
+
+  @@index([Negocios_Codigo], map: "faturas_FKIndex1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model itensnegocios {
+  id              Int         @id @default(autoincrement()) @db.UnsignedInt
+  Negocios_Codigo Int         @db.UnsignedInt
+  inventarios_id  Int         @db.UnsignedInt
+  biSemana_id     Int?        @db.UnsignedInt
+  dtExib_Inicial  DateTime?   @db.Date
+  dtExib_Final    DateTime?   @db.Date
+  Roteiro         String?     @db.Char(10)
+  Bonificado      String?     @default("N") @db.Char(1)
+  Tipo            String?     @default("L") @db.Char(1)
+  Preco           Decimal?    @default(0.00) @db.Decimal(11, 2)
+  Motivo          String?     @db.LongText
+  Foto1           String?     @db.VarChar(250)
+  Foto2           String?     @db.VarChar(250)
+  FimReserva      DateTime?   @db.Date
+  negocios        negocios    @relation(fields: [Negocios_Codigo], references: [codigo], onDelete: Cascade, map: "itensnegocios_ibfk_1")
+  inventarios     inventarios @relation(fields: [inventarios_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "itensnegocios_ibfk_2")
+
+  @@index([Negocios_Codigo], map: "ItensNegocios_FKIndex1")
+  @@index([inventarios_id], map: "ItensNegocios_FKIndex2")
+  @@index([biSemana_id], map: "ItensNegocios_FKIndex3")
+}
+
+model negocios {
+  codigo                                           Int                @id @default(autoincrement()) @db.UnsignedInt
+  Status                                           Int
+  Tipo                                             Int
+  Imp_Veic                                         String?            @db.VarChar(10)
+  PICliente                                        String?            @db.VarChar(15)
+  Numero                                           String             @db.VarChar(10)
+  Empresas_id                                      Int                @db.UnsignedInt
+  Socios_id                                        Int?               @db.UnsignedInt
+  Clientes_id_Cliente                              Int                @db.UnsignedInt
+  Clientes_id_Anuante                              Int?               @db.UnsignedInt
+  Clientes_id_Vendedor                             Int                @db.UnsignedInt
+  Servicos_id                                      Int                @db.UnsignedInt
+  Endereco_id_cobranca                             Int                @default(0) @db.UnsignedInt
+  NoAguardo                                        Boolean?           @default(false)
+  dtInsercao                                       DateTime           @db.Date
+  dtEmissao                                        DateTime           @db.Date
+  dtInicio                                         DateTime           @db.Date
+  dtFinal                                          DateTime?          @db.Date
+  dtInstalacao                                     DateTime?          @db.Date
+  dtFaturado                                       DateTime?          @db.Date
+  Clausula9                                        String?            @default("S") @db.Char(1)
+  Testemunha1                                      String?            @db.VarChar(50)
+  CPF_Testemunha1                                  String?            @db.VarChar(20)
+  Cargo_Testemunha1                                String?            @db.VarChar(30)
+  Testemunha2                                      String?            @db.VarChar(50)
+  CPF_Testemunha2                                  String?            @db.VarChar(20)
+  Cargo_Testemunha2                                String?            @db.VarChar(30)
+  Titulo                                           String?            @db.VarChar(50)
+  Formato                                          String             @default("P") @db.Char(1)
+  Praca                                            String?            @db.VarChar(20)
+  Agencia                                          String             @default("N") @db.Char(1)
+  Agencia_Codigo                                   Int?               @default(0) @db.UnsignedInt
+  ComissaoAgePerc                                  Float?             @db.Float
+  ComissaoAge                                      Decimal?           @db.Decimal(11, 2)
+  ComissaoAgeMostrar                               String             @default("N") @db.Char(1)
+  AgeMidia_Tem                                     String             @default("N") @db.Char(1)
+  AgeMidia_Codigo                                  Int?               @default(0) @db.UnsignedInt
+  AgeMidia_Perc                                    Float?             @db.Float
+  AgeMidia_Valor                                   Decimal?           @default(0.00) @db.Decimal(11, 2)
+  AgeMidia_Mostrar                                 String             @default("N") @db.Char(1)
+  Parceria_Tem                                     String             @default("N") @db.Char(1)
+  Parceria_Codigo                                  Int                @default(0) @db.UnsignedInt
+  Parceria_Valor                                   Decimal            @default(0.00) @db.Decimal(11, 2)
+  Contato                                          String?            @db.VarChar(50)
+  ParcelasAutoManual                               String?            @default("x") @db.Char(1)
+  Qtde                                             Decimal?           @db.Decimal(4, 0)
+  qtdeMeses                                        Int                @db.SmallInt
+  DiaPagto                                         Int?               @db.SmallInt
+  dtPriPagto                                       DateTime?          @db.Date
+  dtUltPagto                                       DateTime?          @db.Date
+  VlrUnitario                                      Decimal?           @db.Decimal(11, 2)
+  VlrTotal                                         Decimal?           @db.Decimal(11, 2)
+  vlrDesconto                                      Decimal?           @db.Decimal(11, 2)
+  VlrCobrar                                        Decimal?           @db.Decimal(11, 2)
+  obs                                              String?            @db.LongText
+  Corpo_Nota                                       String?            @db.LongText
+  Lembrete                                         String?            @db.LongText
+  Pendencias                                       String?            @db.LongText
+  NrFaturamento                                    Int?
+  NrEmpresa                                        Int?
+  Contrato                                         String?            @db.VarChar(50)
+  faturas                                          faturas[]
+  itensnegocios                                    itensnegocios[]
+  empresas                                         empresas           @relation(fields: [Empresas_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_1")
+  clientes_negocios_Clientes_id_ClienteToclientes  clientes           @relation("negocios_Clientes_id_ClienteToclientes", fields: [Clientes_id_Cliente], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_2")
+  clientes_negocios_Clientes_id_AnuanteToclientes  clientes?          @relation("negocios_Clientes_id_AnuanteToclientes", fields: [Clientes_id_Anuante], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_3")
+  clientes_negocios_Clientes_id_VendedorToclientes clientes           @relation("negocios_Clientes_id_VendedorToclientes", fields: [Clientes_id_Vendedor], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_4")
+  servicos                                         servicos           @relation(fields: [Servicos_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_5")
+  enderecos_clientes                               enderecos_clientes @relation(fields: [Endereco_id_cobranca], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "negocios_ibfk_6")
+
+  @@index([Empresas_id], map: "Negocios_FKIndex1")
+  @@index([Clientes_id_Anuante], map: "Negocios_FKIndex3")
+  @@index([Clientes_id_Vendedor], map: "Negocios_FKIndex4")
+  @@index([Servicos_id], map: "Negocios_FKIndex5")
+  @@index([Endereco_id_cobranca], map: "Negocios_FKIndex6")
+  @@index([Clientes_id_Cliente], map: "Negocios_FKIndex2")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model notas {
+  id                  Int       @id @default(autoincrement()) @db.UnsignedInt
+  Faturas_id          Int       @db.UnsignedInt
+  Numero              Int       @db.UnsignedInt
+  Eletronica          Boolean   @default(false)
+  dtEmissao           DateTime  @db.Date
+  Cancelada           String    @default("N") @db.Char(1)
+  dtCancelada         DateTime? @db.Date
+  DtAtualizacao       DateTime  @db.Date
+  UserId              Int?
+  Fatura_q_gerou_nota Int?
+  faturas             faturas   @relation(fields: [Faturas_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Faturas_ibfk_id")
+
+  @@index([Faturas_id], map: "NotasRecibos_FKIndex1")
+}
+
+model servicos {
+  id        Int        @id @default(autoincrement()) @db.UnsignedInt
+  descricao String     @db.VarChar(70)
+  TipoNota  String     @default("D") @db.Char(1)
+  negocios  negocios[]
+}
+
+model bisemanas {
+  id       Int        @id @default(autoincrement()) @db.UnsignedInt
+  numero   String     @db.Char(2)
+  ano      String     @db.Char(4)
+  dtInicio DateTime   @db.Date
+  dtFinal  DateTime   @db.Date
+  alugadas alugadas[]
+}
+
+model clientes {
+  id                                               Int                  @id @default(autoincrement()) @db.UnsignedInt
+  pessoa                                           String               @db.Char(1)
+  cnpj_cpf                                         String               @unique(map: "cnpj_cpf") @db.VarChar(14)
+  email                                            String?              @unique(map: "email") @db.VarChar(100)
+  password                                         String?              @default("") @db.VarChar(100)
+  nome                                             String               @db.VarChar(80)
+  fantasia                                         String               @db.VarChar(80)
+  ins_est_rg                                       String?              @db.Char(18)
+  segmento_id                                      Int                  @default(1) @db.UnsignedInt
+  cheque_nominal                                   Boolean              @default(false)
+  cheque_cruzado                                   Boolean              @default(false)
+  fornecedor                                       Boolean?             @default(false)
+  proprietario                                     Boolean?             @default(false)
+  socio                                            Boolean?             @default(false)
+  funcionario                                      Boolean?             @default(false)
+  agencia                                          Boolean?             @default(false)
+  segmentos                                        segmentos            @relation(fields: [segmento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clientes_fk2")
+  enderecos_clientes                               enderecos_clientes[]
+  inventarios                                      inventarios[]
+  negocios_negocios_Clientes_id_ClienteToclientes  negocios[]           @relation("negocios_Clientes_id_ClienteToclientes")
+  negocios_negocios_Clientes_id_AnuanteToclientes  negocios[]           @relation("negocios_Clientes_id_AnuanteToclientes")
+  negocios_negocios_Clientes_id_VendedorToclientes negocios[]           @relation("negocios_Clientes_id_VendedorToclientes")
+  telefones_clientes                               telefones_clientes[]
+
+  @@index([segmento_id], map: "clientes_fk2")
+}
+
+model enderecos_clientes {
+  id          Int        @id @default(autoincrement()) @db.UnsignedInt
+  cliente_id  Int        @db.UnsignedInt
+  cep         String?    @db.Char(10)
+  endereco    String?    @db.VarChar(50)
+  numero      String?    @db.Char(5)
+  complemento String?    @db.VarChar(20)
+  bairro      String?    @db.VarChar(30)
+  cidade      String?    @db.VarChar(30)
+  uf          String?    @db.Char(2)
+  clientes    clientes   @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "endereco_Clientes_fk1")
+  negocios    negocios[]
+
+  @@index([cliente_id], map: "endereco_Clientes_fk1")
+}
+
+model funcionarios {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  cpf           String    @unique(map: "cpf") @db.VarChar(14)
+  nome          String    @db.VarChar(80)
+  ativo         Boolean?  @default(true)
+  data_admissao DateTime? @db.Date
+  data_demissao DateTime? @db.Date
+  empresa_id    Int       @default(1) @db.UnsignedInt
+  cargo_id      Int       @default(1) @db.UnsignedInt
+  login         String?   @unique(map: "login") @db.VarChar(10)
+  trocar_senha  Boolean?  @default(true)
+  senha         String?   @db.VarChar(100)
+  data_senha    DateTime? @db.Date
+  nivel         Int?      @db.UnsignedInt
+  CEP           String?   @db.Char(10)
+  Endereco      String?   @db.VarChar(50)
+  Numero        String?   @db.Char(5)
+  complemento   String?   @db.VarChar(20)
+  Bairro        String?   @db.VarChar(30)
+  cidade        String?   @db.VarChar(30)
+  uf            String?   @db.Char(2)
+  empresas      empresas  @relation(fields: [empresa_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk0")
+  cargos        cargos    @relation(fields: [cargo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "funcionarios_fk1")
+
+  @@index([empresa_id], map: "funcionarios_fk0")
+  @@index([cargo_id], map: "funcionarios_fk1")
 }
 
 model inventarios {
@@ -133,6 +316,7 @@ model inventarios {
   empresas_inventarios_id_EmpresaContaPagarToempresas empresas        @relation("inventarios_id_EmpresaContaPagarToempresas", fields: [id_EmpresaContaPagar], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk3")
   tipoinventarios                                     tipoinventarios @relation(fields: [id_TipoInventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk4")
   dimensoes                                           dimensoes?      @relation(fields: [id_dimensao], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "inventarios_fk5")
+  itensnegocios                                       itensnegocios[]
 
   @@index([id_Proprietario], map: "inventarios_fk1")
   @@index([id_EmpresaNegocio], map: "inventarios_fk2")
@@ -141,38 +325,17 @@ model inventarios {
   @@index([id_dimensao], map: "inventarios_fk5")
 }
 
-model tipoinventarios {
-  id          Int           @id @default(autoincrement()) @db.UnsignedInt
-  inventario  String?       @db.VarChar(50)
-  inventarios inventarios[]
-}
-
-model bisemanas {
-  id       Int        @id @default(autoincrement()) @db.UnsignedInt
-  numero   String     @db.Char(2)
-  ano      String     @db.Char(4)
-  dtInicio DateTime   @db.Date
-  dtFinal  DateTime   @db.Date
-  alugadas alugadas[]
-}
-
-model alugadas {
-  id          Int         @id @default(autoincrement()) @db.UnsignedInt
-  inventario  Int         @db.UnsignedInt
-  id_bisemana Int         @db.UnsignedInt
-  inventarios inventarios @relation(fields: [inventario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk1")
-  bisemanas   bisemanas   @relation(fields: [id_bisemana], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "alugadas_fk2")
-
-  @@index([inventario], map: "alugadas_fk1")
-  @@index([id_bisemana], map: "alugadas_fk2")
-}
-
 model telefones_clientes {
-  id         Int      @default(autoincrement()) @db.UnsignedInt
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
   cliente_id Int      @db.UnsignedInt
   Numero     String   @db.Char(16)
   clientes   clientes @relation(fields: [cliente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "telefone_Clientes_fk1")
 
-  @@id([id, cliente_id])
   @@index([cliente_id], map: "telefone_Clientes_fk1")
+}
+
+model tipoinventarios {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  inventario  String?       @db.VarChar(50)
+  inventarios inventarios[]
 }

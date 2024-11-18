@@ -1,8 +1,28 @@
 import { PIValuesType } from "@/components/AdminDashboard/PIForm";
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
-import { PageOrientation, TDocumentDefinitions } from "pdfmake/interfaces";
+import {
+  Content,
+  PageOrientation,
+  TDocumentDefinitions,
+} from "pdfmake/interfaces";
 export default function GeneratePIPDF(PIValues: PIValuesType) {
+  const rows = PIValues.inventarios.map((inventario) => {
+    return [
+      {
+        text: inventario.codigo.toString(),
+        bold: true,
+        alignment: "center",
+      },
+      // "Av. Juscelino Kubitschek - Painel LED - Esquina Centro Médico",
+      inventario.localizacao,
+      // "-23.5059244, -47.4606713",
+      inventario.geolocalizacao,
+      // "Bruto R$ 17.100,00 - Subsidio R$ 3.129,00 - Liquido - R$ 13.971,90",
+      inventario.valor,
+    ];
+  });
+
   pdfMake.vfs = vfsFonts.pdfMake.vfs;
   pdfMake.tableLayouts = {
     PILayout: {
@@ -204,19 +224,20 @@ export default function GeneratePIPDF(PIValues: PIValuesType) {
               { text: "GEOLOCALIZAÇÃO", bold: true, alignment: "center" },
               { text: "VALOR", bold: true, alignment: "center" },
             ],
-            [
-              {
-                text: PIValues.codigo.toString(),
-                bold: true,
-                alignment: "center",
-              },
-              // "Av. Juscelino Kubitschek - Painel LED - Esquina Centro Médico",
-              PIValues.localizacao,
-              // "-23.5059244, -47.4606713",
-              PIValues.geolocalizacao,
-              // "Bruto R$ 17.100,00 - Subsidio R$ 3.129,00 - Liquido - R$ 13.971,90",
-              PIValues.valor,
-            ],
+            // [
+            //   {
+            //     text: PIValues.inventarios[0].codigo.toString(),
+            //     bold: true,
+            //     alignment: "center",
+            //   },
+            //   // "Av. Juscelino Kubitschek - Painel LED - Esquina Centro Médico",
+            //   PIValues.inventarios[0].localizacao,
+            //   // "-23.5059244, -47.4606713",
+            //   PIValues.inventarios[0].geolocalizacao,
+            //   // "Bruto R$ 17.100,00 - Subsidio R$ 3.129,00 - Liquido - R$ 13.971,90",
+            //   PIValues.inventarios[0].valor,
+            // ],
+            ...rows,
           ],
         },
         margin: [0, 0, 0, 20],
@@ -230,7 +251,7 @@ export default function GeneratePIPDF(PIValues: PIValuesType) {
           },
           " doravante designada EXIBIDORA, têm, entre si, justo e contratado, o presente instrumento que reger-se-á pelas cláusulas seguintes:\n1 – A EXIBIDORA prestará ao ANUNCIANTE o serviço de locação em painel de led cujos local, período de exibição, preço e modalidade de pagamento estão especificados acima.\n2 – O presente instrumento é documento hábil para comprovar negociação ora celebrada e legitimar os pagamentos decorrentes, ficando autorizada a cobrança dos valores devidos por intermédio de documento bancário. O atraso nos pagamentos acarretará a cobrança de multa no valor de 9% ao mês, sobre o valor da parcela e juros de mora.\n3 – A Rescisão contratual unilateral pela ANUNCIANTE, antes de findado o período contratado, acarretará na obrigação da mesma pagar à EXIBIDORA multa correspondente à 20% (vinte por cento) do valor remanescente não pago.\n4 – Construir-se-á causa de rompimento deste contrato o inadimplemento, por qualquer das partes, de quaisquer das obrigações que lhes competem, aqui previstas, ressalvadas as disposições pertinentes estabelecidas neste instrumento e respondendo pelas obrigações decorrentes deste contrato.\n5 – O signatário especificado acima designado como autorizante declara ser legal e formalmente habilitado para assinar este instrumento respondendo inclusive pessoal e solidariamente, pelas obrigações decorrentes deste contrato.",
         ],
-        marginTop: 10,
+        // marginTop: 10,
       },
       {
         marginTop: 60,

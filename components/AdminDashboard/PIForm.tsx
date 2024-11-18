@@ -1,5 +1,5 @@
 import GeneratePIPDF from "@/PDFTemplates/PI/PIPDF";
-import { Button, Stack, TextInput } from "@mantine/core";
+import { Button, Fieldset, Stack, TextInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React from "react";
 
@@ -23,10 +23,14 @@ const initialValues = {
   vencimento: "",
   insercoes: "",
   cpm30: "",
-  codigo: 0,
-  localizacao: "",
-  geolocalizacao: "",
-  valor: "",
+  inventarios: [
+    {
+      codigo: 0,
+      localizacao: "",
+      geolocalizacao: "",
+      valor: "",
+    },
+  ],
 };
 
 export type PIValuesType = typeof initialValues;
@@ -42,32 +46,38 @@ export default function PIForm() {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: initialValues,
-    // initialValues: {
-    //   faturamento: 0,
-    //   anunciante: "",
-    //   autorizante: "",
-    //   razaoSocial: "",
-    //   telefone: "",
-    //   endereco: "",
-    //   email: "",
-    //   cnpjcpf: "",
-    //   data: "",
-    //   planejador: "",
-    //   agencia: "",
-    //   campanha: "",
-    //   periodo: "",
-    //   arquivo: "",
-    //   grade: "",
-    //   parcelas: "",
-    //   vencimento: "",
-    //   insercoes: "",
-    //   cpm30: "",
-    //   codigo: 0,
-    //   localizacao: "",
-    //   geolocalizacao: "",
-    //   valor: "",
-    // },
   });
+
+  const inventoryForm = form.getValues().inventarios.map((inventory, index) => (
+    <Fieldset legend={`Painel de LED ${index + 1}`}>
+      <TextInput
+        {...form.getInputProps(`inventarios.${index}.codigo`)}
+        label="Código"
+      />
+      <TextInput
+        {...form.getInputProps(`inventarios.${index}.localizacao`)}
+        label="Localização"
+      />
+      <TextInput
+        {...form.getInputProps(`inventarios.${index}.geolocalizacao`)}
+        label="Geolocalização"
+      />
+      <TextInput
+        {...form.getInputProps(`inventarios.${index}.valor`)}
+        label="Valor"
+      />
+      {form.getValues().inventarios.length > 1 && (
+        <Button
+          onClick={() => form.removeListItem("inventarios", index)}
+          mt={"md"}
+          color={"red"}
+          fullWidth
+        >
+          Remover painel
+        </Button>
+      )}
+    </Fieldset>
+  ));
 
   return (
     <form
@@ -111,13 +121,12 @@ export default function PIForm() {
           label="Quantidade de inserções"
         />
         <TextInput {...form.getInputProps("cpm30")} label="CPM30" />
-        <TextInput {...form.getInputProps("codigo")} label="Código" />
-        <TextInput {...form.getInputProps("localizacao")} label="Localização" />
-        <TextInput
-          {...form.getInputProps("geolocalizacao")}
-          label="Geolocalização"
-        />
-        <TextInput {...form.getInputProps("valor")} label="Valor" />
+        {inventoryForm ? inventoryForm : <Text>Nenhum painel inserido</Text>}
+        <Button
+          onClick={() => form.insertListItem("inventarios", { codigo: 0 })}
+        >
+          Adicionar painel
+        </Button>
         {/* <TextInput {...form.getInputProps("")} label="Tempo de amostra" /> */}
         <Button type="submit" fullWidth>
           Imprimir PI
