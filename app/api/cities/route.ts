@@ -31,7 +31,9 @@ export async function GET(req: NextRequest) {
     conditions.push("cid_uf IN(" + state + ")");
   }
   if (type !== null) {
-    conditions.push("pontos.pon_outd_pain IN(" + type + ")");
+    const allTypes = type.split(",");
+    const allTypesWithQuotes = allTypes.map((type) => `"${type}"`).join(",");
+    conditions.push(`pontos.pon_outd_pain IN(${allTypesWithQuotes})`);
   }
   // +`ORDER BY cid_nome ASC`;
 
@@ -39,7 +41,7 @@ export async function GET(req: NextRequest) {
     SQL += " WHERE " + conditions.join(" AND ");
   }
 
-  SQL += "ORDER BY cid_nome ASC";
+  SQL += " ORDER BY cid_nome ASC";
 
   const [response] = await db.query(SQL);
   const cidades = response as Cidade[];
