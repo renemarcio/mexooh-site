@@ -1,6 +1,11 @@
 import GeneratePIPDF from "@/PDFTemplates/PI/PIPDF";
 import { Button, Fieldset, Stack, TextInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import {
+  IconCircleMinus,
+  IconCirclePlus,
+  IconPrinter,
+} from "@tabler/icons-react";
 import React from "react";
 
 const initialValues = {
@@ -68,6 +73,7 @@ export default function PIForm() {
       />
       {form.getValues().inventarios.length > 1 && (
         <Button
+          leftSection={<IconCircleMinus />}
           onClick={() => form.removeListItem("inventarios", index)}
           mt={"md"}
           color={"red"}
@@ -124,11 +130,17 @@ export default function PIForm() {
         {inventoryForm ? inventoryForm : <Text>Nenhum painel inserido</Text>}
         <Button
           onClick={() => form.insertListItem("inventarios", { codigo: 0 })}
+          leftSection={<IconCirclePlus />}
         >
           Adicionar painel
         </Button>
         {/* <TextInput {...form.getInputProps("")} label="Tempo de amostra" /> */}
-        <Button type="submit" fullWidth>
+        <Button
+          type="submit"
+          fullWidth
+          leftSection={<IconPrinter />}
+          color={"blue"}
+        >
           Imprimir PI
         </Button>
       </Stack>
