@@ -15,12 +15,12 @@ export async function GET(req: NextRequest) {
 
   let listOfRentedInventoryIDs: number[] = [];
 
-  if (fortnights !== null || fortnights !== "") {
-    console.log("searchParams.get(fortnight)", fortnights);
+  if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
       "Select itensnegocios.Pontos_pon_codigo from   itensnegocios Where  itensnegocios.biSemana_bi_codigo In (" +
       fortnights +
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
+    console.log(SQLRentedInventory);
     const [responseRentedInventory] = await db.query(SQLRentedInventory);
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
@@ -52,9 +52,7 @@ export async function GET(req: NextRequest) {
     SQL += " AND " + conditions.join(" AND ");
   }
 
-  console.log("SQL: " + SQL);
   if (pageSize !== null) {
-    console.log("PAGE SIZE IS NOT NULL");
     const [fullResponse] = await db.query<RowDataPacket[]>(SQL);
     const totalPages = Math.ceil(fullResponse.length / pageSize);
     if (activePage !== null) {
@@ -74,11 +72,8 @@ export async function GET(req: NextRequest) {
       data: billboards,
       totalPages,
     };
-    console.log("The executed query was:");
-    console.log(SQL);
     return NextResponse.json(result);
   } else {
-    console.log("PAGE SIZE IS NULL");
     const [response] = await db.query(SQL);
     const outdoors = response as Pontos[];
     const billboards: Billboard[] = outdoors.map((outdoor) => ({
@@ -90,8 +85,6 @@ export async function GET(req: NextRequest) {
     const result = {
       data: billboards,
     };
-    console.log("The executed query was:");
-    console.log(SQL);
     return NextResponse.json(result);
   }
 }

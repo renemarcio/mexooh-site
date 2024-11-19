@@ -9,14 +9,6 @@ export async function GET(req: NextRequest) {
   const name = searchParams.get("name") || null;
   const state = searchParams.get("state") || null;
   const type = searchParams.get("type") || null;
-  const validParams: { [key: string]: (value: string) => string } = {
-    id: (value: string) => `cid_codigo = ${value}`,
-    name: (value: string) => `cid_nome = '${value}'`,
-    state: (value: string) => `cid_uf = '${value}'`,
-    type: (value: string) => `pontos.pon_outd_pain = '${value}'`,
-  };
-
-  console.log("searchParams type", searchParams.get("type"));
 
   let SQL = `SELECT DISTINCT cid_nome, cid_codigo, cid_uf FROM cidades RIGHT JOIN pontos ON pontos.Cidades_cid_codigo = cid_codigo `;
 

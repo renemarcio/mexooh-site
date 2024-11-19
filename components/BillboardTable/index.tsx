@@ -45,30 +45,30 @@ export default function BillboardTable() {
   const [selectedFortnight, setSelectedFortnight] = useState<string>("");
   const [cities, setCities] = useState<ComboboxData>([]);
   const pageSize = 22;
-  const fortnightsData = fortnights
-    ? fortnights.map((fortnight: Fortnight) => {
-        return {
-          value: fortnight.id.toString(),
-          label: `BI-${fortnight.number} -
-      ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString("pt-BR", {
-        minimumIntegerDigits: 2,
-      })}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
-            "pt-BR",
-            {
-              minimumIntegerDigits: 2,
-            }
-          )}/${new Date(fortnight.finish).getUTCFullYear()} -
-    ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString("pt-BR", {
-      minimumIntegerDigits: 2,
-    })}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
-            "pt-BR",
-            {
-              minimumIntegerDigits: 2,
-            }
-          )}/${new Date(fortnight.finish).getUTCFullYear()}`,
-        };
-      })
-    : null;
+  // const fortnightsData = fortnights
+  //   ? fortnights.map((fortnight: Fortnight) => {
+  //       return {
+  //         value: fortnight.id.toString(),
+  //         label: `BI-${fortnight.number} -
+  //     ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString("pt-BR", {
+  //       minimumIntegerDigits: 2,
+  //     })}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
+  //           "pt-BR",
+  //           {
+  //             minimumIntegerDigits: 2,
+  //           }
+  //         )}/${new Date(fortnight.finish).getUTCFullYear()} -
+  //   ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString("pt-BR", {
+  //     minimumIntegerDigits: 2,
+  //   })}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
+  //           "pt-BR",
+  //           {
+  //             minimumIntegerDigits: 2,
+  //           }
+  //         )}/${new Date(fortnight.finish).getUTCFullYear()}`,
+  //       };
+  //     })
+  //   : null;
   // const { city, setCity } = useCityContext();
   const [city, setCity] = useState("");
   const cartContext = useCartContext();
@@ -81,7 +81,7 @@ export default function BillboardTable() {
       const response = await fetch(
         `/api/billboards?activePage=${activePage}&pageSize=${pageSize}&address=${address}&city=${
           city === null ? "" : city
-        }&fortnight=${selectedFortnight}`
+        }&fortnights=${selectedFortnight}`
       );
       const data = await response.json();
       console.log("data from handleBillboardsFetch", data);
@@ -107,18 +107,22 @@ export default function BillboardTable() {
   }
 
   async function fetchFortnights() {
-    console.log(`/api/fortnights?currentDate=${new Date().toISOString()}`);
-    const res = await fetch(
-      `/api/fortnights?currentDate=${new Date().toISOString()}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const today = new Date();
+    const url = `/api/fortnights?currentDate=${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}&years=${new Date().getFullYear()},${
+      new Date().getFullYear() + 1
+    }&asCombobox`;
+    console.log(url);
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (res) {
       const response = await res.json();
+      console.log("Fortnights data", response.data);
       setFortnights(response.data);
     } else {
       console.log("Server unreachable.");
@@ -235,7 +239,7 @@ export default function BillboardTable() {
                     flex={1}
                     // classNames={{ pillsList: classes.pillsList }}
                     placeholder="Bi-Semana..."
-                    data={fortnightsData || []}
+                    data={fortnights || []}
                     onChange={(value) => {
                       setSelectedFortnight(value ?? "");
                     }}

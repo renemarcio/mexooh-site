@@ -134,7 +134,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
           value={selectedFortnights}
           onChange={setSelectedFortnights}
         />
-        <Code>{JSON.stringify(rentedFortnights, null, 2)}</Code>
         <Button
           fullWidth
           leftSection={<IconShoppingCartPlus />}
