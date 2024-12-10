@@ -16,11 +16,12 @@ import {
   Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { inventarios } from "@prisma/client";
+// import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { modals } from "@mantine/modals";
 import MUPForm from "../MUPForm";
+import { LEDPanel } from "@/types/websiteTypes";
 // import PanelRentForm from "../PanelRentForm";
 
 export default function LEDPanelTable() {
@@ -28,7 +29,7 @@ export default function LEDPanelTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [LEDpanels, setLEDPanels] = useState<inventarios[]>([]);
+  const [LEDpanels, setLEDPanels] = useState<LEDPanel[]>([]);
   const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
@@ -38,11 +39,11 @@ export default function LEDPanelTable() {
   async function fetchLEDPanels() {
     try {
       const response = await fetch(
-        `/api/LEDpanels?p=${activePage}&endereco=${address}&cidade=${city}`
+        `/api/LEDpanels?activePage=${activePage}&pageSize=17&endereco=${address}&cidade=${city}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      setLEDPanels(data.panels);
+      setLEDPanels(data.data);
     } catch {
       setLEDPanels([]);
       setTotalPages(0);
@@ -52,11 +53,12 @@ export default function LEDPanelTable() {
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/cities/select?type=4");
+      const response = await fetch("/api/cities?asCombobox=true&type=L");
       const data = await response.json();
       setCities(data);
       setCity(data[0].value);
-    } catch {
+    } catch (error) {
+      console.log(error);
       setCities([]);
       console.log("LED PANEL Couldn't fetch cities.");
     }
@@ -77,10 +79,10 @@ export default function LEDPanelTable() {
     <Table.Tr
       key={LEDPanel.id}
       onClick={() => {
-        setLat(Number(LEDPanel.LinkGoogleMaps?.split(",")[0]));
-        setLong(Number(LEDPanel.LinkGoogleMaps?.split(",")[1]));
+        setLat(Number(LEDPanel.coordinates?.split(",")[0]));
+        setLong(Number(LEDPanel.coordinates?.split(",")[1]));
         modals.open({
-          title: <p>{LEDPanel.Localizacao}</p>,
+          title: <p>{LEDPanel.address}</p>,
           children: <p>WIP</p>,
           //   children: <MUPForm mup={LEDPanel} closeFn={() => modals.closeAll()} />,
         });
@@ -89,7 +91,7 @@ export default function LEDPanelTable() {
     >
       <Table.Td ta={"left"}>
         <Text lineClamp={1} tt={"capitalize"}>
-          {LEDPanel.Localizacao?.toLowerCase()}
+          {LEDPanel.address?.toLowerCase()}
         </Text>
       </Table.Td>
     </Table.Tr>
@@ -179,7 +181,7 @@ export default function LEDPanelTable() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {tableRows.length > 0 ? (
+                  {LEDpanels && LEDpanels.length > 0 ? (
                     tableRows
                   ) : (
                     <Table.Tr>

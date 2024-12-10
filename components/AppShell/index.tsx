@@ -282,7 +282,7 @@ export default function MyAppShell({ children }: AppShellProps) {
                 </ActionIcon>
               ) : (
                 <Tooltip //@ts-ignore
-                  label={`Logado como ${session.data?.fantasia}, clique para sair.`}
+                  label={`Logado como ${session.data?.nome}, clique para sair.`}
                 >
                   <Avatar
                     color="var(--mantine-primary-color-filled)"

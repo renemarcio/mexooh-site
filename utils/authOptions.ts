@@ -7,12 +7,14 @@
 
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "./prisma";
+// import prisma from "./prisma";
 import { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { query } from "./mysqlConnection";
+import { CadGeral } from "@/types/databaseTypes";
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
+  // adapter: PrismaAdapter(prisma) as Adapter,
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
@@ -23,23 +25,41 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        await prisma.$connect();
-        const user = await prisma.clientes.findUnique({
-          where: {
-            email: credentials ? credentials.email : "",
-          },
-        });
-        if (!user) {
-          throw new Error("Usuário não encontrado");
+        // await prisma.$connect();
+        // const user = await prisma.clientes.findUnique({
+        //   where: {
+        //     email: credentials ? credentials.email : "",
+        //   },
+        // });
+        // if (!user) {
+        //   throw new Error("Usuário não encontrado");
+        // }
+        // const isPasswordCorrect = await bcrypt.compare(
+        //   credentials?.password!,
+        //   user.password!
+        // );
+        // if (!isPasswordCorrect) {
+        //   throw new Error("Senha incorreta");
+        // }
+        // return user as any;
+        const userFetch = await query(
+          "SELECT * FROM cadgeral WHERE email = ? AND Cliente = 1",
+          [credentials?.email]
+        );
+        const user = userFetch as CadGeral[];
+        console.log("Retrieved users: ", user.length);
+        if (user.length === 0) {
+          throw new Error("Usuário não encontrado");
         }
         const isPasswordCorrect = await bcrypt.compare(
           credentials?.password!,
-          user.password!
+          user[0].password!
         );
         if (!isPasswordCorrect) {
           throw new Error("Senha incorreta");
         }
-        return user as any;
+        console.log("Logged as user: ", user[0]);
+        return user[0] as any;
       },
     }),
   ],

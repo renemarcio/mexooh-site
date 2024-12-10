@@ -1,6 +1,6 @@
 import { Cidade } from "@/types/databaseTypes";
 import { City } from "@/types/websiteTypes";
-import db from "@/utils/mysqlConnection";
+import { query } from "@/utils/mysqlConnection";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -25,7 +25,9 @@ export async function GET(req: NextRequest) {
   if (type !== null) {
     const allTypes = type.split(",");
     const allTypesWithQuotes = allTypes.map((type) => `"${type}"`).join(",");
-    conditions.push(`pontos.pon_outd_pain IN(${allTypesWithQuotes})`);
+    conditions.push(
+      `pontos.pon_outd_pain IN(${allTypesWithQuotes}) AND pontos.pon_alugado = 'S'`
+    );
   }
   // +`ORDER BY cid_nome ASC`;
 
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest) {
 
   SQL += " ORDER BY cid_nome ASC";
 
-  const [response] = await db.query(SQL);
+  const response = await query(SQL);
   const cidades = response as Cidade[];
   const cities: City[] = cidades.map((cidade) => {
     return {

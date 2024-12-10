@@ -1,67 +1,159 @@
-import { NextResponse, NextRequest } from "next/server";
-import prisma from "../../../utils/prisma";
+// import { NextResponse, NextRequest } from "next/server";
+// // import prisma from "../../../utils/prisma";
+// export async function GET(req: NextRequest) {
+//   const searchParams = req.nextUrl.searchParams;
+//   const address = searchParams.get("endereco") || undefined;
+//   const city = searchParams.get("cidade") || undefined;
+//   const page = searchParams.get("p") || undefined;
+//   const perPage = 11;
+
+//   const panels = await prisma.inventarios.findMany({
+//     where: {
+//       AND: [
+//         {
+//           tipoinventarios: {
+//             id: 4,
+//           },
+//         },
+//         {
+//           ativo: true,
+//         },
+//         {
+//           Localizacao: {
+//             contains: address,
+//           },
+//         },
+//         {
+//           cidade: {
+//             contains: city,
+//           },
+//         },
+//       ],
+//     },
+//     take: perPage,
+//     skip: (Number(page) - 1) * perPage,
+//   });
+//   const totalPanels = await prisma.inventarios.findMany({
+//     where: {
+//       AND: [
+//         {
+//           tipoinventarios: {
+//             id: 2,
+//           },
+//         },
+//         {
+//           ativo: true,
+//         },
+//         {
+//           Localizacao: {
+//             contains: address,
+//           },
+//         },
+//         {
+//           cidade: {
+//             contains: city,
+//           },
+//         },
+//       ],
+//     },
+//   });
+
+//   const res = {
+//     panels,
+//     totalPages: Math.floor(totalPanels.length / perPage) + 1,
+//   };
+
+//   return NextResponse.json(res);
+// }
+
+import { Pontos } from "@/types/databaseTypes";
+import { LEDPanel } from "@/types/websiteTypes";
+import { query } from "@/utils/mysqlConnection";
+import { RowDataPacket } from "mysql2";
+import { NextRequest, NextResponse } from "next/server";
+
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-  const address = searchParams.get("endereco") || undefined;
-  const city = searchParams.get("cidade") || undefined;
-  const page = searchParams.get("p") || undefined;
-  const perPage = 11;
+  const fortnights = searchParams.get("fortnights") || null;
+  const id = searchParams.get("id") || null;
+  const address = searchParams.get("address") || null;
+  const city = searchParams.get("city") || null;
+  const activePage = Number(searchParams.get("activePage")) || null;
+  const pageSize = Number(searchParams.get("pageSize")) || null;
 
-  const panels = await prisma.inventarios.findMany({
-    where: {
-      AND: [
-        {
-          tipoinventarios: {
-            id: 4,
-          },
-        },
-        {
-          ativo: true,
-        },
-        {
-          Localizacao: {
-            contains: address,
-          },
-        },
-        {
-          cidade: {
-            contains: city,
-          },
-        },
-      ],
-    },
-    take: perPage,
-    skip: (Number(page) - 1) * perPage,
-  });
-  const totalPanels = await prisma.inventarios.findMany({
-    where: {
-      AND: [
-        {
-          tipoinventarios: {
-            id: 2,
-          },
-        },
-        {
-          ativo: true,
-        },
-        {
-          Localizacao: {
-            contains: address,
-          },
-        },
-        {
-          cidade: {
-            contains: city,
-          },
-        },
-      ],
-    },
-  });
+  let listOfRentedInventoryIDs: number[] = [];
 
-  const res = {
-    panels,
-    totalPages: Math.floor(totalPanels.length / perPage) + 1,
-  };
+  if (fortnights !== null && fortnights !== "") {
+    const SQLRentedInventory =
+      "Select itensnegocios.Pontos_pon_codigo from   itensnegocios Where  itensnegocios.biSemana_bi_codigo In (" +
+      fortnights +
+      ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
+    console.log(SQLRentedInventory);
+    const responseRentedInventory = await query(SQLRentedInventory);
+    listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
+      (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
+    );
+  }
 
-  return NextResponse.json(res);
+  let SQL =
+    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'L' And pontos.pon_alugado = 'S'";
+
+  const conditions = [];
+
+  if (id !== null) {
+    conditions.push("pon_codigo IN(" + id + ")");
+  }
+
+  if (address !== null) {
+    conditions.push("pon_compl LIKE '%" + address + "%'");
+  }
+
+  if (city !== null) {
+    conditions.push("Cidades_cid_codigo IN(" + city + ")");
+  }
+
+  if (fortnights !== null) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  }
+
+  if (conditions.length > 0) {
+    SQL += " AND " + conditions.join(" AND ");
+  }
+
+  if (pageSize !== null) {
+    const fullResponse = (await query(SQL)) as Pontos[];
+    const totalPages = Math.ceil(fullResponse.length / pageSize);
+    if (activePage !== null) {
+      SQL += ` LIMIT ${pageSize} OFFSET ${
+        pageSize * (activePage - 1 <= 0 ? 0 : activePage - 1)
+      }`;
+    }
+    const paginatedResponse = await query(SQL);
+    const outdoors = paginatedResponse as Pontos[];
+    const billboards: LEDPanel[] = outdoors.map((outdoor) => ({
+      id: outdoor.pon_codigo,
+      address: outdoor.pon_compl,
+      coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
+      // value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
+    }));
+    const result = {
+      data: billboards,
+      totalPages,
+    };
+    console.log("Here's the SQL: " + SQL);
+    return NextResponse.json(result);
+  } else {
+    const response = await query(SQL);
+    const outdoors = response as Pontos[];
+    const billboards: LEDPanel[] = outdoors.map((outdoor) => ({
+      id: outdoor.pon_codigo,
+      address: outdoor.pon_compl,
+      coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
+      value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
+    }));
+    const result = {
+      data: billboards,
+    };
+    return NextResponse.json(result);
+  }
 }

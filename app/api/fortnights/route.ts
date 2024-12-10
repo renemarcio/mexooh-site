@@ -1,8 +1,7 @@
-import db from "@/utils/mysqlConnection";
+import { query } from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 import { Bisemana } from "@/types/databaseTypes";
-import { SELECTBuilder } from "@/lib/SQLBuilder";
 import { Fortnight } from "@/types/websiteTypes";
 import { ComboboxData } from "@mantine/core";
 
@@ -41,7 +40,7 @@ export async function GET(req: NextRequest) {
   try {
     let totalPages = 0;
     if (pageSize) {
-      const [totalResults] = await db.query<RowDataPacket[]>(SQL);
+      const totalResults = (await query(SQL)) as Bisemana[];
       totalPages = Math.ceil(totalResults.length / pageSize);
     }
     let resultingSQL = SQL;
@@ -53,7 +52,7 @@ export async function GET(req: NextRequest) {
           }`)
       : null;
 
-    const [response] = await db.query<RowDataPacket[]>(resultingSQL);
+    const response = await query(resultingSQL);
     const bisemanas = response as Bisemana[];
     if (asCombobox) {
       const fortnights: ComboboxData = bisemanas.map((fortnight) => ({

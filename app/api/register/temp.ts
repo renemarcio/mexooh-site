@@ -27,6 +27,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       cnpj_cpf: data.cnpj,
     };
   }
+
   //Check if a client exists with the same document.
   const dbUserResponse = (await query(
     `SELECT * FROM cadgeral WHERE cli_cnpj_cpf = ${userData.cnpj_cpf}`
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     try {
       const encryptedPassword = await bcrypt.hash(data.password, 10);
       const insertResponse = await query(
-        `INSERT INTO cadgeral (nome, email, password, cli_pessoa, cli_rz_social, cli_cnpj_cpf, Cliente) VALUES (?, ?, ?, ?, ?, ?, 1)`,
+        `INSERT INTO cadgeral (nome, email, password, cli_pessoa, cli_rz_social, cli_cnpj_cpf) VALUES (?, ?, ?, ?, ?, ?)`,
         [
           userData.nome,
           userData.email,

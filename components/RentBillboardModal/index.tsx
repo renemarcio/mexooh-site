@@ -28,35 +28,36 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
   const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
   const cart = useContext(CartContext);
-  const fortnightsData = fortnights.map((fortnight) => {
-    return {
-      value: fortnight.id.toString(),
-      label: `BI-${fortnight.number} -
+  const fortnightsData =
+    fortnights.map((fortnight) => {
+      return {
+        value: fortnight.id.toString(),
+        label: `BI-${fortnight.number} -
         ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
           "pt-BR",
           {
             minimumIntegerDigits: 2,
           }
         )}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
-        "pt-BR",
-        {
-          minimumIntegerDigits: 2,
-        }
-      )}/${new Date(fortnight.start).getUTCFullYear()} -
+          "pt-BR",
+          {
+            minimumIntegerDigits: 2,
+          }
+        )}/${new Date(fortnight.start).getUTCFullYear()} -
       ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
         "pt-BR",
         {
           minimumIntegerDigits: 2,
         }
       )}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
-        "pt-BR",
-        {
-          minimumIntegerDigits: 2,
-        }
-      )}/${new Date(fortnight.finish).getUTCFullYear()}`,
-      disabled: rentedFortnights.includes(fortnight.id),
-    };
-  });
+          "pt-BR",
+          {
+            minimumIntegerDigits: 2,
+          }
+        )}/${new Date(fortnight.finish).getUTCFullYear()}`,
+        disabled: rentedFortnights.includes(fortnight.id),
+      };
+    }) || [];
 
   useEffect(() => {
     fetchFortnights();
@@ -87,11 +88,14 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
       },
     });
     const data = await res.json();
-    console.log("data from fetchAvailableFortnights()");
+    console.log("data from api/fortnights/rented");
     console.log(data);
     // console.log("availableFortnightsIDs");
     // console.log(availableFortnightsIDs);
-    setRentedFortnights(data.data);
+    const rentedFortnightsIDs = data.data.map((fortnight: Fortnight) => {
+      return fortnight.id;
+    });
+    setRentedFortnights(rentedFortnightsIDs);
   }
 
   async function handleSubmit() {

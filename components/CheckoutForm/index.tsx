@@ -21,10 +21,10 @@ export default function CheckoutForm({ session }: Props) {
   const [phone, setPhone] = useState("");
 
   async function sendMail() {
-    const response = await fetch(`/api/phones/${session.id}`);
+    const response = await fetch(`/api/phones?id=${session.Cad_codigo}`);
     const data = await response.json();
-    console.log("Phones: ", data.phones);
-    const phoneNumbers = data.phones.map((phone: any) => phone.Numero);
+    console.log("Phones: ", data.data);
+    const phoneNumbers = data.data.map((phone: any) => phone.Numero);
     console.log("Sending mail... Telephones: ", phoneNumbers);
     fetch("/api/mail/shoppingCartReady", {
       method: "POST",

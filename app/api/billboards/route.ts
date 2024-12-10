@@ -1,6 +1,6 @@
 import { Pontos } from "@/types/databaseTypes";
 import { Billboard } from "@/types/websiteTypes";
-import db from "@/utils/mysqlConnection";
+import { query } from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,14 +14,14 @@ export async function GET(req: NextRequest) {
   const pageSize = Number(searchParams.get("pageSize")) || null;
 
   let listOfRentedInventoryIDs: number[] = [];
-
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
       "Select itensnegocios.Pontos_pon_codigo from   itensnegocios Where  itensnegocios.biSemana_bi_codigo In (" +
       fortnights +
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
-    console.log(SQLRentedInventory);
-    const [responseRentedInventory] = await db.query(SQLRentedInventory);
+    const responseRentedInventory = await query(SQLRentedInventory);
+    console.log("responseRentedInventory");
+    console.log(responseRentedInventory);
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
     );
@@ -53,14 +53,15 @@ export async function GET(req: NextRequest) {
   }
 
   if (pageSize !== null) {
-    const [fullResponse] = await db.query<RowDataPacket[]>(SQL);
+    const fullResponse = (await query(SQL)) as Pontos[];
     const totalPages = Math.ceil(fullResponse.length / pageSize);
     if (activePage !== null) {
       SQL += ` LIMIT ${pageSize} OFFSET ${
         pageSize * (activePage - 1 <= 0 ? 0 : activePage - 1)
       }`;
     }
-    const [paginatedResponse] = await db.query(SQL);
+    const paginatedResponse = await query(SQL);
+    console.log(paginatedResponse);
     const outdoors = paginatedResponse as Pontos[];
     const billboards: Billboard[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,
@@ -74,7 +75,8 @@ export async function GET(req: NextRequest) {
     };
     return NextResponse.json(result);
   } else {
-    const [response] = await db.query(SQL);
+    const response = await query(SQL);
+    console.log(response);
     const outdoors = response as Pontos[];
     const billboards: Billboard[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,

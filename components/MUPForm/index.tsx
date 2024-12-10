@@ -1,43 +1,45 @@
 import { CartContext } from "@/contexts/CartContext";
+import { Pontos } from "@/types/databaseTypes";
+import { Fortnight, Inventory } from "@/types/websiteTypes";
 import { Title, Text, Button, MultiSelect } from "@mantine/core";
-import { bisemanas, inventarios } from "@prisma/client";
+// import { bisemanas, inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
 
 type Props = {
-  mup: inventarios;
+  mup: Inventory;
   closeFn: () => void;
 };
 
 export default function MUPForm({ mup, closeFn }: Props) {
-  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
-  const [availableFortnights, setAvailableFortnights] = useState<Number[]>([]);
+  const [rentedFortnights, setRentedFornitghts] = useState<Number[]>([]);
   const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label: `BI-${fortnight.numero} -
-          ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+      label: `BI-${fortnight.number} -
+          ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
             "pt-BR",
             {
               minimumIntegerDigits: 2,
             }
           )}/${Number(
-        new Date(fortnight.dtInicio).getUTCMonth() + 1
+        new Date(fortnight.start).getUTCMonth() + 1
       ).toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
-        ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+      })}/${new Date(fortnight.start).getUTCFullYear()} -
+        ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
           "pt-BR",
           {
             minimumIntegerDigits: 2,
           }
         )}/${Number(
-        new Date(fortnight.dtFinal).getUTCMonth() + 1
+        new Date(fortnight.finish).getUTCMonth() + 1
       ).toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
-      disabled: !availableFortnights.includes(fortnight.id),
+      })}/${new Date(fortnight.finish).getUTCFullYear()}`,
+      disabled: rentedFortnights.includes(fortnight.id),
     };
   });
   async function fetchFortnights() {
@@ -50,21 +52,21 @@ export default function MUPForm({ mup, closeFn }: Props) {
     const data = await res.json();
     console.log("data from fetchFortnights()");
     console.log(data);
-    setFortnights(data);
+    setFortnights(data.data);
   }
 
   async function fetchAvailableFortnights() {
-    const res = await fetch("/api/billboards/" + mup.id, {
+    const res = await fetch("/api/mup/" + mup.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     const data = await res.json();
-    const availableFortnightsIDs = data.availableFortnights.map(
+    const availableFortnightsIDs = data.data.map(
       (obj: { id: number }) => obj.id
     );
-    setAvailableFortnights(availableFortnightsIDs);
+    setRentedFornitghts(availableFortnightsIDs);
   }
 
   useEffect(() => {
@@ -74,11 +76,11 @@ export default function MUPForm({ mup, closeFn }: Props) {
 
   return (
     <>
-      <Title ta={"center"}>{mup.Localizacao}</Title>
-      {/* <Text ta={"center"}>
+      <Title ta={"center"}>{mup.address}</Title>
+      <Text ta={"center"}>
         Os valores dos painéis são negociáveis, coloque no carrinho para que
         possamos entrar em contato e reservar seu painel.
-      </Text> */}
+      </Text>
       {/* <MultiSelect
         label="Selecione as Bi-Semanas."
         description="Bi-Semanas disponíveis"
@@ -92,10 +94,7 @@ export default function MUPForm({ mup, closeFn }: Props) {
           const rentedFortnights = fortnights.filter((fortnight) =>
             selectedFortnights.includes(fortnight.id.toString())
           );
-          cart.setCart([
-            ...cart.cart,
-            { item: mup, value: 0, fortnights: rentedFortnights },
-          ]);
+          cart.setCart([...cart.cart, { item: mup, value: 0 }]);
           closeFn();
         }}
       >
