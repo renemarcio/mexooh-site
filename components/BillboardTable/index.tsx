@@ -138,10 +138,10 @@ export default function BillboardTable() {
     });
     if (res) {
       const data = await res.json();
-      console.log("data from cities", data);
+      console.log("data from cities BILLBOARD", data);
       setCities(data.data);
+      setCity(data.data[0].value);
       // setCity("SOROCABA");
-      // setCity(data[0].value);
     } else {
       console.log("Server unreachable.");
     }

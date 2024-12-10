@@ -25,6 +25,7 @@ export default function PhoneForm({ isOpen, onConclude, closeFn }: Props) {
         },
         body: JSON.stringify({
           number: phone,
+          //@ts-ignore
           userID: session.data.id,
           tipo: 1,
         }),

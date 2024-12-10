@@ -14,6 +14,7 @@ import {
   Image,
   ComboboxData,
   Title,
+  ComboboxItem,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
@@ -59,9 +60,12 @@ export default function PanelTable() {
   async function fetchCities() {
     try {
       const response = await fetch("/api/cities?asCombobox=true&type=P");
-      const data = await response.json();
-      setCities(data.data);
-      setCity("ALPHAVILLE");
+      const data: ComboboxItem[] = (await response.json()).data;
+      setCities(data);
+      setCity(
+        data.find((element) => element.label === "ALPHAVILLE")?.value ?? null
+      );
+      // setCity("ALPHAVILLE");
       // setCity(data[0].value);
     } catch {
       setCities([]);

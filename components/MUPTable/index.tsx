@@ -58,11 +58,10 @@ export default function MUPTable() {
     try {
       const response = await fetch("/api/cities?asCombobox=true&type=M");
       const data = await response.json();
-      setCities(data);
-      setCity(data[0].value);
-    } catch {
+      setCities(data.data);
+      setCity(data.data[0]?.value);
+    } catch (error) {
       setCities([]);
-      console.log("Couldn't fetch cities.");
     }
   }
   useEffect(() => {

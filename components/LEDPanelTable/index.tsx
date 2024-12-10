@@ -55,8 +55,8 @@ export default function LEDPanelTable() {
     try {
       const response = await fetch("/api/cities?asCombobox=true&type=L");
       const data = await response.json();
-      setCities(data);
-      setCity(data[0].value);
+      setCities(data.data);
+      setCity(data.data[0].value);
     } catch (error) {
       console.log(error);
       setCities([]);
