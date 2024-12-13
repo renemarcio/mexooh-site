@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
       to: ["atendimento@midiapaineis.com.br"],
       subject: "[Site Mex] Cliente fechou o carrinho!",
       react: ShoppingCartReadyEmail({ user, cart, service, telephones }),
+      // to: ["brunoscachetti@hotmail.com"], //test @ dev mail
     });
 
     if (error) {

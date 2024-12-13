@@ -28,11 +28,15 @@ export default function ShoppingCartDrawer({
   close,
 }: ShoppingCartDrawerProps) {
   const cartContext = useCartContext();
-  const total = cartContext.cart.reduce(
-    (sum, cartItem) => sum + cartItem.value * cartItem.fortnights.length,
-    0
-  );
-
+  // const total = cartContext.cart.reduce(
+  //   (sum, cartItem) => sum + cartItem.value * cartItem.fortnights.length,
+  //   0
+  // );
+  const total = cartContext.cart
+    .map((entry) => {
+      return entry.value * (entry.fortnights ? entry.fortnights.length : 0);
+    })
+    .reduce((a, b) => a + b, 0);
   const billboardList = cartContext.cart.map((entry) => (
     <CartEntry key={entry.item.id} entry={entry} />
   ));

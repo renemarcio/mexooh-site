@@ -2,6 +2,7 @@ import { Button, Modal, Text, TextInput, Group } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
+import { number } from "zod";
 
 type Props = {
   isOpen: boolean;
@@ -14,15 +15,19 @@ export default function PhoneForm({ isOpen, onConclude, closeFn }: Props) {
   const session = useSession();
   async function addPhoneNumber() {
     console.log("Adding phone number: ", phone);
+    if (session.status !== "authenticated") return;
     try {
       //@ts-ignore
-      const response = await fetch(`/api/phones/${session.data?.id}`, {
+      const response = await fetch(`/api/phones/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          phone,
+          number: phone,
+          //@ts-ignore
+          userID: session.data.id,
+          tipo: 1,
         }),
       });
       console.log("Response: ", response);

@@ -10,7 +10,6 @@ import {
   Text,
   Code,
 } from "@mantine/core";
-import { inventarios } from "@prisma/client";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
 
@@ -44,13 +43,13 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       >
         <IconTrash />
       </ActionIcon>
-      <Text size="sm">{entry.item.Localizacao}</Text>
+      <Text size="sm">{entry.item.address}</Text>
       <Group grow gap={0}>
         {entry.value > 0 && (
           <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
         )}
         <Text ta={"right"}>
-          {entry.fortnights.length === 0
+          {entry.fortnights === undefined
             ? null
             : entry.fortnights.length > 1
             ? `${entry.fortnights.length} Bi-Semanas`
@@ -59,15 +58,19 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       </Group>
       <Center>
         <Text size="lg" fw={700} c={"midiagreen.8"}>
-          {entry.value > 0 && (
+          {entry.value > 0 ? (
             <NumberFormatter
               prefix="R$ "
               thousandSeparator="."
               decimalSeparator=","
               decimalScale={2}
               fixedDecimalScale
-              value={entry.value * entry.fortnights.length}
+              value={
+                entry.fortnights ? entry.value * entry.fortnights.length : 0
+              }
             />
+          ) : (
+            <>À negociar</>
           )}
         </Text>
       </Center>

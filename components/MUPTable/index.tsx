@@ -16,11 +16,12 @@ import {
   Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { inventarios } from "@prisma/client";
+// import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { modals } from "@mantine/modals";
 import MUPForm from "../MUPForm";
+import { MUP } from "@/types/websiteTypes";
 // import PanelRentForm from "../PanelRentForm";
 
 export default function MUPTable() {
@@ -28,7 +29,7 @@ export default function MUPTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [panels, setPanels] = useState<inventarios[]>([]);
+  const [MUPs, setMUPs] = useState<MUP[]>([]);
   const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
@@ -39,29 +40,28 @@ export default function MUPTable() {
   async function fetchMUPs() {
     try {
       const response = await fetch(
-        `/api/mup?p=${activePage}&endereco=${address}&cidade=${
+        `/api/mup?activePage=${activePage}&pageSize=20&address=${address}&city=${
           city === null ? "" : city
         }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      setPanels(data.panels);
+      setMUPs(data.data);
     } catch {
-      setPanels([]);
+      setMUPs([]);
       setTotalPages(0);
-      console.log("Couldn't fetch panels.");
+      console.log("Couldn't fetch MUPs.");
     }
   }
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/cities/select?type=3");
+      const response = await fetch("/api/cities?asCombobox=true&type=M");
       const data = await response.json();
-      setCities(data);
-      setCity(data[0].value);
-    } catch {
+      setCities(data.data);
+      setCity(data.data[0]?.value);
+    } catch (error) {
       setCities([]);
-      console.log("Couldn't fetch cities.");
     }
   }
   useEffect(() => {
@@ -76,25 +76,29 @@ export default function MUPTable() {
     setPage(1);
   }, [city]);
 
-  const tableRows = panels.map((panel) => (
-    <Table.Tr
-      key={panel.id}
-      onClick={() => {
-        setLat(Number(panel.LinkGoogleMaps?.split(",")[0]));
-        setLong(Number(panel.LinkGoogleMaps?.split(",")[1]));
-        modals.open({
-          children: <MUPForm mup={panel} closeFn={() => modals.closeAll()} />,
-        });
-      }}
-      style={{ cursor: "pointer" }}
-    >
-      <Table.Td ta={"left"}>
-        <Text lineClamp={1} tt={"capitalize"}>
-          {panel.Localizacao?.toLowerCase()}
-        </Text>
-      </Table.Td>
-    </Table.Tr>
-  ));
+  const tableRows = MUPs ? (
+    MUPs.map((MUP) => (
+      <Table.Tr
+        key={MUP.id}
+        onClick={() => {
+          setLat(Number(MUP.coordinates?.split(",")[0]));
+          setLong(Number(MUP.coordinates?.split(",")[1]));
+          modals.open({
+            children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
+          });
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        <Table.Td ta={"left"}>
+          <Text lineClamp={1} tt={"capitalize"}>
+            {MUP.address?.toLowerCase()}
+          </Text>
+        </Table.Td>
+      </Table.Tr>
+    ))
+  ) : (
+    <></>
+  );
 
   return (
     <>
@@ -160,7 +164,7 @@ export default function MUPTable() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {tableRows.length > 0 ? (
+                  {MUPs && MUPs.length > 0 ? (
                     tableRows
                   ) : (
                     <Table.Tr>

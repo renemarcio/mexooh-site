@@ -15,9 +15,10 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 import { imageBase64 } from "@/public/logos/base64logo";
+import { CadGeral } from "@/types/databaseTypes";
 
 interface Props {
-  user: any;
+  user: CadGeral;
   cart: CartEntry[];
   service: boolean;
   telephones: string[];
@@ -38,18 +39,20 @@ export default function ShoppingCartReadyEmail({
   let total = 0;
 
   const cartList = cart?.map((entry, index) => {
-    total += entry.value * entry.fortnights.length;
+    total += entry.value * (entry.fortnights ? entry.fortnights.length : 0);
     if (index % 2 === 1) {
       return (
         <div className="flex w-full">
-          <div className="p-4 basis-2/5">{entry.item.Localizacao}</div>
+          <div className="p-4 basis-2/5">{entry.item.address}</div>
           <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
           <div className="p-4 basis-1/5">
-            {entry.fortnights.length} Bi-Semanas
+            {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
           </div>
           <div className="p-4 basis-1/5">
             {entry.value > 0
-              ? "R$" + entry.value * entry.fortnights.length + ",00"
+              ? "R$" +
+                entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+                ",00"
               : "Á NEGOCIAR"}
             {/* R${entry.value * entry.fortnights.length},00 */}
           </div>
@@ -58,14 +61,16 @@ export default function ShoppingCartReadyEmail({
     } else {
       return (
         <div className="bg-zinc-500 flex w-full">
-          <div className="p-4 basis-2/5">{entry.item.Localizacao}</div>
+          <div className="p-4 basis-2/5">{entry.item.address}</div>
           <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
           <div className="p-4 basis-1/5">
-            {entry.fortnights.length} Bi-Semanas
+            {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
           </div>
           <div className="p-4 basis-1/5">
             {entry.value > 0
-              ? "R$" + entry.value * entry.fortnights.length + ",00"
+              ? "R$" +
+                entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+                ",00"
               : "PAINEL"}
           </div>
         </div>
@@ -80,7 +85,7 @@ export default function ShoppingCartReadyEmail({
       </Head>
       <Body>
         <Tailwind>
-          <Preview>{`${user?.fantasia} está na tela de pagamento.`}</Preview>
+          <Preview>{`${user?.cli_rz_social} está na tela de pagamento.`}</Preview>
           <Section>
             <Img
               src={`data:image/jpeg;base64, ${imageBase64}`}
@@ -94,7 +99,7 @@ export default function ShoppingCartReadyEmail({
           <Hr />
           <Section>
             <Text style={main}>
-              {`O cliente ${user?.fantasia} finalizou o carrinho neste exato momento.`}
+              {`O cliente ${user?.cli_rz_social} finalizou o carrinho neste exato momento.`}
               <br />
               {`Este é o carrinho que o cliente fez.`}
             </Text>

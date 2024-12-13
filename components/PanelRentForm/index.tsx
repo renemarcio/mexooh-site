@@ -1,43 +1,43 @@
 import { CartContext } from "@/contexts/CartContext";
 import { Title, Text, Button, MultiSelect } from "@mantine/core";
-import { bisemanas, inventarios } from "@prisma/client";
+import { Fortnight, Panel } from "@/types/websiteTypes";
 import React, { useContext, useEffect, useState } from "react";
 
 type Props = {
-  panel: inventarios;
+  panel: Panel;
   closeFn: () => void;
 };
 
 export default function PanelRentForm({ panel, closeFn }: Props) {
-  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
-  const [availableFortnights, setAvailableFortnights] = useState<Number[]>([]);
+  const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
   const cart = useContext(CartContext);
   const fortnightsData = fortnights.map((fortnight) => {
     return {
       value: fortnight.id.toString(),
-      label: `BI-${fortnight.numero} -
-          ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+      label: `BI-${fortnight.number} -
+          ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
             "pt-BR",
             {
               minimumIntegerDigits: 2,
             }
           )}/${Number(
-        new Date(fortnight.dtInicio).getUTCMonth() + 1
+        new Date(fortnight.start).getUTCMonth() + 1
       ).toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
-        ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+      })}/${new Date(fortnight.start).getUTCFullYear()} -
+        ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
           "pt-BR",
           {
             minimumIntegerDigits: 2,
           }
         )}/${Number(
-        new Date(fortnight.dtFinal).getUTCMonth() + 1
+        new Date(fortnight.finish).getUTCMonth() + 1
       ).toLocaleString("pt-BR", {
         minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
-      disabled: !availableFortnights.includes(fortnight.id),
+      })}/${new Date(fortnight.finish).getUTCFullYear()}`,
+      disabled: !rentedFortnights.includes(fortnight.id),
     };
   });
   async function fetchFortnights() {
@@ -50,31 +50,29 @@ export default function PanelRentForm({ panel, closeFn }: Props) {
     const data = await res.json();
     console.log("data from fetchFortnights()");
     console.log(data);
-    setFortnights(data);
+    setFortnights(data.data);
   }
 
-  async function fetchAvailableFortnights() {
-    const res = await fetch("/api/billboards/" + panel.id, {
+  async function fetchRentedFortnights() {
+    const res = await fetch("/api/fortnights/rented?id=" + panel.id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     const data = await res.json();
-    const availableFortnightsIDs = data.availableFortnights.map(
-      (obj: { id: number }) => obj.id
-    );
-    setAvailableFortnights(availableFortnightsIDs);
+    const rentedFortnightsIDs = data.data.map((obj: { id: number }) => obj.id);
+    setRentedFortnights(rentedFortnightsIDs);
   }
 
   useEffect(() => {
     fetchFortnights();
-    fetchAvailableFortnights();
+    fetchRentedFortnights();
   }, []);
 
   return (
     <>
-      <Title ta={"center"}>{panel.Localizacao}</Title>
+      <Title ta={"center"}>{panel.address}</Title>
       <Text ta={"center"}>
         Os valores dos painéis são negociáveis, coloque no carrinho para que
         possamos entrar em contato e reservar seu painel.
@@ -89,15 +87,13 @@ export default function PanelRentForm({ panel, closeFn }: Props) {
       <Button
         fullWidth
         onClick={() => {
-          const rentedFortnights = fortnights.filter((fortnight) =>
-            selectedFortnights.includes(fortnight.id.toString())
-          );
-          cart.setCart([
-            ...cart.cart,
-            { item: panel, value: 0, fortnights: rentedFortnights },
-          ]);
+          // const rentedFortnights = fortnights.filter((fortnight) =>
+          //   selectedFortnights.includes(fortnight.id.toString())
+          // );
+          cart.setCart([...cart.cart, { item: panel, value: 0 }]);
           closeFn();
         }}
+        disabled={cart.cart.find((e) => e.item.id === panel.id) ? true : false}
       >
         Quero reservar!
       </Button>

@@ -21,47 +21,53 @@ export default function ShoppingCartSubmissionConfirmation() {
   const shoppingCartTable = cartContext.cart.map((entry) => {
     return (
       <Table.Tr key={entry.item.id}>
-        <Table.Td>{entry.item.Localizacao}</Table.Td>
+        <Table.Td>{entry.item.address}</Table.Td>
 
         <HoverCard shadow="md">
           <HoverCard.Target>
-            <Table.Td ta={"center"}>{entry.fortnights.length}</Table.Td>
+            <Table.Td ta={"center"}>
+              {entry.fortnights ? entry.fortnights.length : 0}
+            </Table.Td>
           </HoverCard.Target>
           <HoverCard.Dropdown>
-            {entry.fortnights.map((fortnight) => (
-              <Text>
-                BI-{fortnight.numero} (
-                {Number(
-                  new Date(fortnight.dtInicio).getUTCDate()
-                ).toLocaleString("pt-BR", {
-                  minimumIntegerDigits: 2,
-                })}
-                /
-                {Number(
-                  new Date(fortnight.dtInicio).getUTCMonth() + 1
-                ).toLocaleString("pt-BR", {
-                  minimumIntegerDigits: 2,
-                })}
-                /{new Date(fortnight.dtInicio).getUTCFullYear()} -
-                {" " +
-                  Number(
-                    new Date(fortnight.dtFinal).getUTCDate()
+            {entry.fortnights ? (
+              entry.fortnights.map((fortnight) => (
+                <Text>
+                  BI-{fortnight.number} (
+                  {Number(
+                    new Date(fortnight.start).getUTCDate()
                   ).toLocaleString("pt-BR", {
                     minimumIntegerDigits: 2,
                   })}
-                /
-                {Number(
-                  new Date(fortnight.dtFinal).getUTCMonth() + 1
-                ).toLocaleString("pt-BR", {
-                  minimumIntegerDigits: 2,
-                })}
-                /{new Date(fortnight.dtFinal).getUTCFullYear()})
-              </Text>
-            ))}
+                  /
+                  {Number(
+                    new Date(fortnight.start).getUTCMonth() + 1
+                  ).toLocaleString("pt-BR", {
+                    minimumIntegerDigits: 2,
+                  })}
+                  /{new Date(fortnight.start).getUTCFullYear()} -
+                  {" " +
+                    Number(
+                      new Date(fortnight.finish).getUTCDate()
+                    ).toLocaleString("pt-BR", {
+                      minimumIntegerDigits: 2,
+                    })}
+                  /
+                  {Number(
+                    new Date(fortnight.finish).getUTCMonth() + 1
+                  ).toLocaleString("pt-BR", {
+                    minimumIntegerDigits: 2,
+                  })}
+                  /{new Date(fortnight.finish).getUTCFullYear()})
+                </Text>
+              ))
+            ) : (
+              <Text>À negociar.</Text>
+            )}
           </HoverCard.Dropdown>
         </HoverCard>
         <Table.Td ta={"center"}>
-          {entry.value > 0 ? (
+          {entry.fortnights ? (
             <>
               <NumberFormatter
                 value={entry.value * entry.fortnights.length}
@@ -112,7 +118,9 @@ export default function ShoppingCartSubmissionConfirmation() {
               <NumberFormatter
                 value={cartContext.cart.reduce(
                   (sum, cartItem) =>
-                    sum + cartItem.value * cartItem.fortnights.length,
+                    sum +
+                    cartItem.value *
+                      (cartItem.fortnights ? cartItem.fortnights.length : 0),
                   0
                 )}
                 prefix=" R$ "

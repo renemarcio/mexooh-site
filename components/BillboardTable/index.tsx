@@ -18,7 +18,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { bisemanas, inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../Map";
 import { useCityContext } from "../../contexts/CityContext";
@@ -30,44 +29,46 @@ import {
 import { modals } from "@mantine/modals";
 import RentBillboardModal from "../RentBillboardModal";
 import classes from "./styles.module.css";
+import { Billboard, Fortnight } from "@/types/websiteTypes";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [billboards, setBillboards] = useState<inventarios[]>([]);
+  const [billboards, setBillboards] = useState<Billboard[]>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [activeBillboard, setActiveBillboard] = useState<inventarios>();
-  const [fortnights, setFortnights] = useState<bisemanas[]>([]);
+  const [activeBillboard, setActiveBillboard] = useState<any>();
+  const [fortnights, setFortnights] = useState<any[]>([]);
   const [selectedFortnight, setSelectedFortnight] = useState<string>("");
   const [cities, setCities] = useState<ComboboxData>([]);
-  const fortnightsData = fortnights.map((fortnight) => {
-    return {
-      value: fortnight.id.toString(),
-      label: `BI-${fortnight.numero} -
-      ${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
-        "pt-BR",
-        {
-          minimumIntegerDigits: 2,
-        }
-      )}/${Number(
-        new Date(fortnight.dtInicio).getUTCMonth() + 1
-      ).toLocaleString("pt-BR", {
-        minimumIntegerDigits: 2,
-      })}/${new Date(fortnight.dtInicio).getUTCFullYear()} -
-    ${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString("pt-BR", {
-      minimumIntegerDigits: 2,
-    })}/${Number(new Date(fortnight.dtFinal).getUTCMonth() + 1).toLocaleString(
-        "pt-BR",
-        {
-          minimumIntegerDigits: 2,
-        }
-      )}/${new Date(fortnight.dtFinal).getUTCFullYear()}`,
-    };
-  });
+  const pageSize = 22;
+  // const fortnightsData = fortnights
+  //   ? fortnights.map((fortnight: Fortnight) => {
+  //       return {
+  //         value: fortnight.id.toString(),
+  //         label: `BI-${fortnight.number} -
+  //     ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString("pt-BR", {
+  //       minimumIntegerDigits: 2,
+  //     })}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
+  //           "pt-BR",
+  //           {
+  //             minimumIntegerDigits: 2,
+  //           }
+  //         )}/${new Date(fortnight.finish).getUTCFullYear()} -
+  //   ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString("pt-BR", {
+  //     minimumIntegerDigits: 2,
+  //   })}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
+  //           "pt-BR",
+  //           {
+  //             minimumIntegerDigits: 2,
+  //           }
+  //         )}/${new Date(fortnight.finish).getUTCFullYear()}`,
+  //       };
+  //     })
+  //   : null;
   // const { city, setCity } = useCityContext();
   const [city, setCity] = useState("");
   const cartContext = useCartContext();
@@ -78,13 +79,14 @@ export default function BillboardTable() {
       //   city === null ? "" : city
       // }`
       const response = await fetch(
-        `/api/billboards?p=${activePage}&endereco=${address}&cidade=${
+        `/api/billboards?activePage=${activePage}&pageSize=${pageSize}&address=${address}&city=${
           city === null ? "" : city
-        }&fortnight=${selectedFortnight}`
+        }&fortnights=${selectedFortnight}`
       );
       const data = await response.json();
+      console.log("data from handleBillboardsFetch", data);
       setTotalPages(data.totalPages);
-      setBillboards(data.billboards);
+      setBillboards(data.data);
     } catch {
       setBillboards([]);
       setTotalPages(0);
@@ -105,22 +107,30 @@ export default function BillboardTable() {
   }
 
   async function fetchFortnights() {
-    const res = await fetch("/api/fortnights", {
+    const today = new Date();
+    const url = `/api/fortnights?currentDate=${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}&years=${new Date().getFullYear()},${
+      new Date().getFullYear() + 1
+    }&asCombobox`;
+    console.log(url);
+    const res = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (res) {
-      const data = await res.json();
-      setFortnights(data);
+      const response = await res.json();
+      console.log("Fortnights data", response.data);
+      setFortnights(response.data);
     } else {
       console.log("Server unreachable.");
     }
   }
 
   async function fetchCities() {
-    const res = await fetch("/api/cities/select?type=1", {
+    const res = await fetch("/api/cities?asCombobox=true&type=O", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -128,9 +138,10 @@ export default function BillboardTable() {
     });
     if (res) {
       const data = await res.json();
-      setCities(data);
-      setCity("SOROCABA");
-      // setCity(data[0].value);
+      console.log("data from cities BILLBOARD", data);
+      setCities(data.data);
+      setCity(data.data[0].value);
+      // setCity("SOROCABA");
     } else {
       console.log("Server unreachable.");
     }
@@ -152,8 +163,8 @@ export default function BillboardTable() {
     <Table.Tr
       key={billboard.id}
       onClick={() => {
-        setLat(Number(billboard.LinkGoogleMaps?.split(",")[0]));
-        setLong(Number(billboard.LinkGoogleMaps?.split(",")[1]));
+        setLat(Number(billboard.coordinates?.split(",")[0]));
+        setLong(Number(billboard.coordinates?.split(",")[1]));
         handleBillboardFetch(billboard.id);
         setActiveBillboard(billboard);
       }}
@@ -169,7 +180,7 @@ export default function BillboardTable() {
       <Table.Td ta={"left"}>
         <Text lineClamp={1} tt={"capitalize"}>
           {activeBillboard?.id === billboard.id && "• "}
-          {billboard.Localizacao?.toLowerCase()}
+          {billboard.address?.toLowerCase()}
         </Text>
       </Table.Td>
 
@@ -182,7 +193,7 @@ export default function BillboardTable() {
             decimalScale={2}
             fixedDecimalScale
             //@ts-ignore
-            value={billboard.valor}
+            value={billboard.value}
           />
         </Text>
       </Table.Td>
@@ -228,7 +239,7 @@ export default function BillboardTable() {
                     flex={1}
                     // classNames={{ pillsList: classes.pillsList }}
                     placeholder="Bi-Semana..."
-                    data={fortnightsData}
+                    data={fortnights || []}
                     onChange={(value) => {
                       setSelectedFortnight(value ?? "");
                     }}
@@ -237,11 +248,11 @@ export default function BillboardTable() {
                     flex={1}
                     placeholder="Cidade..."
                     value={city}
-                    // data={["Itapetininga", "Sorocaba", "Tatuí"]} // ADICIONAR CIDADES
                     data={cities}
                     searchable
                     allowDeselect={true}
                     onChange={(value) => {
+                      console.log("value", value);
                       setCity(value!);
                       handleBillboardsFetch();
                     }}

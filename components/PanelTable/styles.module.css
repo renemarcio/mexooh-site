@@ -1,0 +1,19 @@
+.inCart {
+  background-color: var(--mantine-primary-color-light) !important;
+}
+
+.inCart:hover {
+  background-color: var(--mantine-primary-color-light-hover) !important;
+}
+
+.selected {
+  background-color: var(--mantine-color-red-light) !important;
+}
+
+.selected:hover {
+  background-color: var(--mantine-color-red-light-hover) !important;
+}
+
+.pillsList {
+  display: none;
+}

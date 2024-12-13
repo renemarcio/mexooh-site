@@ -1,9 +1,9 @@
+import { Fortnight } from "@/types/websiteTypes";
 import { Table } from "@mantine/core";
-import { bisemanas } from "@prisma/client";
 import React, { useEffect } from "react";
 
 export default function FortnightTable() {
-  const [fortnights, setFortnights] = React.useState<bisemanas[]>([]);
+  const [fortnights, setFortnights] = React.useState<Fortnight[]>([]);
 
   useEffect(() => {
     fetchFortnights();
@@ -12,7 +12,9 @@ export default function FortnightTable() {
   async function fetchFortnights() {
     try {
       const response = await fetch(
-        "/api/fortnights?ano=" + new Date().getFullYear() + "",
+        "/api/fortnights?years=" + new Date().getFullYear(),
+        // + ", " +
+        // (new Date().getFullYear() + 1),
         {
           method: "GET",
           headers: {
@@ -21,11 +23,9 @@ export default function FortnightTable() {
         }
       );
       const data = await response.json();
-      console.log(data);
-      console.log(new Date().getFullYear());
-      setFortnights(data);
+      setFortnights(data.data);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -34,37 +34,37 @@ export default function FortnightTable() {
       <Table.Tr
         key={fortnight.id}
         bg={
-          new Date().getTime() > new Date(fortnight.dtFinal).getTime()
+          new Date().getTime() > new Date(fortnight.finish).getTime()
             ? "var(--mantine-color-red-light)"
-            : new Date().getTime() > new Date(fortnight.dtInicio).getTime()
+            : new Date().getTime() > new Date(fortnight.start).getTime()
             ? "var(--mantine-color-green-light)"
             : ""
         }
       >
-        <Table.Td ta={"center"}>{fortnight.numero}</Table.Td>
+        <Table.Td ta={"center"}>{fortnight.number}</Table.Td>
         <Table.Td ta={"center"}>
-          {`${Number(new Date(fortnight.dtInicio).getUTCDate()).toLocaleString(
+          {`${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
             "pt-BR",
             {
               minimumIntegerDigits: 2,
             }
           )}/${Number(
-            new Date(fortnight.dtInicio).getUTCMonth() + 1
+            new Date(fortnight.start).getUTCMonth() + 1
           ).toLocaleString("pt-BR", {
             minimumIntegerDigits: 2,
-          })}/${new Date(fortnight.dtInicio).getUTCFullYear()}`}
+          })}/${new Date(fortnight.start).getUTCFullYear()}`}
         </Table.Td>
         <Table.Td ta={"center"}>
-          {`${Number(new Date(fortnight.dtFinal).getUTCDate()).toLocaleString(
+          {`${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
             "pt-BR",
             {
               minimumIntegerDigits: 2,
             }
           )}/${Number(
-            new Date(fortnight.dtFinal).getUTCMonth() + 1
+            new Date(fortnight.finish).getUTCMonth() + 1
           ).toLocaleString("pt-BR", {
             minimumIntegerDigits: 2,
-          })}/${new Date(fortnight.dtFinal).getUTCFullYear()}`}
+          })}/${new Date(fortnight.finish).getUTCFullYear()}`}
         </Table.Td>
       </Table.Tr>
     );

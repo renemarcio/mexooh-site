@@ -14,37 +14,42 @@ import {
   Image,
   ComboboxData,
   Title,
+  ComboboxItem,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { inventarios } from "@prisma/client";
-import React, { useEffect, useState } from "react";
+// import { inventarios } from "@prisma/client";
+import React, { useContext, useEffect, useState } from "react";
 import Map from "../Map";
 import { modals } from "@mantine/modals";
 import PanelRentForm from "../PanelRentForm";
-
+import { Panel } from "@/types/websiteTypes";
+import { CartContext } from "@/contexts/CartContext";
+import styles from "./styles.module.css";
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [panels, setPanels] = useState<inventarios[]>([]);
+  const [panels, setPanels] = useState<Panel[]>([]);
   const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [city, setCity] = useState<string | null>("");
+  const cart = useContext(CartContext);
+
   // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
     try {
       const response = await fetch(
-        `/api/panels?p=${activePage}&endereco=${address}&cidade=${
+        `/api/panels?activePage=${activePage}&pageSize=20&address=${address}&city=${
           city === null ? "" : city
         }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      setPanels(data.panels);
+      setPanels(data.data);
     } catch {
       setPanels([]);
       setTotalPages(0);
@@ -54,10 +59,13 @@ export default function PanelTable() {
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/cities/select?type=2");
-      const data = await response.json();
+      const response = await fetch("/api/cities?asCombobox=true&type=P");
+      const data: ComboboxItem[] = (await response.json()).data;
       setCities(data);
-      setCity("ALPHAVILLE");
+      setCity(
+        data.find((element) => element.label === "ALPHAVILLE")?.value ?? null
+      );
+      // setCity("ALPHAVILLE");
       // setCity(data[0].value);
     } catch {
       setCities([]);
@@ -80,10 +88,15 @@ export default function PanelTable() {
 
   const tableRows = panels.map((panel) => (
     <Table.Tr
+      className={
+        cart.cart.find((e) => e.item.id === panel.id) ? styles.inCart : ""
+      }
       key={panel.id}
+      onMouseEnter={() => {
+        setLat(Number(panel.coordinates?.split(",")[0]));
+        setLong(Number(panel.coordinates?.split(",")[1]));
+      }}
       onClick={() => {
-        setLat(Number(panel.LinkGoogleMaps?.split(",")[0]));
-        setLong(Number(panel.LinkGoogleMaps?.split(",")[1]));
         modals.open({
           children: (
             <PanelRentForm panel={panel} closeFn={() => modals.closeAll()} />
@@ -94,7 +107,7 @@ export default function PanelTable() {
     >
       <Table.Td ta={"left"}>
         <Text lineClamp={1} tt={"capitalize"}>
-          {panel.Localizacao?.toLowerCase()}
+          {panel.address?.toLowerCase()}
         </Text>
       </Table.Td>
     </Table.Tr>
