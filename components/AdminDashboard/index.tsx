@@ -11,6 +11,13 @@ import {
   Paper,
   Grid,
   Center,
+  Code,
+  ScrollArea,
+  Table,
+  Stack,
+  Flex,
+  Collapse,
+  TextInput,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -22,39 +29,87 @@ import {
   IconPhotoFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import PIForm from "./PIForm";
+import { MatrixDataType } from "@/types/websiteTypes";
+import { useDisclosure } from "@mantine/hooks";
+
 export default function AdminDashboard() {
-  const tree = useTree();
-  const data = useMemo<TreeNodeData[]>(
-    () => [
-      {
-        value: "checking",
-        label: "Checking Fotográfico",
-        children: [
-          {
-            value: "checking/1",
-            label: "1",
-            children: [
-              { value: "checking/1/1.png", label: "1.png" },
-              { value: "checking/1/2.png", label: "2.png" },
-              { value: "checking/1/3.png", label: "3.png" },
-            ],
-          },
-          {
-            value: "checking/2",
-            label: "2",
-            children: [
-              { value: "checking/2/1.png", label: "1.png" },
-              { value: "checking/2/2.png", label: "2.png" },
-              { value: "checking/2/3.png", label: "3.png" },
-            ],
-          },
-        ],
-      },
-    ],
-    []
-  );
+  const [treeData, setTreeData] = React.useState<TreeNodeData[]>([]);
+  const [matrix, setMatrix] = React.useState<MatrixDataType[]>([]);
+  const [address, setAddress] = React.useState("");
+  const [id, setID] = React.useState("");
+  const [opened, { toggle }] = useDisclosure(false);
+  const rows = matrix.map((row) => {
+    return (
+      <Table.Tr key={row.id}>
+        <Table.Td>{row.id}</Table.Td>
+        <Table.Td>{row.address}</Table.Td>
+        <Table.Td>{row.coordinates}</Table.Td>
+        <Table.Td>{row.type}</Table.Td>
+        <Table.Td>{row.media}</Table.Td>
+      </Table.Tr>
+    );
+  });
+  interface FileTree {
+    name: string;
+    type: "file" | "directory";
+    children?: FileTree[];
+  }
+
+  // function readDirectoryTree(dirPath: string): TreeNodeData[] {
+  //   const items = fs.readdirSync(dirPath);
+  //   const fileTree: TreeNodeData[] = [];
+
+  //   items.forEach((item) => {
+  //     const fullPath = path.join(dirPath, item);
+  //     const stats = fs.statSync(fullPath);
+
+  //     if (stats.isDirectory()) {
+  //       fileTree.push({
+  //         value: fullPath + "/" + item,
+  //         label: item,
+  //         // type: "directory",
+  //         children: readDirectoryTree(fullPath), // Recurso recursivo
+  //       });
+  //     } else if (stats.isFile()) {
+  //       fileTree.push({
+  //         value: fullPath + "/" + item,
+  //         label: item,
+  //         // type: "file",
+  //       });
+  //     }
+  //   });
+
+  //   return fileTree;
+  // }
+
+  async function fetchCheckingDirectoryTree() {
+    const response = await fetch("/api/checking");
+    const data = await response.json();
+    setTreeData(data);
+  }
+
+  async function fetchMatrix() {
+    const response = await fetch(
+      "/api/matrix?address=" + address + "&id=" + id
+    );
+    const data = await response.json();
+    setMatrix(data);
+  }
+
+  useEffect(() => {
+    fetchCheckingDirectoryTree();
+    fetchMatrix();
+  }, []);
+
+  useEffect(() => {
+    fetchMatrix();
+  }, [address, id]);
+
+  const tree = useTree({
+    multiple: false,
+  });
 
   interface FileIconProps {
     // name: string;
@@ -128,37 +183,46 @@ export default function AdminDashboard() {
   return (
     <>
       <Center m={"lg"}>
-        <Group>
-          <Button
-            h={"100px"}
-            color="rgba(255, 255, 255, 1)"
-            component={Link}
-            href={"https://sistema.infooh.com.br/#/login"}
-            target="_blank"
-          >
-            <Image src="/infooh.png" h={"100%"} />
-          </Button>
-          <Button
-            h={"100px"}
-            color="rgba(255, 255, 255, 1)"
-            component={Link}
-            href={"http://espacomais.srv.br/"}
-            target="_blank"
-          >
-            <Image src="/EMLogo.png" h={"100%"} p={"xs"} />
-          </Button>
-          <Button onClick={FetchBucket}>Fetch do Bucket</Button>
-          <Button
-            onClick={() =>
-              modals.open({ title: "Imprimir PI", children: <PIForm /> })
-            }
-          >
-            Imprimir PI
-          </Button>
+        <Group justify="space-between" w={"80%"}>
+          <Group justify="center" m={"auto"}>
+            <Button>Mídia</Button>
+            {/* <Button onClick={FetchBucket}>Fetch do Bucket</Button> */}
+            <Button
+              onClick={() =>
+                modals.open({ title: "Imprimir PI", children: <PIForm /> })
+              }
+            >
+              Imprimir PI
+            </Button>
+            <Button onClick={toggle}>Coordenadas</Button>
+          </Group>
+          <Stack>
+            <Text>Sistemas Auxiliares</Text>
+            <Button
+              // h={"100px"}
+              // color="rgba(255, 255, 255, 1)"
+              component={Link}
+              href={"https://sistema.infooh.com.br/#/login"}
+              target="_blank"
+            >
+              InfoOOH
+              {/* <Image src="/infooh.png" h={"100%"} /> */}
+            </Button>
+            <Button
+              // h={"100px"}
+              // color="rgba(255, 255, 255, 1)"
+              component={Link}
+              href={"http://espacomais.srv.br/"}
+              target="_blank"
+            >
+              EspaçoMais
+              {/* <Image src="/EMLogo.png" h={"100%"} p={"xs"} /> */}
+            </Button>
+          </Stack>
         </Group>
       </Center>
-      <Grid columns={3}>
-        <Grid.Col span={1}>
+      <Grid columns={3} h={"600px"} overflow="hidden" w={"80vw"}>
+        <Grid.Col span={1} h={"100%"}>
           <Paper m={"lg"} p={"lg"} h={"100%"}>
             <Button onClick={() => tree.expandAllNodes()}>
               Expandir Todos
@@ -166,18 +230,54 @@ export default function AdminDashboard() {
             <Button onClick={() => tree.collapseAllNodes()}>
               Recolher Todos
             </Button>
-            <Tree
-              data={data}
-              tree={tree}
-              renderNode={(payload) => <Leaf {...payload} />}
-              selectOnClick
-            />
+            <ScrollArea type="auto" h={"475px"}>
+              <Tree
+                data={treeData}
+                tree={tree}
+                renderNode={(payload) => <Leaf {...payload} />}
+                selectOnClick
+              />
+            </ScrollArea>
           </Paper>
         </Grid.Col>
-        <Grid.Col span={2}>
-          <Image src={"https://placehold.co/2068x1082"} h={"100%"} />
+        <Grid.Col span={2} h={"100%"}>
+          <Image
+            src={tree.selectedState[0]}
+            fallbackSrc="https://placehold.co/2068x1082?text=Selecione+um+arquivo"
+            h={"600px"}
+            fit="contain"
+          />
         </Grid.Col>
       </Grid>
+      <Collapse in={opened}>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>
+                Código{" "}
+                <TextInput
+                  onChange={(e) => setID(e.target.value)}
+                  placeholder="Buscar por código..."
+                ></TextInput>
+              </Table.Th>
+              <Table.Th>
+                Endereço
+                <TextInput
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Buscar por endereço..."
+                ></TextInput>
+              </Table.Th>
+              <Table.Th>Coordenadas</Table.Th>
+              <Table.Th>Tipo</Table.Th>
+              <Table.Th>Mídia</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {rows.length > 0 ? rows : <Table.Tr>Nada encontrado</Table.Tr>}
+          </Table.Tbody>
+        </Table>
+      </Collapse>
+      {/* <Code>{JSON.stringify(matrix, null, 2)}</Code> */}
     </>
   );
 }

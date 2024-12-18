@@ -40,3 +40,11 @@ export interface City {
   name: string;
   state: string;
 }
+
+export interface MatrixDataType {
+  id: string;
+  address: string;
+  coordinates: string;
+  type: string;
+  media: string;
+}
