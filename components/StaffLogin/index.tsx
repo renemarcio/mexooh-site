@@ -7,7 +7,14 @@ export default function StaffLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>();
   function validateLogin() {
-    if (username && password === "admin") {
+    if (
+      (username && password === "admin") ||
+      (username === "vanessa" && password === "admin") ||
+      (username === "claudio" && password === "admin") ||
+      (username === "ana" && password === "admin") ||
+      (username === "douglas" && password === "admin") ||
+      (username === "bruno" && password === "admin")
+    ) {
       window.location.href = "/admin";
       modals.closeAll();
     } else {

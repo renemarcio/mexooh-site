@@ -1,5 +1,12 @@
 import GeneratePIPDF from "@/PDFTemplates/PI/PIPDF";
-import { Button, Fieldset, Stack, TextInput, Text } from "@mantine/core";
+import {
+  Button,
+  Fieldset,
+  Stack,
+  TextInput,
+  Text,
+  Select,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
   IconCircleMinus,
@@ -48,6 +55,44 @@ export default function PIForm() {
     GeneratePIPDF(formValues);
   }
 
+  function handleChooseLEDPanel(LEDPanel: string | null, index: number) {
+    switch (LEDPanel) {
+      case "LED AV CALORS COMITRE N° 275 - CAMPOLIM - EM FRENTE TELHA NORTE":
+        form.setFieldValue(
+          "inventarios." + index + ".localizacao",
+          "LED AV CALORS COMITRE N° 275 - CAMPOLIM - EM FRENTE TELHA NORTE"
+        );
+        form.setFieldValue(
+          "inventarios." + index + ".geolocalizacao",
+          "-23.5186964, -47.4642155"
+        );
+        break;
+      case "AV. JUSCELINO KUBITSCHEK - PAINEL LED - ESQUINA ESTACIONAMENTO":
+        form.setFieldValue(
+          "inventarios." + index + ".localizacao",
+          "AV. JUSCELINO KUBITSCHEK - PAINEL LED - ESQUINA ESTACIONAMENTO"
+        );
+        form.setFieldValue(
+          "inventarios." + index + ".geolocalizacao",
+          "-23.5059244, -47.4606713"
+        );
+        break;
+      case "AV DOM AGUIRRE N° 525 - CENTRO":
+        form.setFieldValue(
+          "inventarios." + index + ".localizacao",
+          "AV DOM AGUIRRE N° 525 - CENTRO"
+        );
+        form.setFieldValue(
+          "inventarios." + index + ".geolocalizacao",
+          "-23.5028318, -47.4526939"
+        );
+        break;
+      default:
+        form.setFieldValue("inventarios." + index + ".localizacao", "");
+        form.setFieldValue("inventarios." + index + ".geolocalizacao", "");
+    }
+  }
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: initialValues,
@@ -55,18 +100,33 @@ export default function PIForm() {
 
   const inventoryForm = form.getValues().inventarios.map((inventory, index) => (
     <Fieldset legend={`Painel de LED ${index + 1}`}>
+      <Select
+        label="Localização"
+        data={[
+          "LED AV CALORS COMITRE N° 275 - CAMPOLIM - EM FRENTE TELHA NORTE",
+          "AV. JUSCELINO KUBITSCHEK - PAINEL LED - ESQUINA ESTACIONAMENTO",
+          "AV DOM AGUIRRE N° 525 - CENTRO",
+        ]}
+        {...form.getInputProps(`inventarios.${index}.localizacao`)}
+        onChange={(value) => {
+          handleChooseLEDPanel(value, index);
+        }}
+      />
+      <Text>
+        Coordenadas: {form.getValues().inventarios[index].geolocalizacao}
+      </Text>
       <TextInput
         {...form.getInputProps(`inventarios.${index}.codigo`)}
         label="Código"
       />
-      <TextInput
+      {/* <TextInput
         {...form.getInputProps(`inventarios.${index}.localizacao`)}
         label="Localização"
-      />
-      <TextInput
+      /> */}
+      {/* <TextInput
         {...form.getInputProps(`inventarios.${index}.geolocalizacao`)}
         label="Geolocalização"
-      />
+      /> */}
       <TextInput
         {...form.getInputProps(`inventarios.${index}.valor`)}
         label="Valor"
