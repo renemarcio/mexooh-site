@@ -37,8 +37,18 @@ export async function GET(req: NextRequest) {
 
   SQL += " ORDER BY cid_nome ASC";
 
-  const response = await query(SQL);
-  const cidades = response as Cidade[];
+  const response = (await query(SQL)) as Cidade[];
+  const cidades = response.map((city) => {
+    if (city.cid_nome === "OSASCO") {
+      return {
+        ...city,
+        cid_nome: "ALPHAVILLE",
+      };
+    } else {
+      return city;
+    }
+  }) as Cidade[];
+  // const cidades = response as Cidade[];
   const cities: City[] = cidades.map((cidade) => {
     return {
       id: cidade.cid_codigo,
