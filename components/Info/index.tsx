@@ -14,7 +14,7 @@ import { handelGoth } from "@/styles/fonts/fonts";
 export default function Info() {
   return (
     <Center my={"xl"}>
-      <Box maw={"1920px"} w={"100%"} p={"lg"} id="info">
+      <Box maw={"1920px"} w={"100%"} id="info">
         <Center>
           <Title>Quem Somos</Title>
         </Center>
@@ -25,7 +25,7 @@ export default function Info() {
             h={"700px"}
           /> */}
           <AboutUsPhoto />
-          <Container w={"50%"}>
+          <Container>
             <Stack justify="space-between">
               {/* <Text size={"lg"}>
                 Com mais de 20 anos de experiência, a Mídia Painéis tornou-se
