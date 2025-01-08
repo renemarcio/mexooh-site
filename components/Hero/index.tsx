@@ -5,16 +5,12 @@ import React, { useRef } from "react";
 import Autoplay, { AutoplayOptionsType } from "embla-carousel-autoplay";
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
-import { useCityContext } from "../../contexts/CityContext";
 type HeroProps = {
   slides?: SlideData[];
-  // setCity: (city: string) => void;
 };
 
 export default function Hero({ slides }: HeroProps) {
   const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
-
-  // const { city, setCity } = useCityContext();
 
   const cardsData: SlideData[] = [
     {
