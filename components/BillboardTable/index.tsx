@@ -129,6 +129,11 @@ export default function BillboardTable() {
   const tableRows = billboards.map((billboard) => (
     <Table.Tr
       key={billboard.id}
+      onMouseEnter={() => {
+        setLat(Number(billboard.coordinates?.split(",")[0]));
+        setLong(Number(billboard.coordinates?.split(",")[1]));
+        handleBillboardFetch(billboard.id);
+      }}
       onClick={() => {
         setLat(Number(billboard.coordinates?.split(",")[0]));
         setLong(Number(billboard.coordinates?.split(",")[1]));
