@@ -68,7 +68,7 @@ export default function BillboardTable() {
 
   async function handleBillboardFetch(id: number) {
     try {
-      const response = await fetch(`/api/billboards/${id}`);
+      const response = await fetch(`/api/billboards?id=${id}`);
       const data = await response.json();
       setThumbnailUrl(data.signedUrl);
     } catch {
@@ -107,8 +107,8 @@ export default function BillboardTable() {
     if (res) {
       const data = await res.json();
       setCities(data.data);
-      setCity(data.data[0].value);
-      // setCity("SOROCABA");
+      // setCity(data.data[0].value);
+      setCity("SOROCABA");
     } else {
       console.log("Server unreachable.");
     }
