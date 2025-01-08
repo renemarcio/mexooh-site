@@ -21,18 +21,29 @@ type SlideProps = {
 export default function Slide({ slide }: SlideProps) {
   return (
     <Carousel.Slide key={slide.alt}>
-      <BackgroundImage className={classes.bgImg} src={slide.src} h={"100%"}>
-        <Anchor
+      <Anchor href={slide.button.link} onClick={slide.button.onClick}>
+        <Image
+          className={classes.bgImg}
+          fit="contain"
+          src={slide.src}
+          h={"100%"}
+          // component={Link}
+          // href={slide.button.link}
+          style={{ cursor: "pointer" }}
+        />
+      </Anchor>
+
+      {/* <Anchor
           href={slide.button.link}
           underline="never"
           onClick={slide.button.onClick}
         >
           <Box
-            w={"80vw"}
-            h={"70%"}
-            pos={"relative"}
-            mx={"auto"}
-            maw={"1920 * 0.8px"}
+          // w={"80vw"}
+          // h={"70%"}
+          // pos={"relative"}
+          // mx={"auto"}
+          // maw={"1920 * 0.8px"}
           >
             <Text
               size={"4rem"}
@@ -47,8 +58,7 @@ export default function Slide({ slide }: SlideProps) {
               {slide.alt}
             </Text>
           </Box>
-        </Anchor>
-      </BackgroundImage>
+        </Anchor> */}
     </Carousel.Slide>
   );
 }

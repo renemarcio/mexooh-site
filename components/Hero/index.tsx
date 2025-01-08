@@ -55,10 +55,11 @@ export default function Hero({ slides }: HeroProps) {
 
   return (
     <Carousel
-      slideSize={"1920px"}
+      slideSize={"90vw"}
       slideGap={"xs"}
       withIndicators
-      height={500}
+      // h={{ sm: "70vh", md: "80vh", lg: "90vh", xl: "100vh" }}
+      height={"500px"}
       loop
       plugins={[autoplay.current]}
       onMouseEnter={autoplay.current.stop}
