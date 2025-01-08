@@ -2,7 +2,7 @@ import { CartEntry } from "@/types/cartEntry";
 import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useContext } from "react";
 
-type CartContextType = {
+export type CartContextType = {
   cart: CartEntry[];
   setCart: React.Dispatch<React.SetStateAction<CartEntry[]>>;
 };

@@ -147,7 +147,6 @@ export default function AdminDashboard() {
     try {
       const response = await fetch("/api/bucket/checking");
       const data = await response.json();
-      console.log(data);
     } catch {
       console.log("Couldn't fetch bucket.");
     }

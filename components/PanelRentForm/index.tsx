@@ -48,8 +48,6 @@ export default function PanelRentForm({ panel, closeFn }: Props) {
       },
     });
     const data = await res.json();
-    console.log("data from fetchFortnights()");
-    console.log(data);
     setFortnights(data.data);
   }
 

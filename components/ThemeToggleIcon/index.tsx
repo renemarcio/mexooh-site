@@ -7,7 +7,11 @@ import {
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import React from "react";
 
-export default function ThemeToggleIcon() {
+interface Props {
+  size?: string;
+}
+
+export default function ThemeToggleIcon({ size }: Props) {
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
@@ -21,7 +25,7 @@ export default function ThemeToggleIcon() {
     <>
       <ActionIcon
         variant="default"
-        size="sm"
+        size={size ? size : "sm"}
         radius="xl"
         darkHidden
         onClick={toggleTheme}
@@ -30,7 +34,7 @@ export default function ThemeToggleIcon() {
       </ActionIcon>
       <ActionIcon
         variant="default"
-        size="sm"
+        size={size ? size : "sm"}
         radius="xl"
         lightHidden
         onClick={toggleTheme}

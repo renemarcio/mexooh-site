@@ -45,46 +45,18 @@ export default function BillboardTable() {
   const [selectedFortnight, setSelectedFortnight] = useState<string>("");
   const [cities, setCities] = useState<ComboboxData>([]);
   const pageSize = 22;
-  // const fortnightsData = fortnights
-  //   ? fortnights.map((fortnight: Fortnight) => {
-  //       return {
-  //         value: fortnight.id.toString(),
-  //         label: `BI-${fortnight.number} -
-  //     ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString("pt-BR", {
-  //       minimumIntegerDigits: 2,
-  //     })}/${Number(new Date(fortnight.start).getUTCMonth() + 1).toLocaleString(
-  //           "pt-BR",
-  //           {
-  //             minimumIntegerDigits: 2,
-  //           }
-  //         )}/${new Date(fortnight.finish).getUTCFullYear()} -
-  //   ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString("pt-BR", {
-  //     minimumIntegerDigits: 2,
-  //   })}/${Number(new Date(fortnight.finish).getUTCMonth() + 1).toLocaleString(
-  //           "pt-BR",
-  //           {
-  //             minimumIntegerDigits: 2,
-  //           }
-  //         )}/${new Date(fortnight.finish).getUTCFullYear()}`,
-  //       };
-  //     })
-  //   : null;
-  // const { city, setCity } = useCityContext();
+
   const [city, setCity] = useState("");
   const cartContext = useCartContext();
 
   async function handleBillboardsFetch() {
     try {
-      // `/api/panels?p=${activePage}&endereco=${address}&cidade=${
-      //   city === null ? "" : city
-      // }`
       const response = await fetch(
         `/api/billboards?activePage=${activePage}&pageSize=${pageSize}&address=${address}&city=${
           city === null ? "" : city
         }&fortnights=${selectedFortnight}`
       );
       const data = await response.json();
-      console.log("data from handleBillboardsFetch", data);
       setTotalPages(data.totalPages);
       setBillboards(data.data);
     } catch {
@@ -98,8 +70,6 @@ export default function BillboardTable() {
     try {
       const response = await fetch(`/api/billboards/${id}`);
       const data = await response.json();
-      console.log("data from handleBillboardFetch()");
-      console.log(data);
       setThumbnailUrl(data.signedUrl);
     } catch {
       console.log("Couldn't fetch billboard.");
@@ -113,7 +83,6 @@ export default function BillboardTable() {
     }-${today.getDate()}&years=${new Date().getFullYear()},${
       new Date().getFullYear() + 1
     }&asCombobox`;
-    console.log(url);
     const res = await fetch(url, {
       method: "GET",
       headers: {
@@ -122,7 +91,6 @@ export default function BillboardTable() {
     });
     if (res) {
       const response = await res.json();
-      console.log("Fortnights data", response.data);
       setFortnights(response.data);
     } else {
       console.log("Server unreachable.");
@@ -138,7 +106,6 @@ export default function BillboardTable() {
     });
     if (res) {
       const data = await res.json();
-      console.log("data from cities BILLBOARD", data);
       setCities(data.data);
       setCity(data.data[0].value);
       // setCity("SOROCABA");
@@ -252,7 +219,6 @@ export default function BillboardTable() {
                     searchable
                     allowDeselect={true}
                     onChange={(value) => {
-                      console.log("value", value);
                       setCity(value!);
                       handleBillboardsFetch();
                     }}

@@ -20,8 +20,6 @@ export async function GET(req: NextRequest) {
       fortnights +
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
     const responseRentedInventory = await query(SQLRentedInventory);
-    console.log("responseRentedInventory");
-    console.log(responseRentedInventory);
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
     );
@@ -61,7 +59,6 @@ export async function GET(req: NextRequest) {
       }`;
     }
     const paginatedResponse = await query(SQL);
-    console.log(paginatedResponse);
     const outdoors = paginatedResponse as Pontos[];
     const billboards: Billboard[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,
@@ -76,7 +73,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(result);
   } else {
     const response = await query(SQL);
-    console.log(response);
     const outdoors = response as Pontos[];
     const billboards: Billboard[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,

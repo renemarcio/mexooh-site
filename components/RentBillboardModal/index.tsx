@@ -75,8 +75,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
       }
     );
     const data = await res.json();
-    console.log("data from fetchFortnights()");
-    console.log(data.data);
     setFortnights(data.data);
   }
 
@@ -88,10 +86,6 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
       },
     });
     const data = await res.json();
-    console.log("data from api/fortnights/rented");
-    console.log(data);
-    // console.log("availableFortnightsIDs");
-    // console.log(availableFortnightsIDs);
     const rentedFortnightsIDs = data.data.map((fortnight: Fortnight) => {
       return fortnight.id;
     });

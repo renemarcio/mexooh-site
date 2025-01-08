@@ -50,8 +50,6 @@ export type PIValuesType = typeof initialValues;
 export default function PIForm() {
   async function handleSubmit(formValues: PIValuesType) {
     const response = await fetch("/api/report/PI");
-    console.log("response");
-    console.log(response);
     GeneratePIPDF(formValues);
   }
 

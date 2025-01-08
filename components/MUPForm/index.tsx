@@ -50,8 +50,6 @@ export default function MUPForm({ mup, closeFn }: Props) {
       },
     });
     const data = await res.json();
-    console.log("data from fetchFortnights()");
-    console.log(data);
     setFortnights(data.data);
   }
 

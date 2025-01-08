@@ -87,7 +87,6 @@ export async function GET(req: NextRequest) {
         "Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.biSemana_bi_codigo In (" +
         fortnights +
         ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
-      console.log(SQLRentedInventory);
       const responseRentedInventory = await query(SQLRentedInventory);
       listOfRentedInventoryIDs = (
         responseRentedInventory as RowDataPacket[]
