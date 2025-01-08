@@ -37,8 +37,6 @@ export function Footer() {
             Av. Prof Jacob Bazarian, 200
             <br />
             CEP 18204-121 • Vale San Fernando
-            {/* <br />
-            Itapetininga, SP */}
           </Text>
         </div>
         <div className={classes.wrapper}>
@@ -46,11 +44,7 @@ export function Footer() {
           <Group mt={6} className={classes.paymentOptions}>
             <SiNubank size={30} color="#5f249f" />
             <Image src={"/mastercard.svg"} h={20} />
-            {/* <RiMastercardFill size={30} /> */}
             <Image src={"/visa.svg"} h={15} />
-            {/* <RiVisaLine size={30} /> */}
-            {/* <FaCcDinersClub size={30} /> */}
-            {/* <FaCcAmex size={30} /> */}
             <FaBarcode size={30} color="black" />
           </Group>
         </div>
@@ -91,15 +85,6 @@ export function Footer() {
           </ActionIcon>
         </Group>
       </Container>
-      <Box
-        pos={"fixed"}
-        bg={"white"}
-        w={"100%"}
-        h={"190px"}
-        bottom={0}
-        style={{ zIndex: 0 }}
-        // right={0}
-      />
     </footer>
   );
 }
