@@ -3,11 +3,21 @@ import {
   Container,
   ActionIcon,
   Group,
+  rem,
+  Stack,
+  Box,
   Image,
   Title,
 } from "@mantine/core";
+import {
+  IconBrandTwitter,
+  IconBrandYoutube,
+  IconBrandInstagram,
+  IconBrandFacebook,
+} from "@tabler/icons-react";
 import classes from "./Footer.module.css";
-import { FaBarcode } from "react-icons/fa";
+import { RiMastercardFill, RiVisaLine } from "react-icons/ri";
+import { FaBarcode, FaCcAmex, FaCcDinersClub } from "react-icons/fa";
 import { SiNubank } from "react-icons/si";
 import Link from "next/link";
 
