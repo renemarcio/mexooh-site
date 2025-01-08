@@ -43,7 +43,7 @@ export function Footer() {
         </div>
         <div className={classes.wrapper}>
           <Text className={classes.title}>Formas de pagamento</Text>
-          <Group justify="right" mt={6}>
+          <Group mt={6} className={classes.paymentOptions}>
             <SiNubank size={30} color="#5f249f" />
             <Image src={"/mastercard.svg"} h={20} />
             {/* <RiMastercardFill size={30} /> */}
