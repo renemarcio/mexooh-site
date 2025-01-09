@@ -108,7 +108,11 @@ export default function BillboardTable() {
       const data = await res.json();
       setCities(data.data);
       // setCity(data.data[0].value);
-      setCity("SOROCABA");
+      setCity(
+        data.data.find(
+          (city: { label: string; value: string }) => city.label === "SOROCABA"
+        )?.value
+      );
     } else {
       console.log("Server unreachable.");
     }
