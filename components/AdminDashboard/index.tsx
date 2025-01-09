@@ -57,33 +57,6 @@ export default function AdminDashboard() {
     children?: FileTree[];
   }
 
-  // function readDirectoryTree(dirPath: string): TreeNodeData[] {
-  //   const items = fs.readdirSync(dirPath);
-  //   const fileTree: TreeNodeData[] = [];
-
-  //   items.forEach((item) => {
-  //     const fullPath = path.join(dirPath, item);
-  //     const stats = fs.statSync(fullPath);
-
-  //     if (stats.isDirectory()) {
-  //       fileTree.push({
-  //         value: fullPath + "/" + item,
-  //         label: item,
-  //         // type: "directory",
-  //         children: readDirectoryTree(fullPath), // Recurso recursivo
-  //       });
-  //     } else if (stats.isFile()) {
-  //       fileTree.push({
-  //         value: fullPath + "/" + item,
-  //         label: item,
-  //         // type: "file",
-  //       });
-  //     }
-  //   });
-
-  //   return fileTree;
-  // }
-
   async function fetchCheckingDirectoryTree() {
     const response = await fetch("/api/checking");
     const data = await response.json();
