@@ -73,6 +73,7 @@ export default function AdminDashboard() {
     const data = await response.json();
     setMatrix(data.data);
     setTotalPages(data.numberOfPages);
+    if (page > data.numberOfPages) setPage(data.numberOfPages);
   }
 
   useEffect(() => {

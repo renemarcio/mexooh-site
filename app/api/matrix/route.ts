@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
     const address = req.nextUrl.searchParams.get("address") || null;
     const id = req.nextUrl.searchParams.get("id") || null;
-    const currentPage = req.nextUrl.searchParams.get("page") || 1;
+    let currentPage = Number(req.nextUrl.searchParams.get("page")) || 1;
     const pageSize = 15;
     //   const fileContent = fs
     //     .readFileSync(filePath, { encoding: "utf-8" })
@@ -54,11 +54,12 @@ export async function GET(req: NextRequest) {
       // matrixData = matrixData.filter((row) => row.id.includes(id));
       matrixData = matrixData.filter((row) => row.id === id);
     }
-    //Pagination
     const numberOfPages = Math.ceil(matrixData.length / pageSize);
+    //if current page exceeds the page limit, limit it to last page
+    currentPage = currentPage > numberOfPages ? numberOfPages : currentPage;
     matrixData = matrixData.slice(
-      Number(currentPage) * pageSize,
-      (Number(currentPage) + 1) * pageSize
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
     );
     const response = {
       data: matrixData,
