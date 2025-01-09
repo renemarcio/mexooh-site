@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { MatrixDataType } from "@/types/websiteTypes";
 import Papa from "papaparse";
@@ -14,7 +15,8 @@ interface MatrixCSVType {
 
 export async function GET(req: NextRequest) {
   try {
-    const filePath = "utils/EXEMPLO MATRIZ.csv";
+    // const filePath = "utils/EXEMPLO MATRIZ.csv";
+    const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
     const address = req.nextUrl.searchParams.get("address") || null;
     const id = req.nextUrl.searchParams.get("id") || null;
     //   const fileContent = fs
