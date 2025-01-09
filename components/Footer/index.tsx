@@ -40,7 +40,7 @@ export function Footer() {
         </div>
       </Container>
       <Container className={classes.afterFooter}>
-        <Group style={{ zIndex: 2 }}>
+        <Group style={{ zIndex: 2 }} justify="center">
           <Link href={"https://iconeooh.com.br/"} target="_blank">
             <Image src={"/icone.png"} h={"45px"} />
           </Link>
