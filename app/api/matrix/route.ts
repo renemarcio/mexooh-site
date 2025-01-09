@@ -53,9 +53,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(matrixData);
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: `Internal Server Error: ${error}` },
-      { status: 500 }
-    );
+    return NextResponse.json({ error });
   }
 }
