@@ -48,6 +48,13 @@ export default function PanelTable() {
         }`
       );
       const data = await response.json();
+      console.log("Call from fetchPanels: ");
+      console.log(
+        `/api/panels?activePage=${activePage}&pageSize=20&address=${address}&city=${
+          city === null ? "" : city
+        }`
+      );
+      console.log("Data from fetchPanels: ", data);
       setTotalPages(data.totalPages);
       setPanels(data.data);
     } catch {
@@ -65,8 +72,6 @@ export default function PanelTable() {
       setCity(
         data.find((element) => element.label === "ALPHAVILLE")?.value ?? null
       );
-      // setCity("ALPHAVILLE");
-      // setCity(data[0].value);
     } catch {
       setCities([]);
       console.log("Couldn't fetch cities.");
@@ -164,7 +169,6 @@ export default function PanelTable() {
                             searchable
                             onChange={(value) => {
                               setCity(value);
-                              fetchPanels();
                             }}
                             allowDeselect={true}
                             value={city}
