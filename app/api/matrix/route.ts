@@ -19,6 +19,8 @@ export async function GET(req: NextRequest) {
     const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
     const address = req.nextUrl.searchParams.get("address") || null;
     const id = req.nextUrl.searchParams.get("id") || null;
+    const currentPage = req.nextUrl.searchParams.get("page") || 1;
+    const pageSize = 15;
     //   const fileContent = fs
     //     .readFileSync(filePath, { encoding: "utf-8" })
     //     .split("\r\n")
@@ -52,7 +54,17 @@ export async function GET(req: NextRequest) {
       // matrixData = matrixData.filter((row) => row.id.includes(id));
       matrixData = matrixData.filter((row) => row.id === id);
     }
-    return NextResponse.json(matrixData);
+    //Pagination
+    const numberOfPages = Math.ceil(matrixData.length / pageSize);
+    matrixData = matrixData.slice(
+      Number(currentPage) * pageSize,
+      (Number(currentPage) + 1) * pageSize
+    );
+    const response = {
+      data: matrixData,
+      numberOfPages: numberOfPages,
+    };
+    return NextResponse.json(response);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error });

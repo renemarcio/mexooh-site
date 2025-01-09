@@ -18,6 +18,7 @@ import {
   Flex,
   Collapse,
   TextInput,
+  Pagination,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -32,7 +33,7 @@ import Link from "next/link";
 import React, { useEffect, useMemo } from "react";
 import PIForm from "./PIForm";
 import { MatrixDataType } from "@/types/websiteTypes";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, usePagination } from "@mantine/hooks";
 
 export default function AdminDashboard() {
   const [treeData, setTreeData] = React.useState<TreeNodeData[]>([]);
@@ -40,6 +41,8 @@ export default function AdminDashboard() {
   const [address, setAddress] = React.useState("");
   const [id, setID] = React.useState("");
   const [opened, { toggle }] = useDisclosure(false);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const [page, setPage] = React.useState(1);
   const rows = matrix.map((row) => {
     return (
       <Table.Tr key={row.id}>
@@ -65,10 +68,11 @@ export default function AdminDashboard() {
 
   async function fetchMatrix() {
     const response = await fetch(
-      "/api/matrix?address=" + address + "&id=" + id
+      "/api/matrix?address=" + address + "&id=" + id + "&page=" + page
     );
     const data = await response.json();
-    setMatrix(data);
+    setMatrix(data.data);
+    setTotalPages(data.numberOfPages);
   }
 
   useEffect(() => {
@@ -78,7 +82,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchMatrix();
-  }, [address, id]);
+  }, [address, id, page]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages]);
 
   const tree = useTree({
     multiple: false,
@@ -247,6 +255,21 @@ export default function AdminDashboard() {
           <Table.Tbody>
             {rows.length > 0 ? rows : <Table.Tr>Nada encontrado</Table.Tr>}
           </Table.Tbody>
+          <Table.Tfoot>
+            <Table.Tr>
+              <Table.Th colSpan={5}>
+                <Center>
+                  <Pagination
+                    total={totalPages}
+                    onChange={(value) => setPage(value)}
+                    // total={Math.ceil(rows.length / 10)}
+                    // page={page}
+                    // onChange={setPage}
+                  />
+                </Center>
+              </Table.Th>
+            </Table.Tr>
+          </Table.Tfoot>
         </Table>
       </Collapse>
       {/* <Code>{JSON.stringify(matrix, null, 2)}</Code> */}
