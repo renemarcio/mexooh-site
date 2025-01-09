@@ -104,7 +104,7 @@ export default function MUPTable() {
     <>
       <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
         <Grid>
-          <Grid.Col span={5}>
+          <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
               <Image
                 src={thumbnailUrl}
@@ -128,7 +128,7 @@ export default function MUPTable() {
               </Paper>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={7}>
+          <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Table>
                 <Table.Thead>

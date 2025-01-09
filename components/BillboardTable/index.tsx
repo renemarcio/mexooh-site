@@ -176,7 +176,7 @@ export default function BillboardTable() {
     <>
       <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} mt={"lg"}>
         <Grid p={"sm"}>
-          <Grid.Col span={5}>
+          <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
               {/* <Image src={thumbnailUrl} height={"300px"} /> */}
               <Image
@@ -194,7 +194,7 @@ export default function BillboardTable() {
               </Paper>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={7}>
+          <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Box>
                 <Group gap={5}>
@@ -274,7 +274,6 @@ export default function BillboardTable() {
                     cartContext.cart.filter(
                       (e) => e.item.id !== activeBillboard.id
                     )
-                    // cartContext.cart.filter((e) => id !== activeBillboard.id)
                   );
                 } else {
                   console.log("ERRO!!! Não tem outdoor selecionado.");
@@ -290,7 +289,6 @@ export default function BillboardTable() {
               disabled={!activeBillboard}
               onClick={() => {
                 if (activeBillboard) {
-                  // cartContext.setCart([...cartContext.cart, activeBillboard]);
                   modals.open({
                     title: "Adicionar ao carrinho",
                     centered: true,
