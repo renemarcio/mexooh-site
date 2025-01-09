@@ -83,7 +83,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchMatrix();
-  }, [address, id, page]);
+  }, [address, id]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
@@ -262,7 +262,13 @@ export default function AdminDashboard() {
                 <Center>
                   <Pagination
                     total={totalPages}
-                    onChange={(value) => setPage(value)}
+                    onChange={(value) => {
+                      if (value !== page) {
+                        setPage(value);
+                        fetchMatrix();
+                      }
+                      setPage(value);
+                    }}
                     // total={Math.ceil(rows.length / 10)}
                     // page={page}
                     // onChange={setPage}

@@ -42,10 +42,12 @@ export const authOptions: NextAuthOptions = {
         //   throw new Error("Senha incorreta");
         // }
         // return user as any;
+
         const userFetch = await query(
           "SELECT * FROM cadgeral WHERE email = ? AND Cliente = 1",
           [credentials?.email]
         );
+
         const user = userFetch as CadGeral[];
         console.log("Retrieved users: ", user.length);
         if (user.length === 0) {

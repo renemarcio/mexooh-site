@@ -36,13 +36,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
   if (dbUserResponse.length === 1) {
     const dbUser = dbUserResponse[0] as CadGeral;
     const encryptedPassword = await bcrypt.hash(userData.password, 10);
+
     if (!dbUser.email) {
       //No e-mail, update it.
       //In the previous route, with prisma, we used to update this client with the email and a new password.
       //We would also check if phone exists, if not, we'd create it.
       try {
         const updateResponse = await query(
-          `UPDATE cadgeral SET email = ?, password = ? WHERE cli_cnpj_cpf = ?`,
+          `UPDATE cadgeral SET email = ?, password = ?, Cliente = 1 WHERE cli_cnpj_cpf = ?`,
           [userData.email, encryptedPassword, userData.cnpj_cpf]
         );
         console.log(updateResponse);
