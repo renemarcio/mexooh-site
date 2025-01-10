@@ -20,17 +20,12 @@ import PanelTable from "../PanelTable";
 
 export default function Panels() {
   return (
-    <Box
-      id="panels"
-      bg={"var(--mantine-primary-color-filled)"}
-      p={"lg"}
-      c={"white"}
-    >
+    <Box id="panels" bg={"var(--mantine-primary-color-filled)"} p={"lg"}>
       <Title my={"lg"} ta={"center"}>
         Painéis Rodoviários
       </Title>
       <PanelTable />
-      <Text ta={"center"} size="lg" px={"10vw"}>
+      <Text ta={"center"} size="lg" px={"10vw"} c={"white"}>
         Os painéis são estrategicamente posicionados e localizados em rodovias
         de grande e médio porte. Geralmente tem grandes dimensões, com a
         mensagem impressa em vinil, por sistema digital. Possuem estruturas de
@@ -40,7 +35,7 @@ export default function Panels() {
         a atenção sobre uma campanha de propaganda.
       </Text>
       <Center>
-        <Stack gap={0} align="center" my={"md"}>
+        <Stack gap={0} align="center" my={"md"} c={"white"}>
           <Group wrap="nowrap" gap={10}>
             <Tooltip label="Mande um e-mail!">
               <ActionIcon

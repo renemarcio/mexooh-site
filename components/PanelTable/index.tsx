@@ -1,4 +1,3 @@
-import { useCityContext } from "@/contexts/CityContext";
 import {
   Box,
   Group,
