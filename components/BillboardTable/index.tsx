@@ -16,6 +16,7 @@ import {
   MultiSelect,
   ComboboxData,
   Title,
+  Flex,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
@@ -201,7 +202,7 @@ export default function BillboardTable() {
           <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Box>
-                <Group gap={5}>
+                <Flex gap={5} direction={{ base: "column", sm: "row" }}>
                   <TextInput
                     flex={3}
                     value={address}
@@ -232,7 +233,7 @@ export default function BillboardTable() {
                       handleBillboardsFetch();
                     }}
                   />
-                </Group>
+                </Flex>
                 <Table striped highlightOnHover>
                   <Table.Thead>
                     <Table.Tr>

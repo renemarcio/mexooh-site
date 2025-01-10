@@ -14,6 +14,7 @@ import {
   ComboboxData,
   Title,
   ComboboxItem,
+  Flex,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
@@ -152,7 +153,11 @@ export default function PanelTable() {
                   <Table.Tr>
                     <Table.Th>
                       <Box>
-                        <Group gap={5} p={0}>
+                        <Flex
+                          gap={5}
+                          p={0}
+                          direction={{ base: "column", md: "row" }}
+                        >
                           <TextInput
                             flex={3}
                             placeholder="Endereço..."
@@ -172,7 +177,7 @@ export default function PanelTable() {
                             allowDeselect={true}
                             value={city}
                           />
-                        </Group>
+                        </Flex>
                       </Box>
                     </Table.Th>
                   </Table.Tr>

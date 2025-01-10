@@ -14,6 +14,7 @@ import {
   Image,
   ComboboxData,
   Title,
+  Flex,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
@@ -135,7 +136,11 @@ export default function MUPTable() {
                   <Table.Tr>
                     <Table.Th>
                       <Box>
-                        <Group gap={5} p={0}>
+                        <Flex
+                          gap={5}
+                          p={0}
+                          direction={{ base: "column", sm: "row" }}
+                        >
                           <TextInput
                             flex={3}
                             placeholder="Endereço..."
@@ -155,7 +160,7 @@ export default function MUPTable() {
                             allowDeselect={true}
                             value={city}
                           />
-                        </Group>
+                        </Flex>
                       </Box>
                     </Table.Th>
                   </Table.Tr>
