@@ -8,14 +8,24 @@ export async function middleware(req: NextRequest) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  const allowedUserIds = ["506169"];
+  const allowedUserIds = [506169];
   //@ts-ignore
-  const userID = token.user.Cad_codigo;
+  const userID = token ? token.user.Cad_codigo : null;
 
-  if (allowedUserIds.includes(userID)) {
+  if (allowedUserIds.includes(userID) && userID !== null) {
+    console.log("userID: ", userID);
+    console.log(
+      "userID está na lista de acesso: ",
+      allowedUserIds.includes(userID)
+    );
     return NextResponse.next();
   } else {
     console.log("Acesso seria negado.");
+    console.log("userID: ", userID);
+    console.log(
+      "userID está na lista de acesso: ",
+      allowedUserIds.includes(userID)
+    );
     // return NextResponse.redirect(new URL("/", req.url));
     return NextResponse.next();
   }
