@@ -11,7 +11,7 @@ type Props = {
 
 export default function FortnightCalendarButton({
   variant = "default",
-  title = "Confira aqui o calendáiro de Bi-Semanas!",
+  title = "Confira aqui o calendário de Bi-Semanas!",
 }: Props) {
   return (
     <>

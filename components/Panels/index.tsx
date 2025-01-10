@@ -17,11 +17,11 @@ import {
 import Link from "next/link";
 import React from "react";
 import PanelTable from "../PanelTable";
-
+import classes from "./styles.module.css";
 export default function Panels() {
   return (
     <Box id="panels" bg={"var(--mantine-primary-color-filled)"} p={"lg"}>
-      <Title my={"lg"} ta={"center"}>
+      <Title my={"lg"} ta={"center"} className={classes.title}>
         Painéis Rodoviários
       </Title>
       <PanelTable />
@@ -39,6 +39,7 @@ export default function Panels() {
           <Group wrap="nowrap" gap={10}>
             <Tooltip label="Mande um e-mail!">
               <ActionIcon
+                color="white"
                 radius={"xl"}
                 size={"lg"}
                 component={Link}
