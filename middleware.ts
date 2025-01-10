@@ -1,12 +1,23 @@
+import { getToken } from "next-auth/jwt";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
-  if (true) {
-    // For now we just redirect to home, afterwards, add verification, see if it's an admin that's logged in.
+export async function middleware(req: NextRequest) {
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  const allowedUserIds = ["506169"];
+  //@ts-ignore
+  const userID = token.user.Cad_codigo;
+
+  if (allowedUserIds.includes(userID)) {
     return NextResponse.next();
   } else {
-    return NextResponse.redirect(new URL("/", req.url));
+    console.log("Acesso seria negado.");
+    // return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.next();
   }
 }
 
