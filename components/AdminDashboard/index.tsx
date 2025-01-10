@@ -254,7 +254,17 @@ export default function AdminDashboard() {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {rows.length > 0 ? rows : <Table.Tr>Nada encontrado</Table.Tr>}
+            {rows.length > 0 ? (
+              rows
+            ) : (
+              <Table.Tr>
+                <Table.Td colSpan={5}>
+                  <Text c={"dimmed"} fs={"italic"} ta={"center"}>
+                    Nada encontrado
+                  </Text>
+                </Table.Td>
+              </Table.Tr>
+            )}
           </Table.Tbody>
           <Table.Tfoot>
             <Table.Tr>
@@ -269,9 +279,6 @@ export default function AdminDashboard() {
                       }
                       setPage(value);
                     }}
-                    // total={Math.ceil(rows.length / 10)}
-                    // page={page}
-                    // onChange={setPage}
                   />
                 </Center>
               </Table.Th>
