@@ -91,13 +91,11 @@ export default function MUPTable() {
         onClick={() => {
           setLat(Number(MUP.coordinates?.split(",")[0]));
           setLong(Number(MUP.coordinates?.split(",")[1]));
-          cartContext.cart.find((e) => e.item.id === MUP.id)
-            ? modals.open({
-                children: (
-                  <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />
-                ),
-              })
-            : null;
+          if (!cartContext.cart.find((e) => e.item.id === MUP.id)) {
+            modals.open({
+              children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
+            });
+          }
         }}
         style={{ cursor: "pointer" }}
         className={
