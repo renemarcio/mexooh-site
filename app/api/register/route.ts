@@ -3,12 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { query } from "@/utils/mysqlConnection";
 import { UserRegisterData } from "@/types/userRegisterData";
+import { isCNPJValid, isCPFValid } from "../../../utils/documentValidation";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = (await req.json()) as UserRegisterData;
   //Transform this into a compatible variable for the DB
   let userData;
   if (data.cpf) {
+    //Validate CPF first
+    if (!isCPFValid(data.cpf))
+      return NextResponse.json({ error: "CPF inválido" });
     userData = {
       nome: data.nome,
       email: data.email,
@@ -18,6 +22,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
       cnpj_cpf: data.cpf,
     };
   } else {
+    //Validate CNPJ first{
+    if (!data.cnpj)
+      return NextResponse.json({ error: "ERRO CRÍTICO! SEM DOCUMENTO!" });
+    console.log("CNPJ: ", data.cnpj);
+    if (!isCNPJValid(data.cnpj))
+      return NextResponse.json({ error: "CNPJ inválido" });
     userData = {
       nome: data.nome,
       email: data.email,
@@ -27,6 +37,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       cnpj_cpf: data.cnpj,
     };
   }
+
   //Check if a client exists with the same document.
   const dbUserResponse = (await query(
     `SELECT * FROM cadgeral WHERE cli_cnpj_cpf = ${userData.cnpj_cpf}`

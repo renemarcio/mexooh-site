@@ -10,6 +10,7 @@ import { modals } from "@mantine/modals";
 import { useForm } from "@mantine/form";
 import React from "react";
 import { IMaskInput } from "react-imask";
+import { isCPFValid } from "@/utils/documentValidation";
 
 export default function RegisterPFForm() {
   const form = useForm({
@@ -25,7 +26,9 @@ export default function RegisterPFForm() {
     validate: {
       confirmarSenha: (value, values) =>
         value !== values.password ? "As senhas precisam ser iguais" : null,
+      cpf: (value) => (isCPFValid(value) ? null : "CPF inválido"),
     },
+    validateInputOnBlur: true,
   });
 
   async function handleSubmit(values: any) {

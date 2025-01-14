@@ -75,14 +75,14 @@ export default function MyAppShell({ children }: AppShellProps) {
       />
       <AppShell header={{ height: 70 }}>
         <AppShell.Header zIndex={9999}>
-          <Box visibleFrom="lg">
+          <Box className={styles.navbarHiddenTo}>
             <LargeAppShell
               cartContext={cartContext}
               loginModalOpen={loginModalOpen}
               shoppingCartDrawerToggle={shoppingCartDrawerToggle}
             />
           </Box>
-          <Box hiddenFrom="lg">
+          <Box className={styles.navbarHiddenFrom}>
             <SmallAppShell
               cartContext={cartContext}
               burgerMenuOpened={burgerMenuOpened}
