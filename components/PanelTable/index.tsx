@@ -25,6 +25,7 @@ import PanelRentForm from "../PanelRentForm";
 import { Panel } from "@/types/websiteTypes";
 import { CartContext } from "@/contexts/CartContext";
 import styles from "./styles.module.css";
+import InfoOOHDisplay from "../InfoOOHDisplay";
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -37,7 +38,7 @@ export default function PanelTable() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [city, setCity] = useState<string | null>("");
   const cart = useContext(CartContext);
-
+  const [infoOOHStats, setInfoOOHStats] = useState<any>([]);
   // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
@@ -78,6 +79,18 @@ export default function PanelTable() {
     }
   }
 
+  async function fetchInfoOOHStats(panelId: number) {
+    try {
+      const response = await fetch(`/api/infooh/panels?id=${panelId}`);
+      const data = await response.json();
+      console.log("Call from fetchInfoOOHStats: ");
+      console.log(data);
+      setInfoOOHStats(data.data[0]);
+    } catch {
+      console.log("Couldn't fetch info.");
+    }
+  }
+
   useEffect(() => {
     fetchPanels();
   }, [debouncedAddress, activePage]);
@@ -100,6 +113,7 @@ export default function PanelTable() {
       onMouseEnter={() => {
         setLat(Number(panel.coordinates?.split(",")[0]));
         setLong(Number(panel.coordinates?.split(",")[1]));
+        fetchInfoOOHStats(panel.id);
       }}
       onClick={() => {
         modals.open({
@@ -140,15 +154,13 @@ export default function PanelTable() {
                 <Map lat={lat} long={long} />
               </Box>
               <Paper withBorder h={"300px"}>
-                <Center h={"100%"}>
-                  <Title c={"dimmed"}>InfoOOH</Title>
-                </Center>
+                <InfoOOHDisplay data={infoOOHStats} />
               </Paper>
             </Stack>
           </Grid.Col>
           <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
-              <Table>
+              <Table highlightOnHover>
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th>

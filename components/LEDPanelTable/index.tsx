@@ -23,6 +23,7 @@ import Map from "../Map";
 import { modals } from "@mantine/modals";
 import MUPForm from "../MUPForm";
 import { LEDPanel } from "@/types/websiteTypes";
+import LEDPanelForm from "../LEDPanelForm";
 // import PanelRentForm from "../PanelRentForm";
 
 export default function LEDPanelTable() {
@@ -84,8 +85,10 @@ export default function LEDPanelTable() {
         setLong(Number(LEDPanel.coordinates?.split(",")[1]));
         modals.open({
           title: <p>{LEDPanel.address}</p>,
-          children: <p>WIP</p>,
-          //   children: <MUPForm mup={LEDPanel} closeFn={() => modals.closeAll()} />,
+          // children: <p>WIP</p>,
+          children: (
+            <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
+          ),
         });
       }}
       style={{ cursor: "pointer" }}
@@ -210,6 +213,8 @@ export default function LEDPanelTable() {
             </Stack>
           </Grid.Col>
         </Grid>
+        TESTE
+        <LEDPanelForm panel={LEDpanels[0]} closeFn={() => {}} />
       </Paper>
     </>
   );

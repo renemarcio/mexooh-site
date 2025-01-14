@@ -48,3 +48,16 @@ export interface MatrixDataType {
   type: string;
   media: string;
 }
+
+export interface InfoOOHPanelInfoType {
+  id: number;
+  latitude: number;
+  longitude: number;
+  dailyImpacts: number;
+  monthlyImpacts: number;
+  value: number;
+  CPM30: number;
+  CPM14: number;
+  CPM7: number;
+  CPM1: number;
+}

@@ -15,23 +15,11 @@ interface MatrixCSVType {
 
 export async function GET(req: NextRequest) {
   try {
-    // const filePath = "utils/EXEMPLO MATRIZ.csv";
     const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
     const address = req.nextUrl.searchParams.get("address") || null;
     const id = req.nextUrl.searchParams.get("id") || null;
     let currentPage = Number(req.nextUrl.searchParams.get("page")) || 1;
     const pageSize = 15;
-    //   const fileContent = fs
-    //     .readFileSync(filePath, { encoding: "utf-8" })
-    //     .split("\r\n")
-    //     .slice(1)
-    //     .map((line) => line.split(","));
-    //   const matrixData: MatrixDataType[] = fileContent.map((row) => ({
-    //     id: row[0],
-    //     address: row[1],
-    //     coordinates: row[2] + ", " + row[3],
-    //     type: row[4],
-    //   }));
     const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
     const parsedContent = Papa.parse(fileContent, {
       header: true,
