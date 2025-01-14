@@ -23,6 +23,8 @@ import Map from "../Map";
 import { modals } from "@mantine/modals";
 import MUPForm from "../MUPForm";
 import { MUP } from "@/types/websiteTypes";
+import { useCartContext } from "@/contexts/CartContext";
+import classes from "./styles.module.css";
 // import PanelRentForm from "../PanelRentForm";
 
 export default function MUPTable() {
@@ -36,6 +38,7 @@ export default function MUPTable() {
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [city, setCity] = useState<string | null>("");
+  const cartContext = useCartContext();
   // const { city, setCity } = useCityContext();
 
   async function fetchMUPs() {
@@ -81,14 +84,27 @@ export default function MUPTable() {
     MUPs.map((MUP) => (
       <Table.Tr
         key={MUP.id}
+        onMouseEnter={() => {
+          setLat(Number(MUP.coordinates?.split(",")[0]));
+          setLong(Number(MUP.coordinates?.split(",")[1]));
+        }}
         onClick={() => {
           setLat(Number(MUP.coordinates?.split(",")[0]));
           setLong(Number(MUP.coordinates?.split(",")[1]));
-          modals.open({
-            children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
-          });
+          cartContext.cart.find((e) => e.item.id === MUP.id)
+            ? modals.open({
+                children: (
+                  <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />
+                ),
+              })
+            : null;
         }}
         style={{ cursor: "pointer" }}
+        className={
+          cartContext.cart.find((e) => e.item.id === MUP.id)
+            ? classes.inCart
+            : ""
+        }
       >
         <Table.Td ta={"left"}>
           <Text lineClamp={1} tt={"capitalize"}>
