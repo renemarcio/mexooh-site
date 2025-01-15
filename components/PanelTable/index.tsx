@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Map from "../Map";
 import { modals } from "@mantine/modals";
 import PanelRentForm from "../PanelRentForm";
-import { Panel } from "@/types/websiteTypes";
+import { InfoOOHPanelInfoType, Panel } from "@/types/websiteTypes";
 import { CartContext } from "@/contexts/CartContext";
 import styles from "./styles.module.css";
 import InfoOOHDisplay from "../InfoOOHDisplay";
@@ -38,7 +38,7 @@ export default function PanelTable() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [city, setCity] = useState<string | null>("");
   const cart = useContext(CartContext);
-  const [infoOOHStats, setInfoOOHStats] = useState<any>([]);
+  const [infoOOHStats, setInfoOOHStats] = useState<InfoOOHPanelInfoType>();
   // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
@@ -114,6 +114,9 @@ export default function PanelTable() {
         setLat(Number(panel.coordinates?.split(",")[0]));
         setLong(Number(panel.coordinates?.split(",")[1]));
         fetchInfoOOHStats(panel.id);
+      }}
+      onMouseLeave={() => {
+        setInfoOOHStats(undefined);
       }}
       onClick={() => {
         modals.open({

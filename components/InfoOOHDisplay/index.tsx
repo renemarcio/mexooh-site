@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 
 interface Props {
-  data: InfoOOHPanelInfoType;
+  data?: InfoOOHPanelInfoType;
 }
 
 export default function InfoOOHDisplay({ data }: Props) {
@@ -136,4 +136,13 @@ export default function InfoOOHDisplay({ data }: Props) {
         </Grid>
       </Center>
     );
+  else {
+    return (
+      <>
+        <Center h={"100%"}>
+          <Title c={"dimmed"}>InfoOOH</Title>
+        </Center>
+      </>
+    );
+  }
 }
