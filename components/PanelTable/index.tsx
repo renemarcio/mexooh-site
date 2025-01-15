@@ -37,7 +37,7 @@ export default function PanelTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [city, setCity] = useState<string | null>("");
+  const [city, setCity] = useState<string | null>("25"); //Hardcoded Alphaville ID because of issues with first fetch. Remove when able to fix.
   const cart = useContext(CartContext);
   const [infoOOHStats, setInfoOOHStats] = useState<InfoOOHPanelInfoType>();
   // const { city, setCity } = useCityContext();
