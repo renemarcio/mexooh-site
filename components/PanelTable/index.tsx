@@ -15,6 +15,7 @@ import {
   Title,
   ComboboxItem,
   Flex,
+  Code,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
@@ -83,8 +84,6 @@ export default function PanelTable() {
     try {
       const response = await fetch(`/api/infooh/panels?id=${panelId}`);
       const data = await response.json();
-      console.log("Call from fetchInfoOOHStats: ");
-      console.log(data);
       setInfoOOHStats(data.data[0]);
     } catch {
       console.log("Couldn't fetch info.");
@@ -137,6 +136,9 @@ export default function PanelTable() {
 
   return (
     <>
+      {/* <Code>
+        {lat}, {long} //Debug/Test Lat Long fetch
+      </Code> */}
       <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
         <Grid>
           <Grid.Col span={5} visibleFrom="lg">

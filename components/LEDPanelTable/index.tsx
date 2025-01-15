@@ -213,8 +213,8 @@ export default function LEDPanelTable() {
             </Stack>
           </Grid.Col>
         </Grid>
-        TESTE
-        <LEDPanelForm panel={LEDpanels[0]} closeFn={() => {}} />
+        {/* TESTE
+        <LEDPanelForm panel={LEDpanels[0]} closeFn={() => {}} /> */}
       </Paper>
     </>
   );
