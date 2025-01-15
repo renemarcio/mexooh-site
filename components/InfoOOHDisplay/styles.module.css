@@ -1,0 +1,12 @@
+.statTitle {
+  /* Padding SUCKS here. Add better styles if needed in the future. */
+  padding-top: 0.5rem;
+  color: var(--mantine-color-midiagreen-7);
+  line-height: 50%;
+}
+
+.statValue {
+  /* Padding SUCKS here. Add better styles if needed in the future. */
+  padding-bottom: 0.5rem;
+  color: var(--mantine-color-bright);
+}
