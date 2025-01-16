@@ -134,6 +134,13 @@ export interface Telefones {
   UserId: number;
 }
 
+export interface ProtocolosTrocaDeSenha {
+  id: number;
+  UUID: string;
+  cadgeral_id: number;
+  concluido: number;
+}
+
 export interface Cliente {}
 
 export interface Negocio {}

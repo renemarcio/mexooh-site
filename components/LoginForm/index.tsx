@@ -32,7 +32,6 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
       password: "",
     },
     validate: {
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Email inválido"),
       email: isEmail("Email inválido"),
     },
   });

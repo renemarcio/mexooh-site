@@ -1,5 +1,7 @@
+import PasswordResetForm from "@/components/PasswordResetForm";
 import { Group, Anchor, Text, PasswordInput, Stack } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import { modals } from "@mantine/modals";
 import React from "react";
 
 type Props = {
@@ -15,7 +17,14 @@ export default function PasswordInputWithRecovery({ form }: Props) {
         </Text>
         <Anchor
           href="#"
-          onClick={(event) => event.preventDefault()}
+          onClick={(event) => {
+            event.preventDefault();
+            modals.open({
+              title: "Redefinição de senha",
+              children: <PasswordResetForm />,
+              centered: true,
+            });
+          }}
           pt={2}
           fw={500}
           fz="xs"
