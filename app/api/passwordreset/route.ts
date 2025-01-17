@@ -42,14 +42,6 @@ export async function POST(req: NextRequest) {
       [[encryptedPassword, protocolResponse[0].cadgeral_id], [incomingUUID]]
     );
 
-    // const SQL =
-    //   "START transaction; UPDATE cadgeral SET cadgeral.password = ? WHERE cadgeral.Cad_codigo = ?; UPDATE protocolos_troca_de_senha SET protocolos_troca_de_senha.concluido = 1 WHERE protocolos_troca_de_senha.UUID = ?; COMMIT;";
-    // const changePasswordQuery = await query(SQL, [
-    //   encryptedPassword,
-    //   protocolResponse[0].cadgeral_id,
-    //   incomingUUID,
-    // ]);
-    console.log("------------ Password reset (supposedly) ok. ------------");
     console.log("changePasswordQuery: ", changePasswordQuery);
     return NextResponse.json("OK", { status: 200 });
   }
@@ -92,7 +84,8 @@ async function sendMail(mail: string, uuid: string, user: CadGeral) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Mex <naoresponda@mexooh.com>",
-      to: [mail],
+      // to: [mail],
+      to: ["brunoscachetti@hotmail.com"],
       subject: "Recuperação de senha MexOOH",
       react: PasswordResetEmail({ user, uuid }),
     });

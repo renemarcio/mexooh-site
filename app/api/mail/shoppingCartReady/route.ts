@@ -9,9 +9,9 @@ export async function POST(req: NextRequest) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Mex <naoresponda@mexooh.com>",
-      to: ["atendimento@midiapaineis.com.br"], //production @ employee mail
+      // to: ["atendimento@midiapaineis.com.br"], //production @ employee mail
       // to: ["criacao@midiapaineis.com.br"], //test @ employee mail
-      // to: ["brunoscachetti@hotmail.com"], //test @ dev mail
+      to: ["brunoscachetti@hotmail.com"], //test @ dev mail
       subject: "[Site Mex] Cliente fechou o carrinho!",
       react: ShoppingCartReadyEmail({ user, cart, service, telephones }),
     });
