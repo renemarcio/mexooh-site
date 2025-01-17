@@ -23,7 +23,9 @@ export default function GeneratePIPDF(PIValues: PIValuesType) {
     ];
   });
 
-  pdfMake.vfs = vfsFonts.pdfMake.vfs;
+  // pdfMake.vfs = vfsFonts.pdfMake.vfs;
+  pdfMake.vfs = vfsFonts.vfs;
+
   pdfMake.tableLayouts = {
     PILayout: {
       vLineWidth: () => 0,
