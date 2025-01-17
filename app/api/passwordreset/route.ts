@@ -1,7 +1,10 @@
 import { CadGeral, ProtocolosTrocaDeSenha } from "@/types/databaseTypes";
-import { query } from "@/utils/mysqlConnection";
+import { query, transaction } from "@/utils/mysqlConnection";
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
+import bcrypt from "bcrypt";
+import { resend } from "@/utils/resend";
+import PasswordResetEmail from "@/emails/PasswordReset";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -17,6 +20,39 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const incomingUUID = req.nextUrl.searchParams.get("uuid");
+  if (incomingUUID) {
+    console.log("Has incomingUUID");
+    console.log("UUID: ", incomingUUID);
+    const protocolResponse = (await query(
+      "SELECT * FROM protocolos_troca_de_senha WHERE UUID = ? AND concluido = 0 AND dataCriacao >= NOW() - INTERVAL 30 MINUTE;",
+      [incomingUUID]
+    )) as ProtocolosTrocaDeSenha[];
+    if (protocolResponse.length != 1)
+      return NextResponse.json("Conflict", { status: 409 });
+    const body = await req.json();
+    const password = body.password;
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
+    const changePasswordQuery = await transaction(
+      [
+        `UPDATE cadgeral SET cadgeral.password = ? WHERE cadgeral.Cad_codigo = ?;`,
+        `UPDATE protocolos_troca_de_senha SET protocolos_troca_de_senha.concluido = 1 WHERE protocolos_troca_de_senha.UUID = ? AND protocolos_troca_de_senha.dataCriacao >= NOW() - INTERVAL 30 MINUTE;`,
+      ],
+      [[encryptedPassword, protocolResponse[0].cadgeral_id], [incomingUUID]]
+    );
+
+    // const SQL =
+    //   "START transaction; UPDATE cadgeral SET cadgeral.password = ? WHERE cadgeral.Cad_codigo = ?; UPDATE protocolos_troca_de_senha SET protocolos_troca_de_senha.concluido = 1 WHERE protocolos_troca_de_senha.UUID = ?; COMMIT;";
+    // const changePasswordQuery = await query(SQL, [
+    //   encryptedPassword,
+    //   protocolResponse[0].cadgeral_id,
+    //   incomingUUID,
+    // ]);
+    console.log("------------ Password reset (supposedly) ok. ------------");
+    console.log("changePasswordQuery: ", changePasswordQuery);
+    return NextResponse.json("OK", { status: 200 });
+  }
   const body = await req.json();
   const email = body.email;
   const SQL = `SELECT * FROM cadgeral WHERE email = ?`;
@@ -45,10 +81,32 @@ export async function POST(req: NextRequest) {
         UUID +
         "."
     );
+    sendMail(email, UUID, user);
   } else {
     console.log("Email not found: ", email);
   }
   return NextResponse.json("OK", { status: 200 });
+}
+
+async function sendMail(mail: string, uuid: string, user: CadGeral) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Mex <naoresponda@mexooh.com>",
+      to: [mail],
+      subject: "Recuperação de senha MexOOH",
+      react: PasswordResetEmail({ user, uuid }),
+    });
+
+    if (error) {
+      console.log("Erro ao enviar e-mail:", error);
+      return Response.json({ error }, { status: 500 });
+    }
+
+    return Response.json(data);
+  } catch (error) {
+    console.log("Erro ao enviar e-mail:", error);
+    return Response.json({ error }, { status: 500 });
+  }
 }
 
 // Usuário manda request para redefinir a senha

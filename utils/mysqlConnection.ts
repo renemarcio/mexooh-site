@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+import mysql, { QueryResult } from "mysql2/promise";
 
 let pool: mysql.Pool | null;
 
@@ -25,6 +25,24 @@ export const db = getPool();
 export const query = async (query: string, params: any[] = []) => {
   const connection = await getPool().getConnection();
   const [rows] = await connection.query(query, params);
+  getPool().releaseConnection(connection);
+  return rows;
+};
+
+export const transaction = async (queries: string[], params: any[][] = []) => {
+  const connection = await getPool().getConnection();
+  await connection.beginTransaction();
+  let rows: QueryResult[] = [];
+  try {
+    for (let i = 0; i < queries.length; i++) {
+      const [result] = await connection.query(queries[i], params[i]);
+      rows.push(result);
+    }
+    await connection.commit();
+  } catch (err) {
+    console.log(err);
+    await connection.rollback();
+  }
   getPool().releaseConnection(connection);
   return rows;
 };

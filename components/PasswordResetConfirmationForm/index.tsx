@@ -11,6 +11,7 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { modals } from "@mantine/modals";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ interface Props {
 export default function PasswordResetConfirmationForm({ UUID }: Props) {
   const [loading, setLoading] = useState(true);
   const [canChangePassword, setCanChangePassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -41,10 +43,68 @@ export default function PasswordResetConfirmationForm({ UUID }: Props) {
     console.log(data);
   }
   async function handleSubmit() {
-    const response = await fetch("/api/passwordreset?uuid=" + UUID, {
-      method: "POST",
-    });
-    console.log(response);
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/passwordreset?uuid=" + UUID, {
+        method: "POST",
+        body: JSON.stringify({
+          UUID: UUID,
+          password: form.values.password,
+        }),
+      });
+      console.log("response from successful submit");
+      console.log(response);
+      console.log(response.status);
+      const waitTimeInSeconds = 5;
+      if (response.status == 200) {
+        //Feedback and maybe redirect to home
+        // window.location.href = "/"; <- might be useful
+        setTimeout(
+          () => (window.location.href = "/"),
+          waitTimeInSeconds * 1000
+        );
+        modals.open({
+          title: "Sucesso!",
+          children: (
+            <>
+              <Text ta={"center"} size="xl" c={"midiagreen"}>
+                Senha alterada com sucesso. Agora é só logar novamente!
+              </Text>
+              <Text c={"dimmed"} size="sm" ta={"center"}>
+                Redirecionando para a homepage em {waitTimeInSeconds} seg.
+              </Text>
+            </>
+          ),
+          centered: true,
+        });
+      } else {
+        //Feedback
+        setTimeout(() => window.location.reload(), waitTimeInSeconds * 1000);
+        modals.open({
+          title: "Ops...",
+          children: (
+            <>
+              <Text ta={"center"} size="xl" c={"red"}>
+                Algo deu errado ao alterar sua senha.
+              </Text>
+              <Text ta={"center"}>
+                O protocolo de alteração de senha pode ter sido utilizado ou
+                expirou. Favor atualizar a pagina e tentar novamente, ou iniciar
+                o processo novamente.
+              </Text>
+              <Text c={"dimmed"} size="sm" ta={"center"}>
+                Atualizando página em {waitTimeInSeconds} seg.
+              </Text>
+            </>
+          ),
+          centered: true,
+        });
+      }
+    } catch (err) {
+      console.log("response from unsuccessful submit");
+      console.error(err);
+    }
+    setSubmitting(false);
   }
 
   useEffect(() => {
@@ -81,7 +141,7 @@ export default function PasswordResetConfirmationForm({ UUID }: Props) {
                 />
               </Skeleton>
               <Skeleton visible={loading}>
-                <Button fullWidth type="submit">
+                <Button fullWidth loading={submitting} type="submit">
                   Trocar de senha
                 </Button>
               </Skeleton>
