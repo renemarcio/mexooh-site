@@ -73,7 +73,8 @@ export async function POST(req: NextRequest) {
         UUID +
         "."
     );
-    sendMail(email, UUID, user);
+    const response = await sendMail(email, UUID, user);
+    console.log("Response from mail: ", response);
   } else {
     console.log("Email not found: ", email);
   }
@@ -93,8 +94,9 @@ async function sendMail(mail: string, uuid: string, user: CadGeral) {
     if (error) {
       console.log("Erro ao enviar e-mail:", error);
       return Response.json({ error }, { status: 500 });
+    } else {
+      console.log("E-mail enviado!");
     }
-
     return Response.json(data);
   } catch (error) {
     console.log("Erro ao enviar e-mail:", error);
