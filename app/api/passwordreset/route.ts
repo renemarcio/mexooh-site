@@ -85,8 +85,8 @@ async function sendMail(mail: string, uuid: string, user: CadGeral) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Mex <naoresponda@mexooh.com>",
-      // to: [mail],
-      to: ["brunoscachetti@hotmail.com"],
+      to: [mail],
+      // to: ["brunoscachetti@hotmail.com"], //test @ dev mail
       subject: "Recuperação de senha MexOOH",
       react: PasswordResetEmail({ user, uuid }),
     });
