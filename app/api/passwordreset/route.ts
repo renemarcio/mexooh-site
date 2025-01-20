@@ -66,17 +66,8 @@ export async function POST(req: NextRequest) {
       "INSERT INTO protocolos_troca_de_senha (UUID, cadgeral_id) VALUES (?, ?)",
       [UUID, userID]
     );
-    console.log(
-      "Sending an email to " +
-        email +
-        " with a link to reset password, uuid = " +
-        UUID +
-        "."
-    );
-    const response = await sendMail(email, UUID, user);
-    console.log("Response from mail: ", response);
-  } else {
-    console.log("Email not found: ", email);
+    // const response = await sendMail(email, UUID, user);
+    sendMail(email, UUID, user);
   }
   return NextResponse.json("OK", { status: 200 });
 }
