@@ -31,7 +31,7 @@ export default function VideoDropZone({ form }: Props) {
       accept={{ "image/*": [] }} // Just testing with images, if it works, should work with video too
       onDrop={(file) => {
         setFile(file[0]);
-        form.setFieldValue("videoFile", file[0]);
+        form.setFieldValue("file", file[0]);
       }}
       h={220}
       multiple={false}
@@ -65,7 +65,7 @@ export default function VideoDropZone({ form }: Props) {
             </Text>
           </div>
         </Group>
-        {preview && <div>{preview()}</div>}
+        {/* {preview && <div>{preview()}</div>} */}
       </Paper>
     </Dropzone>
   );

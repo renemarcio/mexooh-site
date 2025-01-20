@@ -1,6 +1,6 @@
 import { Fortnight, LEDPanel } from "@/types/websiteTypes";
 import VideoDropZone from "./VideoDropZone";
-import { Code, MultiSelect, Space, TextInput } from "@mantine/core";
+import { Button, Code, MultiSelect, Space, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileWithPath } from "@mantine/dropzone";
 
@@ -9,19 +9,34 @@ interface Props {
   closeFn: () => void;
 }
 export interface LEDPanelFormValues {
-  videoFile: FileWithPath;
+  file: File;
   fortnights: string[];
 }
 export default function LEDPanelForm({ panel, closeFn }: Props) {
   const form = useForm<LEDPanelFormValues>({
     // mode: "uncontrolled",
     initialValues: {
-      videoFile: {} as FileWithPath,
+      file: {} as File,
       fortnights: [],
     },
   });
+
+  async function handleSubmit(values: LEDPanelFormValues) {
+    const formData = new FormData();
+    formData.append("file", values.file);
+    formData.append("fortnights", JSON.stringify(values.fortnights));
+    const res = await fetch("/api/uploadFile", {
+      method: "POST",
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
+      body: formData,
+    });
+    console.log(await res.json());
+  }
+
   return (
-    <>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <VideoDropZone form={form} />
       <Space h={"xl"} />
       <MultiSelect
@@ -37,6 +52,9 @@ export default function LEDPanelForm({ panel, closeFn }: Props) {
         {...form.getInputProps("fortnights")}
       />
       <Code>{JSON.stringify(form.getValues(), null, 2)}</Code>
-    </>
+      <Button type="submit" fullWidth>
+        Enviar vídeo e reservar
+      </Button>
+    </form>
   );
 }
