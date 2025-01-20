@@ -122,6 +122,7 @@ export default function PanelTable() {
           children: (
             <PanelRentForm panel={panel} closeFn={() => modals.closeAll()} />
           ),
+          centered: true,
         });
       }}
       style={{ cursor: "pointer" }}

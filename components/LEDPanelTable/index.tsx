@@ -86,6 +86,7 @@ export default function LEDPanelTable() {
         modals.open({
           title: <p>{LEDPanel.address}</p>,
           children: <p>WIP</p>,
+          centered: true,
           // children: (
           //   <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
           // ),

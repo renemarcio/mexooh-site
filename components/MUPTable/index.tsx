@@ -94,6 +94,7 @@ export default function MUPTable() {
           if (!cartContext.cart.find((e) => e.item.id === MUP.id)) {
             modals.open({
               children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
+              centered: true,
             });
           }
         }}
