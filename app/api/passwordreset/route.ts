@@ -21,16 +21,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const incomingUUID = req.nextUrl.searchParams.get("uuid");
-  console.log("Request: ", req);
-  console.warn("Incoming request from: ", req.headers.get("x-forwarded-for"));
+  const ip = req.headers.get("x-forwarded-for") || null;
   const city = req.headers.get("x-vercel-ip-city");
   const state = req.headers.get("x-vercel-ip-country-region");
   const countryCode = req.headers.get("x-vercel-ip-country");
+  let location = null;
   if (countryCode) {
-    const displayNames = new Intl.DisplayNames([countryCode], {
+    const displayNames = new Intl.DisplayNames(["pt-BR"], {
       type: "region",
     });
-    const location = city + ", " + state + " - " + displayNames.of(countryCode);
+    location = city + ", " + state + " - " + displayNames.of(countryCode);
     console.warn("Location: ", location);
   }
   if (incomingUUID) {
@@ -79,19 +79,26 @@ export async function POST(req: NextRequest) {
       [UUID, userID]
     );
     // const response = await sendMail(email, UUID, user);
-    await sendMail(email, UUID, user);
+    console.warn("Sending email... Location is: ", location);
+    await sendMail(email, UUID, user, ip, location);
   }
   return NextResponse.json("OK", { status: 200 });
 }
 
-async function sendMail(mail: string, uuid: string, user: CadGeral) {
+async function sendMail(
+  mail: string,
+  uuid: string,
+  user: CadGeral,
+  ip?: string | null,
+  location?: string | null
+) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Mex <naoresponda@mexooh.com>",
       to: [mail],
       // to: ["brunoscachetti@hotmail.com"], //test @ dev mail
       subject: "Recuperação de senha MexOOH",
-      react: PasswordResetEmail({ user, uuid }),
+      react: PasswordResetEmail({ user, uuid, ip, location }),
     });
 
     if (error) {

@@ -15,10 +15,17 @@ import {
 interface Props {
   user: CadGeral;
   uuid: string;
+  ip?: string | null;
+  location?: string | null;
 }
 import { imageBase64 } from "@/public/logos/base64logo";
 
-export default function PasswordResetEmail({ user, uuid }: Props) {
+export default function PasswordResetEmail({
+  user,
+  uuid,
+  ip,
+  location,
+}: Props) {
   return (
     <>
       <Html lang="pt-BR" dir="ltr">
@@ -49,6 +56,12 @@ export default function PasswordResetEmail({ user, uuid }: Props) {
               >
                 Clique aqui para redefinir a sua senha!
               </Link>
+              {ip && location && (
+                <Text className="text-center text-sm italic text-slate-400">
+                  IP: {ip}, Localização: {location}
+                </Text>
+              )}
+              {/* <Text>IP: {ip}</Text> <Text>Localização: {location}</Text> */}
             </Text>
             <Text>Atenciosamente,</Text> <Text>MexOOH</Text>
             <Markdown>---</Markdown>
