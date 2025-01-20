@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       [UUID, userID]
     );
     // const response = await sendMail(email, UUID, user);
-    sendMail(email, UUID, user);
+    await sendMail(email, UUID, user);
   }
   return NextResponse.json("OK", { status: 200 });
 }
