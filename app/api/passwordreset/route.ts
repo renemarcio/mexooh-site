@@ -21,6 +21,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const incomingUUID = req.nextUrl.searchParams.get("uuid");
+  console.log("Request: ", req);
+  console.warn("Incoming request from: ", req.headers.get("x-forwarded-for"));
   if (incomingUUID) {
     console.log("Has incomingUUID");
     console.log("UUID: ", incomingUUID);

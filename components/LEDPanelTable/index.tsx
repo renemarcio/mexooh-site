@@ -85,8 +85,8 @@ export default function LEDPanelTable() {
         setLong(Number(LEDPanel.coordinates?.split(",")[1]));
         modals.open({
           title: <p>{LEDPanel.address}</p>,
-          children: <p>WIP</p>,
           centered: true,
+          children: <p>WIP</p>,
           // children: (
           //   <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
           // ),
