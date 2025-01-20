@@ -68,7 +68,11 @@ export default function RegisterPFForm() {
             onChange={() => {}}
             onAccept={(value) => form.setFieldValue("cpf", value)}
           />
-          <TextInput {...form.getInputProps("telefone")} label="Telefone" />
+          <TextInput
+            required
+            {...form.getInputProps("telefone")}
+            label="Telefone"
+          />
           <PasswordInput
             required
             {...form.getInputProps("password")}

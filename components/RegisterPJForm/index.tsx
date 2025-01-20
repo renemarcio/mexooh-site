@@ -76,7 +76,11 @@ export default function RegisterPJForm() {
             onChange={() => {}}
             onAccept={(value) => form.setFieldValue("cnpj", value)}
           />
-          <TextInput {...form.getInputProps("telefone")} label="Telefone" />
+          <TextInput
+            required
+            {...form.getInputProps("telefone")}
+            label="Telefone"
+          />
           <PasswordInput
             required
             {...form.getInputProps("password")}
