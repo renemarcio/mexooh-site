@@ -23,6 +23,16 @@ export async function POST(req: NextRequest) {
   const incomingUUID = req.nextUrl.searchParams.get("uuid");
   console.log("Request: ", req);
   console.warn("Incoming request from: ", req.headers.get("x-forwarded-for"));
+  const city = req.headers.get("x-vercel-ip-city");
+  const state = req.headers.get("x-vercel-ip-country-region");
+  const countryCode = req.headers.get("x-vercel-ip-country");
+  if (countryCode) {
+    const displayNames = new Intl.DisplayNames([countryCode], {
+      type: "region",
+    });
+    const location = city + ", " + state + " - " + displayNames.of(countryCode);
+    console.warn("Location: ", location);
+  }
   if (incomingUUID) {
     console.log("Has incomingUUID");
     console.log("UUID: ", incomingUUID);
