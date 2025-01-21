@@ -36,13 +36,14 @@ export async function GET(req: NextRequest) {
   if (id !== null) {
     conditions.push("pon_codigo IN(" + id + ")");
 
-    const command = new GetObjectCommand({
-      Bucket: "mexooh-webapp-system-files",
-      // Key: `Photos/Outdoor/${id}.png`,
-      Key: `Photos/Outdoor/${id}.jpg`,
-    });
-
-    signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
+    if (id.split(",").length === 1) {
+      const command = new GetObjectCommand({
+        Bucket: "mexooh-webapp-system-files",
+        // Key: `Photos/Outdoor/${id}.png`,
+        Key: `Photos/Outdoor/${id}.jpg`,
+      });
+      signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
+    }
   }
 
   if (address !== null) {
