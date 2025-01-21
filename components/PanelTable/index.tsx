@@ -94,7 +94,6 @@ export default function PanelTable() {
     try {
       const response = await fetch(`/api/panels?id=${panelId}`);
       const data = await response.json();
-      console.log(data.data[0].signedUrl);
       setThumbnailUrl(data.data[0].signedUrl);
     } catch {
       console.log("Couldn't fetch thumbnail.");
