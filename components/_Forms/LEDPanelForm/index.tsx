@@ -1,6 +1,14 @@
 import { Fortnight, LEDPanel } from "@/types/websiteTypes";
 import VideoDropZone from "./VideoDropZone";
-import { Button, Code, MultiSelect, Space, TextInput } from "@mantine/core";
+import {
+  Button,
+  Code,
+  MultiSelect,
+  Space,
+  TextInput,
+  Text,
+  Stack,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileWithPath } from "@mantine/dropzone";
 
@@ -36,25 +44,39 @@ export default function LEDPanelForm({ panel, closeFn }: Props) {
   }
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <VideoDropZone form={form} />
-      <Space h={"xl"} />
-      <MultiSelect
-        data={[
-          { label: "Semanal", value: "1" },
-          { label: "Bi-Semanal", value: "2" },
-          { label: "Semanal 2", value: "3" },
-          { label: "Bi-Semanal 2", value: "4" },
-          { label: "Semanal 3", value: "5" },
-          { label: "Bi-Semanal 3", value: "6" },
-        ]}
-        label="Bi-Semanas"
-        {...form.getInputProps("fortnights")}
-      />
-      <Code>{JSON.stringify(form.getValues(), null, 2)}</Code>
-      <Button type="submit" fullWidth>
-        Enviar vídeo e reservar
-      </Button>
+    <form
+      // onSubmit={form.onSubmit(handleSubmit)}
+      onSubmit={form.onSubmit(() => console.log(":0)"))}
+    >
+      {/* <Text>
+        Olá! Nosso banco de dados ainda não tem suporte para o upload de vídeos.
+        Nosso especialista em Banco de Dados está trabalhando duro para
+        adicionar essa funcionalidade. Quando estiver pronto, ficará parecido
+        com isto:
+      </Text> */}
+      <Text c={"dimmed"} fs={"italic"} size="sm" ta={"center"} mb={"xl"}>
+        Em breve, novas funcionalidades! O que esperar:
+      </Text>
+      <Stack gap={"lg"}>
+        <VideoDropZone form={form} />
+        {/* <Space h={"xl"} /> */}
+        <MultiSelect
+          data={[
+            { label: "Semanal", value: "1" },
+            { label: "Bi-Semanal", value: "2" },
+            { label: "Semanal 2", value: "3" },
+            { label: "Bi-Semanal 2", value: "4" },
+            { label: "Semanal 3", value: "5" },
+            { label: "Bi-Semanal 3", value: "6" },
+          ]}
+          label="Bi-Semanas"
+          {...form.getInputProps("fortnights")}
+        />
+        {/* <Code>{JSON.stringify(form.getValues(), null, 2)}</Code> */}
+        <Button type="submit" fullWidth>
+          Enviar vídeo e reservar
+        </Button>
+      </Stack>
     </form>
   );
 }

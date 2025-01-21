@@ -86,10 +86,10 @@ export default function LEDPanelTable() {
         modals.open({
           title: <p>{LEDPanel.address}</p>,
           centered: true,
-          children: <p>WIP</p>,
-          // children: (
-          //   <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
-          // ),
+          // children: <p>WIP</p>,
+          children: (
+            <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
+          ),
         });
       }}
       style={{ cursor: "pointer" }}

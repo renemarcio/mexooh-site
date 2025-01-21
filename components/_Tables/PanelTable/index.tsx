@@ -114,10 +114,10 @@ export default function PanelTable() {
 
   const tableRows = panels.map((panel) => (
     <Table.Tr
+      key={panel.id}
       className={
         cart.cart.find((e) => e.item.id === panel.id) ? styles.inCart : ""
       }
-      key={panel.id}
       onMouseEnter={() => {
         setLat(Number(panel.coordinates?.split(",")[0]));
         setLong(Number(panel.coordinates?.split(",")[1]));

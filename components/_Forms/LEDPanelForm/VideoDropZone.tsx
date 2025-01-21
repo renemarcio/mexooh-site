@@ -52,20 +52,19 @@ export default function VideoDropZone({ form }: Props) {
           </DropzoneReject>
           <div>
             <DropzoneIdle>
-              <Text>Envie seu vídeo aqui!</Text>
+              <Text ta={"center"}>Envie seu vídeo aqui!</Text>
             </DropzoneIdle>
             <DropzoneAccept>
-              <Text>Agora é só soltar!</Text>
+              <Text ta={"center"}>Agora é só soltar!</Text>
             </DropzoneAccept>
             <DropzoneReject>
-              <Text>Drop inválido!</Text>
+              <Text ta={"center"}>Drop inválido!</Text>
             </DropzoneReject>
-            <Text c={"dimmed"}>
+            <Text c={"dimmed"} size="sm" ta={"center"}>
               Tamanho máximo de 5GB, apenas 1 arquivo de vídeo.
             </Text>
           </div>
         </Group>
-        {/* {preview && <div>{preview()}</div>} */}
       </Paper>
     </Dropzone>
   );

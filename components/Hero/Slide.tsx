@@ -14,13 +14,14 @@ import {
 import classes from "./styles.module.css";
 import Link from "next/link";
 import { handelGoth } from "@/styles/fonts/fonts";
+import { randomId } from "@mantine/hooks";
 type SlideProps = {
   slide: SlideData;
 };
 
 export default function Slide({ slide }: SlideProps) {
   return (
-    <Carousel.Slide key={slide.alt}>
+    <Carousel.Slide key={randomId()}>
       <Anchor href={slide.button.link} onClick={slide.button.onClick}>
         <Image
           className={classes.bgImg}

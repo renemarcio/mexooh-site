@@ -3,12 +3,14 @@ import { writeFile } from "fs/promises";
 import path from "path";
 
 export async function POST(req: NextRequest) {
+  const maxFileSizeInBytes = 5 * 1000 * 1000; //5MB
   const destination = path.join(process.cwd(), "public/uploadedFiles/");
   const formData = await req.formData();
-  console.log("Request: ", req);
-  console.log("File: ", formData.get("file"));
   const file = formData.get("file") as File;
   if (!file) return NextResponse.json("Arquivo ausente", { status: 400 });
+  console.log(file.size);
+  if (file.size > maxFileSizeInBytes)
+    return NextResponse.json("Arquivo muito grande", { status: 400 });
   const buffer = Buffer.from(await file.arrayBuffer());
   const filename = file.name.replaceAll(" ", "_");
   try {
