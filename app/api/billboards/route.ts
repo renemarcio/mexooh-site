@@ -1,8 +1,11 @@
 import { Pontos } from "@/types/databaseTypes";
 import { Billboard } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
+import { bucket } from "@/utils/bucket";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -12,7 +15,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-
+  let signedUrl = "";
   let listOfRentedInventoryIDs: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
@@ -32,6 +35,14 @@ export async function GET(req: NextRequest) {
 
   if (id !== null) {
     conditions.push("pon_codigo IN(" + id + ")");
+
+    const command = new GetObjectCommand({
+      Bucket: "mexooh-webapp-system-files",
+      // Key: `Photos/Outdoor/${id}.png`,
+      Key: `Photos/Outdoor/${id}.jpg`,
+    });
+
+    signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
   }
 
   if (address !== null) {
@@ -65,6 +76,7 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
+      signedUrl,
     }));
     const result = {
       data: billboards,
@@ -79,6 +91,7 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
+      signedUrl,
     }));
     const result = {
       data: billboards,
@@ -86,3 +99,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(result);
   }
 }
+
+// const command = new GetObjectCommand({
+//   Bucket: "mexooh-webapp-system-files",
+//   Key: `Logo/mex.png`,
+// });
+// const signedUrl = await getSignedUrl(bucket, command, { expiresIn: 5 });
+// return new Response(JSON.stringify({ signedUrl }));

@@ -71,7 +71,8 @@ export default function BillboardTable() {
     try {
       const response = await fetch(`/api/billboards?id=${id}`);
       const data = await response.json();
-      setThumbnailUrl(data.signedUrl);
+      console.log("Data from HandleBillboardFetch: ", data);
+      setThumbnailUrl(data.data[0].signedUrl);
     } catch {
       console.log("Couldn't fetch billboard.");
     }
