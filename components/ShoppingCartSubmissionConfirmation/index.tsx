@@ -10,9 +10,9 @@ import {
   HoverCard,
 } from "@mantine/core";
 import React, { useContext, useState } from "react";
-import BillboardTable from "../BillboardTable";
+import BillboardTable from "../_Tables/BillboardTable";
 import { CartContext } from "@/contexts/CartContext";
-import PanelTable from "../PanelTable";
+import PanelTable from "../_Tables/PanelTable";
 
 export default function ShoppingCartSubmissionConfirmation() {
   const [needsMoreOutdoors, setNeedsMoreOutdoors] = useState(false);

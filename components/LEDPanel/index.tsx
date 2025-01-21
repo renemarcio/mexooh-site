@@ -1,6 +1,6 @@
 import { Box, Button, Center, Text, Title } from "@mantine/core";
 import React from "react";
-import LEDPanelTable from "../LEDPanelTable";
+import LEDPanelTable from "../_Tables/LEDPanelTable";
 
 export default function LEDPanel() {
   return (

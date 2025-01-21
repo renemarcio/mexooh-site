@@ -20,13 +20,13 @@ import {
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
-import Map from "../Map";
+import Map from "../../Map";
 import { modals } from "@mantine/modals";
-import PanelRentForm from "../PanelRentForm";
+import PanelRentForm from "../../_Forms/PanelRentForm";
 import { InfoOOHPanelInfoType, Panel } from "@/types/websiteTypes";
 import { CartContext } from "@/contexts/CartContext";
 import styles from "./styles.module.css";
-import InfoOOHDisplay from "../InfoOOHDisplay";
+import InfoOOHDisplay from "../../InfoOOHDisplay";
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);

@@ -1,7 +1,7 @@
 import FortnightCalendarButton from "@/components/FortnightCalendarButton";
 import Logo from "@/components/Logo";
-import StaffLogin from "@/components/StaffLogin";
-import ThemeToggleIcon from "@/components/ThemeToggleIcon";
+import StaffLogin from "@/components/_Forms/Login/StaffLogin";
+import ThemeToggleIcon from "@/components/_Buttons/ThemeToggleIcon";
 import { CartContextType } from "@/contexts/CartContext";
 import {
   Group,

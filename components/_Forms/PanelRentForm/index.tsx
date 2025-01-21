@@ -2,7 +2,7 @@ import { CartContext } from "@/contexts/CartContext";
 import { Title, Text, Button, MultiSelect, Skeleton } from "@mantine/core";
 import { Fortnight, InfoOOHPanelInfoType, Panel } from "@/types/websiteTypes";
 import React, { useContext, useEffect, useState } from "react";
-import InfoOOHDisplay from "../InfoOOHDisplay";
+import InfoOOHDisplay from "../../InfoOOHDisplay";
 
 type Props = {
   panel: Panel;

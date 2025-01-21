@@ -19,50 +19,53 @@ import {
 import { useDebouncedValue } from "@mantine/hooks";
 // import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import Map from "../Map";
+import Map from "../../Map";
 import { modals } from "@mantine/modals";
-import MUPForm from "../MUPForm";
-import { LEDPanel } from "@/types/websiteTypes";
-import LEDPanelForm from "../LEDPanelForm";
+import MUPForm from "../../_Forms/MUPForm";
+import { MUP } from "@/types/websiteTypes";
+import { useCartContext } from "@/contexts/CartContext";
+import classes from "./styles.module.css";
 // import PanelRentForm from "../PanelRentForm";
 
-export default function LEDPanelTable() {
+export default function MUPTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [LEDpanels, setLEDPanels] = useState<LEDPanel[]>([]);
+  const [MUPs, setMUPs] = useState<MUP[]>([]);
   const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
-  const [videoURL, setVideoURL] = useState("");
-  const { city, setCity } = useCityContext();
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [city, setCity] = useState<string | null>("");
+  const cartContext = useCartContext();
+  // const { city, setCity } = useCityContext();
 
-  async function fetchLEDPanels() {
+  async function fetchMUPs() {
     try {
       const response = await fetch(
-        `/api/LEDpanels?activePage=${activePage}&pageSize=17&endereco=${address}&cidade=${city}`
+        `/api/mup?activePage=${activePage}&pageSize=20&address=${address}&city=${
+          city === null ? "" : city
+        }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      setLEDPanels(data.data);
+      setMUPs(data.data);
     } catch {
-      setLEDPanels([]);
+      setMUPs([]);
       setTotalPages(0);
-      console.log("Couldn't fetch panels.");
+      console.log("Couldn't fetch MUPs.");
     }
   }
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/cities?asCombobox=true&type=L");
+      const response = await fetch("/api/cities?asCombobox=true&type=M");
       const data = await response.json();
       setCities(data.data);
-      setCity(data.data[0].value);
+      setCity(data.data[0]?.value);
     } catch (error) {
-      console.log(error);
       setCities([]);
-      console.log("LED PANEL Couldn't fetch cities.");
     }
   }
   useEffect(() => {
@@ -70,37 +73,48 @@ export default function LEDPanelTable() {
   }, []);
 
   useEffect(() => {
-    fetchLEDPanels();
+    fetchMUPs();
   }, [debouncedAddress, city, activePage]);
 
   useEffect(() => {
     setPage(1);
   }, [city]);
 
-  const tableRows = LEDpanels.map((LEDPanel) => (
-    <Table.Tr
-      key={LEDPanel.id}
-      onClick={() => {
-        setLat(Number(LEDPanel.coordinates?.split(",")[0]));
-        setLong(Number(LEDPanel.coordinates?.split(",")[1]));
-        modals.open({
-          title: <p>{LEDPanel.address}</p>,
-          centered: true,
-          children: <p>WIP</p>,
-          // children: (
-          //   <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
-          // ),
-        });
-      }}
-      style={{ cursor: "pointer" }}
-    >
-      <Table.Td ta={"left"}>
-        <Text lineClamp={1} tt={"capitalize"}>
-          {LEDPanel.address?.toLowerCase()}
-        </Text>
-      </Table.Td>
-    </Table.Tr>
-  ));
+  const tableRows = MUPs ? (
+    MUPs.map((MUP) => (
+      <Table.Tr
+        key={MUP.id}
+        onMouseEnter={() => {
+          setLat(Number(MUP.coordinates?.split(",")[0]));
+          setLong(Number(MUP.coordinates?.split(",")[1]));
+        }}
+        onClick={() => {
+          setLat(Number(MUP.coordinates?.split(",")[0]));
+          setLong(Number(MUP.coordinates?.split(",")[1]));
+          if (!cartContext.cart.find((e) => e.item.id === MUP.id)) {
+            modals.open({
+              children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
+              centered: true,
+            });
+          }
+        }}
+        style={{ cursor: "pointer" }}
+        className={
+          cartContext.cart.find((e) => e.item.id === MUP.id)
+            ? classes.inCart
+            : ""
+        }
+      >
+        <Table.Td ta={"left"}>
+          <Text lineClamp={1} tt={"capitalize"}>
+            {MUP.address?.toLowerCase()}
+          </Text>
+        </Table.Td>
+      </Table.Tr>
+    ))
+  ) : (
+    <></>
+  );
 
   return (
     <>
@@ -108,41 +122,21 @@ export default function LEDPanelTable() {
         <Grid>
           <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
-              {/* <Image
+              <Image
                 src={thumbnailUrl}
-                height={"300px"}
+                height={"600px"}
                 fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
                 lightHidden
-                h={"50%"}
               />
               <Image
                 src={thumbnailUrl}
-                height={"300px"}
+                height={"600px"}
                 fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
                 darkHidden
-                h={"50%"}
-              /> */}
-              <Image
-                src={"photos/led.jpeg"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
               />
-              {/* <video loop muted height={"300px"}> //Reenable when we have videos for this.
-                <source src={videoURL} type="video/mp4" />
-                <Image
-                  height={"300px"}
-                  src="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Video"
-                  lightHidden
-                  h={"50%"}
-                />
-                <Image
-                  height={"300px"}
-                  src="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Video"
-                  darkHidden
-                  h={"50%"}
-                />
-                Vídeo indisponível
-              </video> */}
-              {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
+              <Box h={"250px"}>
+                <Map lat={lat} long={long} />
+              </Box>
               <Paper withBorder h={"300px"}>
                 <Center h={"100%"}>
                   <Title c={"dimmed"}>InfoOOH</Title>
@@ -166,7 +160,7 @@ export default function LEDPanelTable() {
                             flex={3}
                             placeholder="Endereço..."
                             onBlur={() => {
-                              fetchLEDPanels();
+                              fetchMUPs();
                             }}
                             onChange={(e) => setAddress(e.currentTarget.value)}
                           />
@@ -176,9 +170,9 @@ export default function LEDPanelTable() {
                             data={cities}
                             onChange={(value) => {
                               setCity(value!);
-                              fetchLEDPanels();
+                              fetchMUPs();
                             }}
-                            allowDeselect={false}
+                            allowDeselect={true}
                             value={city}
                           />
                         </Flex>
@@ -190,7 +184,7 @@ export default function LEDPanelTable() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {LEDpanels && LEDpanels.length > 0 ? (
+                  {MUPs && MUPs.length > 0 ? (
                     tableRows
                   ) : (
                     <Table.Tr>
@@ -214,8 +208,6 @@ export default function LEDPanelTable() {
             </Stack>
           </Grid.Col>
         </Grid>
-        {/* TESTE
-        <LEDPanelForm panel={LEDpanels[0]} closeFn={() => {}} /> */}
       </Paper>
     </>
   );

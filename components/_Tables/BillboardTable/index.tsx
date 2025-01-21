@@ -20,15 +20,15 @@ import {
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
-import Map from "../Map";
-import { useCityContext } from "../../contexts/CityContext";
+import Map from "../../Map";
+import { useCityContext } from "../../../contexts/CityContext";
 import { useCartContext } from "@/contexts/CartContext";
 import {
   IconShoppingCartMinus,
   IconShoppingCartPlus,
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
-import RentBillboardModal from "../RentBillboardModal";
+import RentBillboardModal from "../../_Forms/RentBillboardModal";
 import classes from "./styles.module.css";
 import { Billboard, Fortnight } from "@/types/websiteTypes";
 

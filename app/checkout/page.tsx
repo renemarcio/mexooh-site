@@ -14,13 +14,13 @@ import {
   Text,
 } from "@mantine/core";
 import React, { useContext, useEffect, useState } from "react";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/_Forms/Login/LoginForm";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import BillboardTable from "../../components/BillboardTable";
-import CheckoutForm from "@/components/CheckoutForm";
+import BillboardTable from "../../components/_Tables/BillboardTable";
+import CheckoutForm from "@/components/_Forms/CheckoutForm";
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@mantine/hooks";
-import PhoneForm from "@/components/PhoneForm";
+import PhoneForm from "@/components/_Forms/PhoneForm";
 import ShoppingCartSubmissionConfirmation from "@/components/ShoppingCartSubmissionConfirmation";
 import { CartContext } from "@/contexts/CartContext";
 

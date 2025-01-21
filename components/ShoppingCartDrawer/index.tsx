@@ -15,7 +15,7 @@ import { modals } from "@mantine/modals";
 import Link from "next/link";
 import React from "react";
 import CartEntry from "./CartEntry";
-import ServiceButton from "../ServiceButton";
+import ServiceButton from "../_Buttons/ServiceButton";
 
 type ShoppingCartDrawerProps = {
   opened: boolean;

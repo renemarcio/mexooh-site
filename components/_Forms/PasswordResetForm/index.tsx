@@ -4,7 +4,7 @@ import { Text, TextInput, Button, Stack } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
-import PasswordResetMailSend from "../PasswordResetMailSend";
+import PasswordResetMailSend from "../../PasswordResetMailSend";
 
 export default function PasswordResetForm() {
   const [loading, setLoading] = useState(false);

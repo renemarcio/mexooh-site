@@ -1,6 +1,6 @@
 import { Box, Center, Title } from "@mantine/core";
 import React from "react";
-import BillboardTable from "../BillboardTable";
+import BillboardTable from "../_Tables/BillboardTable";
 import classes from "./styles.module.css";
 import FortnightCalendarButton from "../FortnightCalendarButton";
 

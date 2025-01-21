@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 // import { bisemanas, inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
-import Map from "../Map";
+import Map from "../../Map";
 import { IconShoppingCartPlus } from "@tabler/icons-react";
 import { CartContext } from "@/contexts/CartContext";
 import { CartEntry } from "@/types/cartEntry";

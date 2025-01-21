@@ -1,7 +1,7 @@
 import { Button, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import React from "react";
-import ServiceForm from "../ServiceForm";
+import ServiceForm from "../../_Forms/ServiceForm";
 import { useToggle } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useServiceContext } from "@/contexts/ServiceContext";

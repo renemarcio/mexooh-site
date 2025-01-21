@@ -16,7 +16,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
-import PanelTable from "../PanelTable";
+import PanelTable from "../_Tables/PanelTable";
 import classes from "./styles.module.css";
 export default function Panels() {
   return (

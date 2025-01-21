@@ -1,7 +1,7 @@
 import { Button, Paper, Stack, TextInput, Text, Code } from "@mantine/core";
 import React from "react";
-import PasswordInputWithRecovery from "../Inputs/PasswordInputWithRecovery";
-import RegisterAnchor from "../Buttons/RegisterAnchor";
+import PasswordInputWithRecovery from "../../../Inputs/PasswordInputWithRecovery";
+import RegisterAnchor from "../../../_Buttons/RegisterAnchor";
 import { UseFormInput, isEmail, useForm } from "@mantine/form";
 import { signIn } from "next-auth/react";
 type LoginProps = {

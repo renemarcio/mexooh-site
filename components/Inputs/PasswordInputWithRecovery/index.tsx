@@ -1,4 +1,4 @@
-import PasswordResetForm from "@/components/PasswordResetForm";
+import PasswordResetForm from "@/components/_Forms/PasswordResetForm";
 import { Group, Anchor, Text, PasswordInput, Stack } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { modals } from "@mantine/modals";

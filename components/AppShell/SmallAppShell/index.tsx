@@ -1,5 +1,5 @@
 import Logo from "@/components/Logo";
-import ThemeToggleIcon from "@/components/ThemeToggleIcon";
+import ThemeToggleIcon from "@/components/_Buttons/ThemeToggleIcon";
 import { CartContextType } from "@/contexts/CartContext";
 import {
   ActionIcon,

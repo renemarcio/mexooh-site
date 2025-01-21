@@ -1,8 +1,8 @@
 import { Anchor, Button, Center, Group, Modal, Stack } from "@mantine/core";
 import { IconBuilding, IconUser } from "@tabler/icons-react";
 import React from "react";
-import RegisterPJForm from "../../RegisterPJForm";
-import RegisterPFForm from "../../RegisterPFForm";
+import RegisterPJForm from "../../_Forms/Login/RegisterPJForm";
+import RegisterPFForm from "../../_Forms/Login/RegisterPFForm";
 import { modals } from "@mantine/modals";
 export default function RegisterAnchor() {
   const selectTypeModal = (

@@ -1,5 +1,5 @@
 import React from "react";
-import MUPTable from "../MUPTable";
+import MUPTable from "../_Tables/MUPTable";
 import { Title, Text, Box } from "@mantine/core";
 import classes from "./styles.module.css";
 export default function MUP() {
