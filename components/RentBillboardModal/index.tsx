@@ -4,11 +4,13 @@ import {
   Center,
   Code,
   ComboboxData,
+  Group,
   MultiSelect,
   NumberFormatter,
   Stack,
   Text,
   Title,
+  Image,
 } from "@mantine/core";
 // import { bisemanas, inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
@@ -21,9 +23,14 @@ import { Billboard, Fortnight } from "@/types/websiteTypes";
 type Props = {
   billboard: Billboard;
   closeFn: () => void;
+  signedURL: string;
 };
 
-export default function RentBillboardModal({ billboard, closeFn }: Props) {
+export default function RentBillboardModal({
+  billboard,
+  closeFn,
+  signedURL,
+}: Props) {
   const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
   const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
@@ -117,14 +124,14 @@ export default function RentBillboardModal({ billboard, closeFn }: Props) {
     >
       <Title ta={"center"}>{billboard.address}</Title>
       <Stack gap={"md"}>
-        <Center>
-          <Box h={"400px"} w={"100%"}>
-            <Map
-              lat={Number(billboard.coordinates?.split(",")[0])}
-              long={Number(billboard.coordinates?.split(",")[1])}
-            />
-          </Box>
-        </Center>
+        <Image
+          src={signedURL}
+          fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+        />
+        <Map
+          lat={Number(billboard.coordinates?.split(",")[0])}
+          long={Number(billboard.coordinates?.split(",")[1])}
+        />
         <MultiSelect
           label="Selecione as Bi-Semanas."
           description="Bi-Semanas disponíveis"
