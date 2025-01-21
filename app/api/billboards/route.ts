@@ -1,7 +1,7 @@
 import { Pontos } from "@/types/databaseTypes";
 import { Billboard } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
@@ -37,12 +37,21 @@ export async function GET(req: NextRequest) {
     conditions.push("pon_codigo IN(" + id + ")");
 
     if (id.split(",").length === 1) {
-      const command = new GetObjectCommand({
+      const listCommand = new ListObjectsV2Command({
         Bucket: "mexooh-webapp-system-files",
-        // Key: `Photos/Outdoor/${id}.png`,
-        Key: `Photos/Outdoor/${id}.jpg`,
+        Prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
       });
-      signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
+
+      const objList = await bucket.send(listCommand);
+
+      if (objList.Contents && objList.Contents.length > 0) {
+        const foundPic = objList.Contents[0];
+        const command = new GetObjectCommand({
+          Bucket: "mexooh-webapp-system-files",
+          Key: foundPic.Key,
+        });
+        signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
+      }
     }
   }
 

@@ -90,6 +90,16 @@ export default function PanelTable() {
     }
   }
 
+  async function fetchThumbnail(panelId: number) {
+    try {
+      const response = await fetch(`/api/panels?id=${panelId}`);
+      const data = await response.json();
+      console.log(data.data[0].signedUrl);
+      setThumbnailUrl(data.data[0].signedUrl);
+    } catch {
+      console.log("Couldn't fetch thumbnail.");
+    }
+  }
   useEffect(() => {
     fetchPanels();
   }, [debouncedAddress, activePage]);
@@ -113,9 +123,10 @@ export default function PanelTable() {
         setLat(Number(panel.coordinates?.split(",")[0]));
         setLong(Number(panel.coordinates?.split(",")[1]));
         fetchInfoOOHStats(panel.id);
+        fetchThumbnail(panel.id);
       }}
       onMouseLeave={() => {
-        setInfoOOHStats(undefined);
+        // setInfoOOHStats(undefined);
       }}
       onClick={() => {
         modals.open({
