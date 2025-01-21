@@ -84,10 +84,10 @@ export default function PanelRentForm({ panel, closeFn }: Props) {
   return (
     <>
       <Title ta={"center"}>{panel.address}</Title>
-      <Text ta={"center"}>
+      {/* <Text ta={"center"}>
         Os valores dos painéis são negociáveis, coloque no carrinho para que
         possamos entrar em contato e reservar seu painel.
-      </Text>
+      </Text> */}
       <Skeleton visible={loading}>
         <InfoOOHDisplay data={infoOOHData} />
       </Skeleton>

@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
           Bucket: "mexooh-webapp-system-files",
           Key: foundPic.Key,
         });
-        signedUrl = await getSignedUrl(bucket, command, { expiresIn: 30 });
+        signedUrl = await getSignedUrl(bucket, command, { expiresIn: 5 });
       }
     }
   }

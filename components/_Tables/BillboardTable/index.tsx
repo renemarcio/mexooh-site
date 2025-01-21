@@ -302,7 +302,6 @@ export default function BillboardTable() {
                     children: (
                       <RentBillboardModal
                         billboard={activeBillboard}
-                        signedURL={thumbnailUrl}
                         closeFn={() => modals.closeAll()}
                       />
                     ),

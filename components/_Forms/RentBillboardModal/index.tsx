@@ -19,21 +19,23 @@ import { IconShoppingCartPlus } from "@tabler/icons-react";
 import { CartContext } from "@/contexts/CartContext";
 import { CartEntry } from "@/types/cartEntry";
 import { Billboard, Fortnight } from "@/types/websiteTypes";
+import { set } from "zod";
 
 type Props = {
   billboard: Billboard;
   closeFn: () => void;
-  signedURL: string;
+  // signedURL: string;
 };
 
 export default function RentBillboardModal({
   billboard,
   closeFn,
-  signedURL,
-}: Props) {
+}: // signedURL,
+Props) {
   const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
   const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const cart = useContext(CartContext);
   const fortnightsData =
     fortnights.map((fortnight) => {
@@ -66,9 +68,22 @@ export default function RentBillboardModal({
       };
     }) || [];
 
+  async function fetchThumbnail(id: number) {
+    const res = await fetch("/api/billboards?id=" + id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data.data[0].signedUrl);
+    setThumbnailUrl(data.data[0].signedUrl);
+  }
+
   useEffect(() => {
     fetchFortnights();
     fetchRentedFortnights();
+    fetchThumbnail(billboard.id);
   }, []);
 
   async function fetchFortnights() {
@@ -125,7 +140,7 @@ export default function RentBillboardModal({
       <Title ta={"center"}>{billboard.address}</Title>
       <Stack gap={"md"}>
         <Image
-          src={signedURL}
+          src={thumbnailUrl}
           fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
         />
         <Map
@@ -147,6 +162,7 @@ export default function RentBillboardModal({
         >
           Adicionar ao carrinho
         </Button>
+        <Code>{JSON.stringify(billboard)}</Code>
       </Stack>
     </form>
   );
