@@ -34,6 +34,7 @@ import React, { useEffect, useMemo } from "react";
 import PIForm from "./PIForm";
 import { MatrixDataType } from "@/types/websiteTypes";
 import { useDisclosure, usePagination } from "@mantine/hooks";
+import PresentationForm from "../_Forms/PresentationForm";
 
 export default function AdminDashboard() {
   const [treeData, setTreeData] = React.useState<TreeNodeData[]>([]);
@@ -126,6 +127,7 @@ export default function AdminDashboard() {
   }
 
   async function FetchBucket() {
+    //REMOVE AMAZON BUCKET FUNCTIONALITY
     try {
       const response = await fetch("/api/bucket/checking");
       const data = await response.json();
@@ -176,6 +178,18 @@ export default function AdminDashboard() {
               Imprimir PI
             </Button>
             <Button onClick={toggle}>Coordenadas</Button>
+            <Button
+              onClick={() => {
+                modals.open({
+                  title: "Apresentação",
+                  size: "lg",
+                  children: <PresentationForm />,
+                  centered: true,
+                });
+              }}
+            >
+              Apresentação
+            </Button>
           </Group>
           <Stack>
             <Text>Sistemas Auxiliares</Text>

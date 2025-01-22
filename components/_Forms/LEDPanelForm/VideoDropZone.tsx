@@ -27,8 +27,7 @@ export default function VideoDropZone({ form }: Props) {
     : undefined;
   return (
     <Dropzone
-      // accept={{ "video/*": [] }}
-      accept={{ "image/*": [] }} // Just testing with images, if it works, should work with video too
+      accept={{ "video/*": [] }}
       onDrop={(file) => {
         setFile(file[0]);
         form.setFieldValue("file", file[0]);
