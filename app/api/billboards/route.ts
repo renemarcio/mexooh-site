@@ -1,11 +1,11 @@
 import { Pontos } from "@/types/databaseTypes";
 import { Billboard } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
-import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+// import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
+// import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
-import { bucket } from "@/utils/bucket";
+// import { bucket } from "@/utils/bucket";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -36,23 +36,23 @@ export async function GET(req: NextRequest) {
   if (id !== null) {
     conditions.push("pon_codigo IN(" + id + ")");
 
-    if (id.split(",").length === 1) {
-      const listCommand = new ListObjectsV2Command({
-        Bucket: "mexooh-webapp-system-files",
-        Prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
-      });
+    // if (id.split(",").length === 1) {
+    //   const listCommand = new ListObjectsV2Command({
+    //     Bucket: "mexooh-webapp-system-files",
+    //     Prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
+    //   });
 
-      const objList = await bucket.send(listCommand);
+    //   // const objList = await bucket.send(listCommand);
 
-      if (objList.Contents && objList.Contents.length > 0) {
-        const foundPic = objList.Contents[0];
-        const command = new GetObjectCommand({
-          Bucket: "mexooh-webapp-system-files",
-          Key: foundPic.Key,
-        });
-        signedUrl = await getSignedUrl(bucket, command, { expiresIn: 5 });
-      }
-    }
+    //   if (objList.Contents && objList.Contents.length > 0) {
+    //     const foundPic = objList.Contents[0];
+    //     const command = new GetObjectCommand({
+    //       Bucket: "mexooh-webapp-system-files",
+    //       Key: foundPic.Key,
+    //     });
+    //     // signedUrl = await getSignedUrl(bucket, command, { expiresIn: 5 });
+    //   }
+    // }
   }
 
   if (address !== null) {

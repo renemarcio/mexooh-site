@@ -162,7 +162,6 @@ Props) {
         >
           Adicionar ao carrinho
         </Button>
-        <Code>{JSON.stringify(billboard)}</Code>
       </Stack>
     </form>
   );

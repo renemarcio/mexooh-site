@@ -125,14 +125,14 @@ export default function AdminDashboard() {
     return null;
   }
 
-  async function FetchBucket() {
-    try {
-      const response = await fetch("/api/bucket/checking");
-      const data = await response.json();
-    } catch {
-      console.log("Couldn't fetch bucket.");
-    }
-  }
+  // async function FetchBucket() {
+  //   try {
+  //     const response = await fetch("/api/bucket/checking");
+  //     const data = await response.json();
+  //   } catch {
+  //     console.log("Couldn't fetch bucket.");
+  //   }
+  // }
 
   function Leaf({
     node,
