@@ -1,4 +1,4 @@
-import { PIValuesType } from "@/components/AdminDashboard/PIForm";
+import { PIValuesType } from "@/components/_Forms/PIForm/PIForm";
 import pdfMake from "pdfmake/build/pdfmake";
 import vfsFonts from "pdfmake/build/vfs_fonts";
 import {
