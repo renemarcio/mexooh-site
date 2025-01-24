@@ -55,7 +55,7 @@ export default function AdminDashboard() {
       </Table.Tr>
     );
   });
-  
+
   interface FileTree {
     name: string;
     type: "file" | "directory";
