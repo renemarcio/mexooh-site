@@ -6,6 +6,7 @@ import {
 import { Panel } from "@/types/websiteTypes";
 import {
   Button,
+  Code,
   ComboboxData,
   Image,
   Loader,
@@ -16,11 +17,12 @@ import {
 import { useForm } from "@mantine/form";
 // import ReactPDF, { pdf, usePDF } from "@react-pdf/renderer";
 import { IconSlideshow } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function PresentationForm() {
   const [loading, setLoading] = useState(false);
   const [inventory, setInventory] = useState<ComboboxData>();
+  const [panelThumbnail, setPanelThumbnail] = useState("");
   // const [instance, update] = usePDF();
   const form = useForm({
     initialValues: {
@@ -42,6 +44,40 @@ export default function PresentationForm() {
     setInventory(select);
     return select;
   }
+  function toDataURL(url: string, callback: (result: any) => void) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open("GET", url);
+    xhr.responseType = "blob";
+    xhr.send();
+  }
+
+  async function fetchPanelThumbnail() {
+    const response = await fetch(`/api/panels?id=${form.values.inventoryID}`);
+    const data = await response.json();
+    console.log("Data from fetchPanelThumbnail in PresentationForm: ", data);
+    toDataURL(
+      "/photos/Paineis/" +
+        String(form.values.inventoryID).padStart(6, "0") +
+        ".jpg",
+      (base64Test) => {
+        console.log("base64Test: ", base64Test);
+        setPanelThumbnail(base64Test);
+      }
+    );
+
+    // setPanelThumbnail(data.data[0].signedUrl);
+  }
+
+  useEffect(() => {
+    fetchPanelThumbnail();
+  }, [form.values.inventoryID]);
 
   useMemo(() => {
     setLoading(true);
@@ -83,12 +119,23 @@ export default function PresentationForm() {
   //   }
   // };
 
-  function handleSubmit() {
-    GeneratePresentationPDF();
+  async function fetchPanel(id: string) {
+    const response = await fetch(`/api/panels?id=${id}`);
+    const data = await response.json();
+    return data.data[0];
+  }
+
+  async function handleSubmit() {
+    const panel = await fetchPanel(form.values.inventoryID);
+    const description = form.values.complementaryText;
+    const image = panelThumbnail;
+    GeneratePresentationPDF(panel, description, image);
   }
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Code>{JSON.stringify(form.values, null, 2)}</Code>
+      <Code>awa {panelThumbnail}</Code>
       <Stack gap={"xl"}>
         <Select
           leftSection={loading && <Loader size={"sm"} />}
@@ -100,7 +147,10 @@ export default function PresentationForm() {
           {...form.getInputProps("inventoryID")}
         />
         <Image
-          src={"https://placehold.co/2212x1554?text=Imagem+do+Ponto+(Teste)"}
+          src={panelThumbnail}
+          fallbackSrc={
+            "https://placehold.co/2212x1554?text=Imagem+do+Ponto+(Teste)"
+          }
         />
         <TextInput
           label={"Texto complementar"}

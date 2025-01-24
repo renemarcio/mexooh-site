@@ -10,20 +10,22 @@ import {
 import { MexLogoWhiteBase64 } from "@/public/logos/LogosBase64";
 import { InfoOOHPanelInfoType, Inventory } from "@/types/websiteTypes";
 
-// export interface PresentationValuesType {
-//   inventory: Inventory;
-//   infoOOH: InfoOOHPanelInfoType;
-//   description: string;
-// }
+export interface PresentationValuesType {
+  inventory: Inventory;
+  description: string;
+  image: string;
+}
 
-export default function GeneratePresentationPDF() {
-  /*
-  {
-    inventory,
-    infoOOH,
-    description,
-  }: PresentationValuesType
-  */
+// export default function GeneratePresentationPDF({
+//   inventory,
+//   description,
+//   image,
+// }: PresentationValuesType) {
+export default function GeneratePresentationPDF(
+  inventory: Inventory,
+  description: string,
+  image: string
+) {
   pdfMake.vfs = vfsFonts.vfs;
 
   const blackBGHeight = 1047;
@@ -83,8 +85,8 @@ export default function GeneratePresentationPDF() {
       { image: "secondImage" },
       { image: "thirdImage", pageBreak: "after" },
       {
-        text: "Ponto 544 - Rod. Castello Branco, km 31+900m – Face Sorocaba - Jandira",
-        // text: inventory.address,
+        // text: "Ponto 544 - Rod. Castello Branco, km 31+900m – Face Sorocaba - Jandira",
+        text: inventory.address,
         alignment: "center",
         bold: true,
         marginTop: 40,
@@ -227,6 +229,7 @@ export default function GeneratePresentationPDF() {
                   {
                     text: "Link: https://maps.app.goo.gl/nH7oxUdnzyNGU3X47\n",
                     alignment: "left",
+                    noWrap: true,
                   },
                 ],
               },
@@ -236,7 +239,8 @@ export default function GeneratePresentationPDF() {
         marginLeft: 45,
       },
       {
-        text: "Custos Líquidos - Veiculação Mensal: R$ 9.000,00 – Período Contratual 12 (meses) Com Disponibilidade a partir de 01/03/2025",
+        // text: "Custos Líquidos - Veiculação Mensal: R$ 9.000,00 – Período Contratual 12 (meses) Com Disponibilidade a partir de 01/03/2025",
+        text: description,
         alignment: "center",
         bold: true,
         fontSize: 28,
@@ -248,7 +252,8 @@ export default function GeneratePresentationPDF() {
       coverImage: CoverImageBase64,
       secondImage: SecondImageBase64,
       thirdImage: ThirdImageBase64,
-      placeholderImage: PlaceholderImage,
+      placeholderImage: image,
+      // placeholderImage: PlaceholderImage,
     },
   };
   pdfMake.createPdf(docDefinition).open();
