@@ -34,7 +34,7 @@ export default function PresentationForm() {
   async function fetchInventory() {
     const response = await fetch("/api/panels");
     const data = await response.json();
-    console.log("Data from fetchInventory in PresentationForm: ", data);
+
     const select = data.data.map((obj: Panel) => {
       return {
         value: obj.id.toString(),
@@ -61,13 +61,11 @@ export default function PresentationForm() {
   async function fetchPanelThumbnail() {
     const response = await fetch(`/api/panels?id=${form.values.inventoryID}`);
     const data = await response.json();
-    console.log("Data from fetchPanelThumbnail in PresentationForm: ", data);
     toDataURL(
       "/photos/Paineis/" +
         String(form.values.inventoryID).padStart(6, "0") +
         ".jpg",
       (base64Test) => {
-        console.log("base64Test: ", base64Test);
         setPanelThumbnail(base64Test);
       }
     );
@@ -134,8 +132,6 @@ export default function PresentationForm() {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Code>{JSON.stringify(form.values, null, 2)}</Code>
-      <Code>awa {panelThumbnail}</Code>
       <Stack gap={"xl"}>
         <Select
           leftSection={loading && <Loader size={"sm"} />}
@@ -148,9 +144,7 @@ export default function PresentationForm() {
         />
         <Image
           src={panelThumbnail}
-          fallbackSrc={
-            "https://placehold.co/2212x1554?text=Imagem+do+Ponto+(Teste)"
-          }
+          fallbackSrc={"https://placehold.co/2212x1554?text=Imagem+do+Ponto"}
         />
         <TextInput
           label={"Texto complementar"}
