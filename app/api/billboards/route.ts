@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-  let signedUrl = "";
+  const signedUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.jpg`;
   let listOfRentedInventoryIDs: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
   const conditions = [];
 
   if (id !== null) {
+    console.log(signedUrl);
     conditions.push("pon_codigo IN(" + id + ")");
 
     if (id.split(",").length === 1) {

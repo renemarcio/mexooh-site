@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
 
-  let signedUrl = "";
+  const signedUrl = `/photos/Paineis/${String(id).padStart(6, "0")}.jpg`;
 
   let listOfRentedInventoryIDs: number[] = [];
 
