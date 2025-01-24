@@ -31,9 +31,10 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import React, { useEffect, useMemo } from "react";
-import PIForm from "./PIForm";
+import PIForm from "../_Forms/PIForm/PIForm";
 import { MatrixDataType } from "@/types/websiteTypes";
 import { useDisclosure, usePagination } from "@mantine/hooks";
+import PresentationForm from "../_Forms/PresentationForm";
 
 export default function AdminDashboard() {
   const [treeData, setTreeData] = React.useState<TreeNodeData[]>([]);
@@ -54,6 +55,7 @@ export default function AdminDashboard() {
       </Table.Tr>
     );
   });
+
   interface FileTree {
     name: string;
     type: "file" | "directory";
@@ -176,6 +178,18 @@ export default function AdminDashboard() {
               Imprimir PI
             </Button>
             <Button onClick={toggle}>Coordenadas</Button>
+            <Button
+              onClick={() => {
+                modals.open({
+                  title: "Apresentação",
+                  size: "lg",
+                  children: <PresentationForm />,
+                  centered: true,
+                });
+              }}
+            >
+              Apresentação
+            </Button>
           </Group>
           <Stack>
             <Text>Sistemas Auxiliares</Text>
