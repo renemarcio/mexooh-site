@@ -14,14 +14,14 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import ReactPDF, { pdf, usePDF } from "@react-pdf/renderer";
+// import ReactPDF, { pdf, usePDF } from "@react-pdf/renderer";
 import { IconSlideshow } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 
 export default function PresentationForm() {
   const [loading, setLoading] = useState(false);
   const [inventory, setInventory] = useState<ComboboxData>();
-  const [instance, update] = usePDF();
+  // const [instance, update] = usePDF();
   const form = useForm({
     initialValues: {
       inventoryID: "",
@@ -64,24 +64,24 @@ export default function PresentationForm() {
     if (newTab) newTab.focus();
   };
 
-  async function handleReactPDFGenTest() {
-    handleReactPDFGeneration();
-  }
+  // async function handleReactPDFGenTest() {
+  //   handleReactPDFGeneration();
+  // }
 
-  const openPdfInNewTab = async () => {
-    try {
-      // Generate the PDF as a Blob asynchronously
-      const blob = await pdf(<MyDocument />).toBlob();
+  // const openPdfInNewTab = async () => {
+  //   try {
+  //     // Generate the PDF as a Blob asynchronously
+  //     const blob = await pdf(<MyDocument />).toBlob();
 
-      // Create a temporary URL for the Blob
-      const url = URL.createObjectURL(blob);
+  //     // Create a temporary URL for the Blob
+  //     const url = URL.createObjectURL(blob);
 
-      // Open the URL in a new browser tab
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
+  //     // Open the URL in a new browser tab
+  //     window.open(url, "_blank");
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //   }
+  // };
 
   function handleSubmit() {
     GeneratePresentationPDF();
@@ -110,13 +110,13 @@ export default function PresentationForm() {
         <Button type="submit" leftSection={<IconSlideshow />}>
           Gerar apresentação
         </Button>
-        <Button
+        {/* <Button
           color="blue"
           leftSection={<IconSlideshow />}
           onClick={openPdfInNewTab}
         >
           Teste React-PDF
-        </Button>
+        </Button> */}
       </Stack>
     </form>
   );

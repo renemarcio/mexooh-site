@@ -11,18 +11,15 @@ import {
   Paper,
   Grid,
   Center,
-  Code,
   ScrollArea,
   Table,
   Stack,
-  Flex,
   Collapse,
   TextInput,
   Pagination,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
-  IconChevronDown,
   IconChevronRight,
   IconFolder,
   IconFolderOpen,
@@ -30,10 +27,10 @@ import {
   IconPhotoFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import PIForm from "../_Forms/PIForm/PIForm";
 import { MatrixDataType } from "@/types/websiteTypes";
-import { useDisclosure, usePagination } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import PresentationForm from "../_Forms/PresentationForm";
 
 export default function AdminDashboard() {

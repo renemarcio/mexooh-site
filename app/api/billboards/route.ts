@@ -6,6 +6,7 @@ import { query } from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 // import { bucket } from "@/utils/bucket";
+import { list } from "@vercel/blob";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -36,11 +37,18 @@ export async function GET(req: NextRequest) {
   if (id !== null) {
     conditions.push("pon_codigo IN(" + id + ")");
 
-    // if (id.split(",").length === 1) {
+    if (id.split(",").length === 1) {
+      const blob = await list({
+        prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
+      });
+      if (blob) {
+        console.log("Blob: ", blob);
+      }
+    }
     //   const listCommand = new ListObjectsV2Command({
     //     Bucket: "mexooh-webapp-system-files",
     //     Prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
-    //   });
+    // });
 
     //   // const objList = await bucket.send(listCommand);
 
