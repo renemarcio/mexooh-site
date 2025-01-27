@@ -20,6 +20,7 @@ import { CartContext } from "@/contexts/CartContext";
 import { CartEntry } from "@/types/cartEntry";
 import { Billboard, Fortnight } from "@/types/websiteTypes";
 import { set } from "zod";
+import ThumbnailWithZoomModal from "@/components/ThumbnailWithZoomModal";
 
 type Props = {
   billboard: Billboard;
@@ -139,10 +140,11 @@ Props) {
     >
       <Title ta={"center"}>{billboard.address}</Title>
       <Stack gap={"md"}>
-        <Image
+        {/* <Image
           src={thumbnailUrl}
           fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-        />
+        /> */}
+        <ThumbnailWithZoomModal src={thumbnailUrl} />
         <Map
           lat={Number(billboard.coordinates?.split(",")[0])}
           long={Number(billboard.coordinates?.split(",")[1])}

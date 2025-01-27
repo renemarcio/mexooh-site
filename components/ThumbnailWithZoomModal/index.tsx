@@ -28,9 +28,6 @@ export default function ThumbnailWithZoomModal({
             m={"auto"}
             w={"auto"}
             h={"90vh"}
-            onClick={() => {
-              modals.closeAll();
-            }}
           />
           <Image
             src={src}
@@ -39,9 +36,6 @@ export default function ThumbnailWithZoomModal({
             m={"auto"}
             w={"auto"}
             h={"90vh"}
-            onClick={() => {
-              modals.closeAll();
-            }}
           />
         </>
       ),
