@@ -184,8 +184,17 @@ export default function BillboardTable() {
               {/* <Image src={thumbnailUrl} height={"300px"} /> */}
               <Image
                 src={thumbnailUrl}
-                height={"600px"}
+                h={"300px"}
+                w={"auto"}
                 fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+                lightHidden
+              />
+              <Image
+                src={thumbnailUrl}
+                h={"300px"}
+                w={"auto"}
+                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+                darkHidden
               />
               <Box h={"250px"}>
                 <Map lat={lat} long={long} />
