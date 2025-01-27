@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-  const thumbnailUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.jpg`;
+  const thumbnailUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.webp`;
   let listOfRentedInventoryIDs: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
