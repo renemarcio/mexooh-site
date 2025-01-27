@@ -1,6 +1,5 @@
 import {
   Center,
-  Group,
   Pagination,
   Select,
   Table,
@@ -13,7 +12,6 @@ import {
   Paper,
   Button,
   NumberFormatter,
-  MultiSelect,
   ComboboxData,
   Title,
   Flex,
@@ -21,7 +19,6 @@ import {
 import { useDebouncedValue } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import Map from "../../Map";
-import { useCityContext } from "../../../contexts/CityContext";
 import { useCartContext } from "@/contexts/CartContext";
 import {
   IconShoppingCartMinus,
@@ -71,8 +68,7 @@ export default function BillboardTable() {
     try {
       const response = await fetch(`/api/billboards?id=${id}`);
       const data = await response.json();
-      console.log("Data from HandleBillboardFetch: ", data);
-      setThumbnailUrl(data.data[0].signedUrl);
+      setThumbnailUrl(data.data[0].thumbnailUrl);
     } catch {
       console.log("Couldn't fetch billboard.");
     }

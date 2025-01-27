@@ -4,6 +4,7 @@ import {
   RenderPDF,
 } from "@/PDFTemplates/Presentation/reactpdftext";
 import { Panel } from "@/types/websiteTypes";
+import { toDataURL } from "@/utils/toDataURL";
 import {
   Button,
   Code,
@@ -44,29 +45,16 @@ export default function PresentationForm() {
     setInventory(select);
     return select;
   }
-  function toDataURL(url: string, callback: (result: any) => void) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open("GET", url);
-    xhr.responseType = "blob";
-    xhr.send();
-  }
 
   async function fetchPanelThumbnail() {
-    const response = await fetch(`/api/panels?id=${form.values.inventoryID}`);
-    const data = await response.json();
+    // const response = await fetch(`/api/panels?id=${form.values.inventoryID}`);
+    // const data = await response.json();
     toDataURL(
       "/photos/Paineis/" +
         String(form.values.inventoryID).padStart(6, "0") +
         ".jpg",
-      (base64Test) => {
-        setPanelThumbnail(base64Test);
+      (base64Panel) => {
+        setPanelThumbnail(base64Panel);
       }
     );
 

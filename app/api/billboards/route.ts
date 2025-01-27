@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-  const signedUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.jpg`;
+  const thumbnailUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.jpg`;
   let listOfRentedInventoryIDs: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
@@ -35,7 +35,6 @@ export async function GET(req: NextRequest) {
   const conditions = [];
 
   if (id !== null) {
-    console.log(signedUrl);
     conditions.push("pon_codigo IN(" + id + ")");
 
     if (id.split(",").length === 1) {
@@ -95,7 +94,7 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
-      signedUrl,
+      thumbnailUrl,
     }));
     const result = {
       data: billboards,
@@ -110,7 +109,7 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
-      signedUrl,
+      thumbnailUrl,
     }));
     const result = {
       data: billboards,

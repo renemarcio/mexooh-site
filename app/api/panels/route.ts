@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
 
-  const signedUrl = `/photos/Paineis/${String(id).padStart(6, "0")}.jpg`;
+  const thumbnailUrl = `/photos/Paineis/${String(id).padStart(6, "0")}.jpg`;
 
   let listOfRentedInventoryIDs: number[] = [];
 
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
       address: panel.pon_compl,
       coordinates: panel.LinkMapa ? panel.LinkMapa : "0,0",
       value: panel.pon_iluminado === "S" ? 1190 : 1090,
-      signedUrl,
+      thumbnailUrl,
     }));
     const result = {
       data: panels,

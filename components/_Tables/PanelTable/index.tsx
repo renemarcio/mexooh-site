@@ -37,10 +37,10 @@ export default function PanelTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  //TODO: CITY FETCH FIX
   const [city, setCity] = useState<string | null>("25"); //Hardcoded Alphaville ID because of issues with first fetch. Remove when able to fix.
   const cart = useContext(CartContext);
   const [infoOOHStats, setInfoOOHStats] = useState<InfoOOHPanelInfoType>();
-  // const { city, setCity } = useCityContext();
 
   async function fetchPanels() {
     try {
@@ -50,13 +50,6 @@ export default function PanelTable() {
         }`
       );
       const data = await response.json();
-      console.log("Call from fetchPanels: ");
-      console.log(
-        `/api/panels?activePage=${activePage}&pageSize=20&address=${address}&city=${
-          city === null ? "" : city
-        }`
-      );
-      console.log("Data from fetchPanels: ", data);
       setTotalPages(data.totalPages);
       setPanels(data.data);
     } catch {
@@ -94,7 +87,7 @@ export default function PanelTable() {
     try {
       const response = await fetch(`/api/panels?id=${panelId}`);
       const data = await response.json();
-      setThumbnailUrl(data.data[0].signedUrl);
+      setThumbnailUrl(data.data[0].thumbnailUrl);
     } catch {
       console.log("Couldn't fetch thumbnail.");
     }

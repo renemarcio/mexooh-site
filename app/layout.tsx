@@ -3,7 +3,6 @@ import { ColorSchemeScript, Box, Button } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
 
 import Providers from "../contexts/providers";
-import { modals } from "@mantine/modals";
 
 export const metadata = {
   title: "Mex OOH",
