@@ -27,7 +27,8 @@ import {
 import { modals } from "@mantine/modals";
 import RentBillboardModal from "../../_Forms/RentBillboardModal";
 import classes from "./styles.module.css";
-import { Billboard, Fortnight } from "@/types/websiteTypes";
+import { Billboard } from "@/types/websiteTypes";
+import ThumbnailWithZoomModal from "@/components/ThumbnailWithZoomModal";
 
 export default function BillboardTable() {
   const [activePage, setPage] = useState(1);
@@ -182,7 +183,7 @@ export default function BillboardTable() {
           <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
               {/* <Image src={thumbnailUrl} height={"300px"} /> */}
-              <Image
+              {/* <Image
                 src={thumbnailUrl}
                 h={"300px"}
                 w={"auto"}
@@ -195,6 +196,16 @@ export default function BillboardTable() {
                 w={"auto"}
                 fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
                 darkHidden
+              /> */}
+              <ThumbnailWithZoomModal
+                src={thumbnailUrl}
+                fallbackDarkSrc={
+                  "https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+                }
+                fallbackLightSrc={
+                  "https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+                }
+                h="300px"
               />
               <Box h={"250px"}>
                 <Map lat={lat} long={long} />

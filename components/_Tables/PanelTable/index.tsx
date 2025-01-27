@@ -18,7 +18,6 @@ import {
   Code,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-// import { inventarios } from "@prisma/client";
 import React, { useContext, useEffect, useState } from "react";
 import Map from "../../Map";
 import { modals } from "@mantine/modals";
@@ -27,6 +26,7 @@ import { InfoOOHPanelInfoType, Panel } from "@/types/websiteTypes";
 import { CartContext } from "@/contexts/CartContext";
 import styles from "./styles.module.css";
 import InfoOOHDisplay from "../../InfoOOHDisplay";
+import ThumbnailWithZoomModal from "@/components/ThumbnailWithZoomModal";
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -147,7 +147,7 @@ export default function PanelTable() {
         <Grid>
           <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
-              <Image
+              {/* <Image
                 src={thumbnailUrl}
                 h={"300px"}
                 w={"auto"}
@@ -160,6 +160,16 @@ export default function PanelTable() {
                 w={"auto"}
                 fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
                 darkHidden
+              /> */}
+              <ThumbnailWithZoomModal
+                src={thumbnailUrl}
+                fallbackDarkSrc={
+                  "https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+                }
+                fallbackLightSrc={
+                  "https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+                }
+                h="300px"
               />
               <Box h={"250px"}>
                 <Map lat={lat} long={long} />

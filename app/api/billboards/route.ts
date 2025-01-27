@@ -37,14 +37,14 @@ export async function GET(req: NextRequest) {
   if (id !== null) {
     conditions.push("pon_codigo IN(" + id + ")");
 
-    if (id.split(",").length === 1) {
-      const blob = await list({
-        prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
-      });
-      if (blob) {
-        console.log("Blob: ", blob);
-      }
-    }
+    // if (id.split(",").length === 1) {
+    //   // const blob = await list({
+    //   //   prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
+    //   // });
+    //   // if (blob) {
+    //   //   console.log("Blob: ", blob);
+    //   // }
+    // }
     //   const listCommand = new ListObjectsV2Command({
     //     Bucket: "mexooh-webapp-system-files",
     //     Prefix: `Photos/Outdoor/${String(id).padStart(6, "0")}.`,
