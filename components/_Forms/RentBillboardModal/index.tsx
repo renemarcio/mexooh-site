@@ -24,13 +24,13 @@ import { set } from "zod";
 type Props = {
   billboard: Billboard;
   closeFn: () => void;
-  // signedURL: string;
+  // thumbnailUrl: string;
 };
 
 export default function RentBillboardModal({
   billboard,
   closeFn,
-}: // signedURL,
+}: // thumbnailUrl,
 Props) {
   const [fortnights, setFortnights] = useState<Fortnight[]>([]);
   const [selectedFortnights, setSelectedFortnights] = useState<string[]>([]);
@@ -76,8 +76,8 @@ Props) {
       },
     });
     const data = await res.json();
-    console.log(data.data[0].signedUrl);
-    setThumbnailUrl(data.data[0].signedUrl);
+    console.log(data.data[0].thumbnailUrl);
+    setThumbnailUrl(data.data[0].thumbnailUrl);
   }
 
   useEffect(() => {
