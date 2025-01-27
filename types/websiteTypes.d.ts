@@ -15,25 +15,16 @@ export interface Inventory {
 
 export interface Billboard extends Inventory {
   value: number;
+  thumbnailUrl?: string;
 }
 
-export interface MUP {
-  id: number;
-  address: string;
-  coordinates: string;
+export interface MUP extends Inventory {}
+
+export interface Panel extends Inventory {
+  thumbnailUrl?: string;
 }
 
-export interface Panel {
-  id: number;
-  address: string;
-  coordinates: string;
-}
-
-export interface LEDPanel {
-  id: number;
-  address: string;
-  coordinates: string;
-}
+export interface LEDPanel extends Inventory {}
 
 export interface City {
   id: number;

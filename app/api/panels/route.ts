@@ -92,6 +92,10 @@ export async function GET(req: NextRequest) {
       address: panel.pon_compl,
       coordinates: panel.LinkMapa ? panel.LinkMapa : "0,0",
       value: panel.pon_iluminado === "S" ? 1190 : 1090,
+      thumbnailUrl: `/photos/Paineis/${String(panel.pon_codigo).padStart(
+        6,
+        "0"
+      )}.webp`,
     }));
     const result = {
       data: panels,

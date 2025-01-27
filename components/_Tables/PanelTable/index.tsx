@@ -51,6 +51,8 @@ export default function PanelTable() {
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
+      console.log("fetchPanels WHOLE DATA");
+      console.log(data.data);
       setPanels(data.data);
     } catch {
       setPanels([]);
@@ -123,7 +125,12 @@ export default function PanelTable() {
       onClick={() => {
         modals.open({
           children: (
-            <PanelRentForm panel={panel} closeFn={() => modals.closeAll()} />
+            <PanelRentForm
+              panel={panel}
+              //@ts-ignore
+              thumbnailUrl={panel.thumbnailUrl}
+              closeFn={() => modals.closeAll()}
+            />
           ),
           centered: true,
         });
