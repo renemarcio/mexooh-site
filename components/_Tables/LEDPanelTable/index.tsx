@@ -152,7 +152,7 @@ export default function LEDPanelTable() {
           </Grid.Col>
           <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
-              <Table>
+              <Table highlightOnHover striped>
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th>
