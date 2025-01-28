@@ -19,7 +19,7 @@ export default function LEDPanel() {
         <Button
           mt={"lg"}
           component="a"
-          href="downloads/apresentacao_painel_digital.pdf"
+          href="downloads/painel_led.pdf"
           target="_blank"
           // download
         >

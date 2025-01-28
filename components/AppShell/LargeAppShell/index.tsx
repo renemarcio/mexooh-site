@@ -190,7 +190,7 @@ export default function LargeAppShell({
                   <Menu.Dropdown>
                     <Menu.Item
                       component={Link}
-                      href={"downloads/apresentacao_painel_digital.pdf"}
+                      href={"downloads/painel_led.pdf"}
                       target="_blank"
                       leftSection={<RiDownload2Line />}
                     >
@@ -198,7 +198,7 @@ export default function LargeAppShell({
                     </Menu.Item>
                     <Menu.Item
                       component={Link}
-                      href={"downloads/apresentacao_painel_digital.pdf"}
+                      href={"downloads/painel_led.pdf"}
                       target="_blank"
                       leftSection={<RiDownload2Line />}
                     >
@@ -206,7 +206,7 @@ export default function LargeAppShell({
                     </Menu.Item>
                     <Menu.Item
                       component={Link}
-                      href={"downloads/apresentacao_painel_digital.pdf"}
+                      href={"downloads/painel_led.pdf"}
                       target="_blank"
                       leftSection={<RiDownload2Line />}
                     >
@@ -214,7 +214,7 @@ export default function LargeAppShell({
                     </Menu.Item>
                     <Menu.Item
                       component={Link}
-                      href={"downloads/apresentacao_painel_digital.pdf"}
+                      href={"downloads/painel_led.pdf"}
                       target="_blank"
                       leftSection={<RiDownload2Line />}
                     >

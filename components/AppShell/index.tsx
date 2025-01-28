@@ -134,25 +134,25 @@ export default function MyAppShell({ children }: AppShellProps) {
               <NavLink onClick={burgerMenuClose} href="#" label="Audiência" />
               <NavLink label="Saiba Mais">
                 <NavLink
-                  href={"downloads/apresentacao_painel_digital.pdf"}
+                  href={"downloads/painel_led.pdf"}
                   leftSection={<RiDownload2Line />}
                   target="_blank"
                   label="Midia Kit Painéis"
                 />
                 <NavLink
-                  href={"downloads/apresentacao_painel_digital.pdf"}
+                  href={"downloads/painel_led.pdf"}
                   leftSection={<RiDownload2Line />}
                   target="_blank"
                   label="Midia Kit Mobiliário Urbano"
                 />
                 <NavLink
-                  href={"downloads/apresentacao_painel_digital.pdf"}
+                  href={"downloads/painel_led.pdf"}
                   leftSection={<RiDownload2Line />}
                   target="_blank"
                   label="Midia Kit Outdoor"
                 />
                 <NavLink
-                  href={"downloads/apresentacao_painel_digital.pdf"}
+                  href={"downloads/painel_led.pdf"}
                   leftSection={<RiDownload2Line />}
                   target="_blank"
                   label="Midia Kit Painel de LED"
