@@ -40,12 +40,32 @@ export default function LEDPanelTable() {
 
   async function fetchLEDPanels() {
     try {
-      const response = await fetch(
-        `/api/LEDpanels?activePage=${activePage}&pageSize=17&endereco=${address}&cidade=${city}`
-      );
-      const data = await response.json();
-      setTotalPages(data.totalPages);
-      setLEDPanels(data.data);
+      // const response = await fetch(
+      //   `/api/LEDpanels?activePage=${activePage}&pageSize=17&endereco=${address}&cidade=${city}`
+      // );
+      // const data = await response.json();
+      // setTotalPages(data.totalPages);
+      // setLEDPanels(data.data);
+      // This works, but the database is still not supporting this. In the meantime, faux data will be used.
+
+      setLEDPanels([
+        {
+          id: 1,
+          address:
+            "LED Av. Antonio Carlos Comitre nº 275 - Campolim - Sentido Sam's Club - Em Frente Telha Norte",
+          coordinates: "0, 0",
+        },
+        {
+          id: 2,
+          address: "LED Av. Juscelino Kubitschek - Esquina Centro Médico",
+          coordinates: "0, 0",
+        },
+        {
+          id: 3,
+          address: "led av. dom aguirre nº 525 - centro",
+          coordinates: "0, 0",
+        },
+      ]);
     } catch {
       setLEDPanels([]);
       setTotalPages(0);
