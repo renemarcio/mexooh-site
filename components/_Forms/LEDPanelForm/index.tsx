@@ -69,14 +69,15 @@ export default function LEDPanelForm({ panel, closeFn }: Props) {
         <VideoDropZone form={form} />
         {/* <Space h={"xl"} /> */}
         <DatePickerInput
-          label={"Data de aluguel"}
+          label={"Data de início do aluguel"}
           placeholder={"Data..."}
           valueFormat="DD/MM/YYYY"
+          minDate={new Date()}
         />
         <NumberInput
           min={1}
           defaultValue={1}
-          label={"Quantidade de meses à alugar"}
+          label={"Quantidade de quinzenas à alugar"}
           placeholder={"Quero alugar por..."}
         />
         <Fieldset legend={"Grade de horários"}>

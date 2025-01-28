@@ -17,6 +17,7 @@ import {
   Collapse,
   TextInput,
   Pagination,
+  Divider,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -32,26 +33,11 @@ import PIForm from "../_Forms/PIForm/PIForm";
 import { MatrixDataType } from "@/types/websiteTypes";
 import { useDisclosure } from "@mantine/hooks";
 import PresentationForm from "../_Forms/PresentationForm";
+import MatrixTable from "../_Tables/MatrixTable";
 
 export default function AdminDashboard() {
   const [treeData, setTreeData] = React.useState<TreeNodeData[]>([]);
-  const [matrix, setMatrix] = React.useState<MatrixDataType[]>([]);
-  const [address, setAddress] = React.useState("");
-  const [id, setID] = React.useState("");
   const [opened, { toggle }] = useDisclosure(false);
-  const [totalPages, setTotalPages] = React.useState(1);
-  const [page, setPage] = React.useState(1);
-  const rows = matrix.map((row) => {
-    return (
-      <Table.Tr key={row.id}>
-        <Table.Td>{row.id}</Table.Td>
-        <Table.Td>{row.address}</Table.Td>
-        <Table.Td>{row.coordinates}</Table.Td>
-        <Table.Td>{row.type}</Table.Td>
-        <Table.Td>{row.media}</Table.Td>
-      </Table.Tr>
-    );
-  });
 
   interface FileTree {
     name: string;
@@ -65,28 +51,9 @@ export default function AdminDashboard() {
     setTreeData(data);
   }
 
-  async function fetchMatrix() {
-    const response = await fetch(
-      "/api/matrix?address=" + address + "&id=" + id + "&page=" + page
-    );
-    const data = await response.json();
-    setMatrix(data.data);
-    setTotalPages(data.numberOfPages);
-    if (page > data.numberOfPages) setPage(data.numberOfPages);
-  }
-
   useEffect(() => {
     fetchCheckingDirectoryTree();
-    fetchMatrix();
   }, []);
-
-  useEffect(() => {
-    fetchMatrix();
-  }, [address, id]);
-
-  useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
-  }, [totalPages]);
 
   const tree = useTree({
     multiple: false,
@@ -123,15 +90,6 @@ export default function AdminDashboard() {
     }
     return null;
   }
-
-  // async function FetchBucket() {
-  //   try {
-  //     const response = await fetch("/api/bucket/checking");
-  //     const data = await response.json();
-  //   } catch {
-  //     console.log("Couldn't fetch bucket.");
-  //   }
-  // }
 
   function Leaf({
     node,
@@ -191,24 +149,18 @@ export default function AdminDashboard() {
           <Stack>
             <Text>Sistemas Auxiliares</Text>
             <Button
-              // h={"100px"}
-              // color="rgba(255, 255, 255, 1)"
               component={Link}
               href={"https://sistema.infooh.com.br/#/login"}
               target="_blank"
             >
               InfoOOH
-              {/* <Image src="/infooh.png" h={"100%"} /> */}
             </Button>
             <Button
-              // h={"100px"}
-              // color="rgba(255, 255, 255, 1)"
               component={Link}
               href={"http://espacomais.srv.br/"}
               target="_blank"
             >
               EspaçoMais
-              {/* <Image src="/EMLogo.png" h={"100%"} p={"xs"} /> */}
             </Button>
           </Stack>
         </Group>
@@ -242,62 +194,8 @@ export default function AdminDashboard() {
         </Grid.Col>
       </Grid>
       <Collapse in={opened}>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>
-                Código{" "}
-                <TextInput
-                  onChange={(e) => setID(e.target.value)}
-                  placeholder="Buscar por código..."
-                ></TextInput>
-              </Table.Th>
-              <Table.Th>
-                Endereço
-                <TextInput
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Buscar por endereço..."
-                ></TextInput>
-              </Table.Th>
-              <Table.Th>Coordenadas</Table.Th>
-              <Table.Th>Tipo</Table.Th>
-              <Table.Th>Mídia</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {rows.length > 0 ? (
-              rows
-            ) : (
-              <Table.Tr>
-                <Table.Td colSpan={5}>
-                  <Text c={"dimmed"} fs={"italic"} ta={"center"}>
-                    Nada encontrado
-                  </Text>
-                </Table.Td>
-              </Table.Tr>
-            )}
-          </Table.Tbody>
-          <Table.Tfoot>
-            <Table.Tr>
-              <Table.Th colSpan={5}>
-                <Center>
-                  <Pagination
-                    total={totalPages}
-                    onChange={(value) => {
-                      if (value !== page) {
-                        setPage(value);
-                        fetchMatrix();
-                      }
-                      setPage(value);
-                    }}
-                  />
-                </Center>
-              </Table.Th>
-            </Table.Tr>
-          </Table.Tfoot>
-        </Table>
+        <MatrixTable />
       </Collapse>
-      {/* <Code>{JSON.stringify(matrix, null, 2)}</Code> */}
     </>
   );
 }
