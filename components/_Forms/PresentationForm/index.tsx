@@ -24,6 +24,7 @@ export default function PresentationForm() {
   const [loading, setLoading] = useState(false);
   const [inventory, setInventory] = useState<ComboboxData>();
   const [panelThumbnail, setPanelThumbnail] = useState("");
+  const test = document.getElementById("test");
   // const [instance, update] = usePDF();
   const form = useForm({
     initialValues: {
@@ -52,7 +53,7 @@ export default function PresentationForm() {
     toDataURL(
       "/photos/Paineis/" +
         String(form.values.inventoryID).padStart(6, "0") +
-        ".jpg",
+        ".webp",
       (base64Panel) => {
         setPanelThumbnail(base64Panel);
       }
@@ -131,6 +132,7 @@ export default function PresentationForm() {
           {...form.getInputProps("inventoryID")}
         />
         <Image
+          id="test"
           src={panelThumbnail}
           fallbackSrc={"https://placehold.co/2212x1554?text=Imagem+do+Ponto"}
         />

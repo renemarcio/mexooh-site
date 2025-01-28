@@ -94,7 +94,7 @@ export default function GeneratePresentationPDF(
         fontSize: 28,
       },
       {
-        image: "placeholderImage",
+        image: "thumbnail",
         alignment: "center",
         cover: {
           width: docWidth - 2 * 50,
@@ -252,8 +252,8 @@ export default function GeneratePresentationPDF(
       coverImage: CoverImageBase64,
       secondImage: SecondImageBase64,
       thirdImage: ThirdImageBase64,
-      placeholderImage: image,
-      // placeholderImage: PlaceholderImage,
+      thumbnail: image,
+      // placeholderImage:
     },
   };
   pdfMake.createPdf(docDefinition).open();

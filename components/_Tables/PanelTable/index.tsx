@@ -51,8 +51,6 @@ export default function PanelTable() {
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      console.log("fetchPanels WHOLE DATA");
-      console.log(data.data);
       setPanels(data.data);
     } catch {
       setPanels([]);
@@ -133,6 +131,7 @@ export default function PanelTable() {
             />
           ),
           centered: true,
+          size: "lg",
         });
       }}
       style={{ cursor: "pointer" }}
