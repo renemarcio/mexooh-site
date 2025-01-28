@@ -20,27 +20,27 @@ interface InfoOOHPanelCSV {
 }
 
 export async function GET(req: NextRequest) {
+  const filePath = path.join(process.cwd(), "utils/IMPACTOS_PAINEL.csv");
+  const id = req.nextUrl.searchParams.get("id") || null;
+  const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
+  const parsedContent = Papa.parse(fileContent, {
+    header: true,
+  });
+  let panelData: InfoOOHPanelInfoType[] = (
+    parsedContent.data as InfoOOHPanelCSV[]
+  ).map((row) => ({
+    id: row.id,
+    latitude: row.lat,
+    longitude: row.long,
+    dailyImpacts: row.dailyImpacts,
+    monthlyImpacts: row.monthlyImpacts,
+    value: row.value,
+    CPM30: row.CPM30,
+    CPM14: row.CPM14,
+    CPM7: row.CPM7,
+    CPM1: row.CPM1,
+  }));
   try {
-    const filePath = path.join(process.cwd(), "utils/IMPACTOS_PAINEL.csv");
-    const id = req.nextUrl.searchParams.get("id") || null;
-    const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
-    const parsedContent = Papa.parse(fileContent, {
-      header: true,
-    });
-    let panelData: InfoOOHPanelInfoType[] = (
-      parsedContent.data as InfoOOHPanelCSV[]
-    ).map((row) => ({
-      id: row.id,
-      latitude: row.lat,
-      longitude: row.long,
-      dailyImpacts: row.dailyImpacts,
-      monthlyImpacts: row.monthlyImpacts,
-      value: row.value,
-      CPM30: row.CPM30,
-      CPM14: row.CPM14,
-      CPM7: row.CPM7,
-      CPM1: row.CPM1,
-    }));
     if (id) {
       panelData = panelData.filter((row) => row.id.toString() === id);
     }

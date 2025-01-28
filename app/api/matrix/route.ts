@@ -14,25 +14,25 @@ interface MatrixCSVType {
 }
 
 export async function GET(req: NextRequest) {
+  const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
+  const address = req.nextUrl.searchParams.get("address") || null;
+  const id = req.nextUrl.searchParams.get("id") || null;
+  let currentPage = Number(req.nextUrl.searchParams.get("page")) || 1;
+  const pageSize = 15;
+  const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
+  const parsedContent = Papa.parse(fileContent, {
+    header: true,
+  });
+  let matrixData: MatrixDataType[] = (
+    parsedContent.data as MatrixCSVType[]
+  ).map((row) => ({
+    id: row.id,
+    address: row.name,
+    coordinates: row.latitude + ", " + row.longitude,
+    type: row.kind,
+    media: row.media,
+  }));
   try {
-    const filePath = path.join(process.cwd(), "utils/EXEMPLO MATRIZ.csv");
-    const address = req.nextUrl.searchParams.get("address") || null;
-    const id = req.nextUrl.searchParams.get("id") || null;
-    let currentPage = Number(req.nextUrl.searchParams.get("page")) || 1;
-    const pageSize = 15;
-    const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
-    const parsedContent = Papa.parse(fileContent, {
-      header: true,
-    });
-    let matrixData: MatrixDataType[] = (
-      parsedContent.data as MatrixCSVType[]
-    ).map((row) => ({
-      id: row.id,
-      address: row.name,
-      coordinates: row.latitude + ", " + row.longitude,
-      type: row.kind,
-      media: row.media,
-    }));
     if (address) {
       matrixData = matrixData.filter((row) =>
         row.address.toLowerCase().includes(address.toLowerCase())
