@@ -8,11 +8,16 @@ import {
   Code,
   Box,
   Paper,
+  Group,
+  NumberInput,
+  Stack,
 } from "@mantine/core";
 import { Fortnight, InfoOOHPanelInfoType, Panel } from "@/types/websiteTypes";
 import React, { useContext, useEffect, useState } from "react";
 import InfoOOHDisplay from "../../InfoOOHDisplay";
 import ThumbnailWithZoomModal from "@/components/ThumbnailWithZoomModal";
+import { DatePickerInput } from "@mantine/dates";
+import WeekPicker from "@/components/WeekPicker";
 
 type Props = {
   panel: Panel;
@@ -93,27 +98,46 @@ export default function PanelRentForm({ panel, thumbnailUrl, closeFn }: Props) {
 
   return (
     <>
-      <Title ta={"center"}>{panel.address}</Title>
-      {/* <Text ta={"center"}>
+      <form>
+        <Stack>
+          <Title ta={"center"}>{panel.address}</Title>
+          {/* <Text ta={"center"}>
         Os valores dos painéis são negociáveis, coloque no carrinho para que
         possamos entrar em contato e reservar seu painel.
       </Text> */}
-      <ThumbnailWithZoomModal src={thumbnailUrl} />
-      <Skeleton visible={loading}>
-        <Paper withBorder my={"xs"} p={"xs"}>
-          <InfoOOHDisplay data={infoOOHData} />
-        </Paper>
-      </Skeleton>
-      <Button
-        fullWidth
-        onClick={() => {
-          cart.setCart([...cart.cart, { item: panel, value: 0 }]);
-          closeFn();
-        }}
-        disabled={cart.cart.find((e) => e.item.id === panel.id) ? true : false}
-      >
-        Quero reservar!
-      </Button>
+          <ThumbnailWithZoomModal src={thumbnailUrl} />
+          <Skeleton visible={loading}>
+            <Paper withBorder p={"xs"}>
+              <InfoOOHDisplay data={infoOOHData} />
+            </Paper>
+          </Skeleton>
+          <Group justify="space-between" grow>
+            <DatePickerInput
+              label={"Data de aluguel"}
+              placeholder={"Data..."}
+              valueFormat="DD/MM/YYYY"
+            />
+            <NumberInput
+              min={1}
+              defaultValue={1}
+              label={"Quantidade de meses à alugar"}
+              placeholder={"Quero alugar por..."}
+            />
+          </Group>
+          <Button
+            fullWidth
+            onClick={() => {
+              cart.setCart([...cart.cart, { item: panel, value: 0 }]);
+              closeFn();
+            }}
+            disabled={
+              cart.cart.find((e) => e.item.id === panel.id) ? true : false
+            }
+          >
+            Quero reservar!
+          </Button>
+        </Stack>
+      </form>
     </>
   );
 }

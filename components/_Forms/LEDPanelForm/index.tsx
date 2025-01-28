@@ -8,9 +8,17 @@ import {
   TextInput,
   Text,
   Stack,
+  NumberInput,
+  Fieldset,
+  Grid,
+  Radio,
+  Chip,
+  Group,
+  Center,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FileWithPath } from "@mantine/dropzone";
+import { DatePickerInput } from "@mantine/dates";
 
 interface Props {
   panel: LEDPanel;
@@ -18,21 +26,21 @@ interface Props {
 }
 export interface LEDPanelFormValues {
   file: File;
-  fortnights: string[];
+  grid: string[];
 }
 export default function LEDPanelForm({ panel, closeFn }: Props) {
   const form = useForm<LEDPanelFormValues>({
     // mode: "uncontrolled",
     initialValues: {
       file: {} as File,
-      fortnights: [],
+      grid: [],
     },
   });
-
+  const gridSize = Array(18).fill(undefined);
   async function handleSubmit(values: LEDPanelFormValues) {
     const formData = new FormData();
     formData.append("file", values.file);
-    formData.append("fortnights", JSON.stringify(values.fortnights));
+    formData.append("grid", JSON.stringify(values.grid));
     const res = await fetch("/api/uploadFile", {
       method: "POST",
       // headers: {
@@ -60,18 +68,30 @@ export default function LEDPanelForm({ panel, closeFn }: Props) {
       <Stack gap={"lg"}>
         <VideoDropZone form={form} />
         {/* <Space h={"xl"} /> */}
-        <MultiSelect
-          data={[
-            { label: "Semanal", value: "1" },
-            { label: "Bi-Semanal", value: "2" },
-            { label: "Semanal 2", value: "3" },
-            { label: "Bi-Semanal 2", value: "4" },
-            { label: "Semanal 3", value: "5" },
-            { label: "Bi-Semanal 3", value: "6" },
-          ]}
-          label="Bi-Semanas"
-          {...form.getInputProps("fortnights")}
+        <DatePickerInput
+          label={"Data de aluguel"}
+          placeholder={"Data..."}
+          valueFormat="DD/MM/YYYY"
         />
+        <NumberInput
+          min={1}
+          defaultValue={1}
+          label={"Quantidade de meses à alugar"}
+          placeholder={"Quero alugar por..."}
+        />
+        <Fieldset legend={"Grade de horários"}>
+          <Chip.Group multiple {...form.getInputProps("grid")}>
+            <Grid>
+              {gridSize.map((_, index) => (
+                <Grid.Col span={4}>
+                  <Center>
+                    <Chip value={`${index + 1}`}>{`${index + 1}`}</Chip>
+                  </Center>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Chip.Group>
+        </Fieldset>
         {/* <Code>{JSON.stringify(form.getValues(), null, 2)}</Code> */}
         <Button type="submit" fullWidth>
           Enviar vídeo e reservar

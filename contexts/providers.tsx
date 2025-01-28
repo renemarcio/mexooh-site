@@ -9,6 +9,9 @@ import { SessionProvider } from "next-auth/react";
 import { ServiceProvider } from "./ServiceContext";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
+import { DatesProvider } from "@mantine/dates";
+import "dayjs/locale/pt-br";
 
 type ProvidersProps = {
   children: React.ReactNode;
@@ -17,15 +20,17 @@ type ProvidersProps = {
 export default function Providers({ children }: ProvidersProps) {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <SessionProvider>
-        <CityProvider>
-          <CartProvider>
-            <ServiceProvider>
-              <ModalsProvider>{children}</ModalsProvider>
-            </ServiceProvider>
-          </CartProvider>
-        </CityProvider>
-      </SessionProvider>
+      <DatesProvider settings={{ locale: "pt-br", firstDayOfWeek: 0 }}>
+        <SessionProvider>
+          <CityProvider>
+            <CartProvider>
+              <ServiceProvider>
+                <ModalsProvider>{children}</ModalsProvider>
+              </ServiceProvider>
+            </CartProvider>
+          </CityProvider>
+        </SessionProvider>
+      </DatesProvider>
     </MantineProvider>
   );
 }

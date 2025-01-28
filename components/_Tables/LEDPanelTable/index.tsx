@@ -1,7 +1,6 @@
 import { useCityContext } from "@/contexts/CityContext";
 import {
   Box,
-  Group,
   Paper,
   Select,
   Table,
@@ -17,14 +16,10 @@ import {
   Flex,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-// import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import Map from "../../Map";
 import { modals } from "@mantine/modals";
-import MUPForm from "../../_Forms/MUPForm";
 import { LEDPanel } from "@/types/websiteTypes";
 import LEDPanelForm from "../../_Forms/LEDPanelForm";
-// import PanelRentForm from "../PanelRentForm";
 
 export default function LEDPanelTable() {
   const [activePage, setPage] = useState(1);
@@ -66,6 +61,7 @@ export default function LEDPanelTable() {
           coordinates: "0, 0",
         },
       ]);
+      setTotalPages(1);
     } catch {
       setLEDPanels([]);
       setTotalPages(0);

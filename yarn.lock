@@ -854,6 +854,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^7.16.2":
+  version: 7.16.2
+  resolution: "@mantine/dates@npm:7.16.2"
+  dependencies:
+    clsx: "npm:^2.1.1"
+  peerDependencies:
+    "@mantine/core": 7.16.2
+    "@mantine/hooks": 7.16.2
+    dayjs: ">=1.0.0"
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+  checksum: 10c0/4ecef21c80c0a394fd0611346c441a129b8504ed7b1ecb35864d8943c4cfde92722d25ab8a671ba3ecfef02fbb6a1508f86c62383de532008a83e812ba54390c
+  languageName: node
+  linkType: hard
+
 "@mantine/dropzone@npm:^7.16.0":
   version: 7.16.0
   resolution: "@mantine/dropzone@npm:7.16.0"
@@ -3983,6 +3998,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
 "debounce@npm:2.0.0":
   version: 2.0.0
   resolution: "debounce@npm:2.0.0"
@@ -6393,6 +6415,7 @@ __metadata:
     "@mantine/carousel": "npm:^7.16.0"
     "@mantine/colors-generator": "npm:^7.16.0"
     "@mantine/core": "npm:7.16.0"
+    "@mantine/dates": "npm:^7.16.2"
     "@mantine/dropzone": "npm:^7.16.0"
     "@mantine/form": "npm:^7.16.0"
     "@mantine/hooks": "npm:7.16.0"
@@ -6410,6 +6433,7 @@ __metadata:
     "@vercel/blob": "npm:^0.27.1"
     bcrypt: "npm:^5.1.1"
     chroma-js: "npm:^2.6.0"
+    dayjs: "npm:^1.11.13"
     embla-carousel-autoplay: "npm:^7.1.0"
     embla-carousel-react: "npm:^7.1.0"
     eslint: "npm:9.19.0"

@@ -38,7 +38,7 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
-      src: "slides/MEX_SITE_PAINEL_LED.jpg",
+      src: "slides/MEX_SITE_PAINEL_LED_FIX.jpg",
       alt: "",
       button: {
         text: "Veja as opções",
