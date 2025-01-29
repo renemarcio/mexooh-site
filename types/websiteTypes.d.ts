@@ -11,18 +11,16 @@ export interface Inventory {
   id: number;
   address: string;
   coordinates: string;
+  thumbnailUrl?: string;
 }
 
 export interface Billboard extends Inventory {
   value: number;
-  thumbnailUrl?: string;
 }
 
 export interface MUP extends Inventory {}
 
-export interface Panel extends Inventory {
-  thumbnailUrl?: string;
-}
+export interface Panel extends Inventory {}
 
 export interface LEDPanel extends Inventory {}
 

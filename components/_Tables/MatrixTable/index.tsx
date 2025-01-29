@@ -35,6 +35,10 @@ export default function MatrixTable() {
     fetchMatrix();
   }, [address, id, page]);
 
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages]);
+
   return (
     <Table>
       <Table.Thead>
