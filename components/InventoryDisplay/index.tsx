@@ -1,4 +1,4 @@
-import { Inventory } from "@/types/websiteTypes";
+import { Inventory, inventoryTypes } from "@/types/websiteTypes";
 import {
   Flex,
   Grid,
@@ -8,15 +8,15 @@ import {
   Center,
   Stack,
   Tabs,
+  LoadingOverlay,
 } from "@mantine/core";
-import InventoryCard from "../_Cards/InventoryCard";
 import TestInventoryDisplayQuery from "../_Forms/TestInventoryDisplayQuery";
 import InventoryFlex from "./InventoryFlex";
 import { useEffect, useState } from "react";
 import { useViewportSize } from "@mantine/hooks";
 
 interface Props {
-  typeOfInventory?: "panels" | "mup" | "billboards" | "LEDpanels";
+  typeOfInventory?: inventoryTypes;
   entriesPerPage?: number;
   // totalPages?: number;
   // setCurrentPage?: (page: number) => void;
@@ -39,12 +39,15 @@ Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const entriesPerPage = viewportWidth > 1000 ? 9 : 6;
+  const [loading, setLoading] = useState(false);
 
   async function fetchInventory() {
+    setLoading(true);
     const response = await fetch(
       `/api/${typeOfInventory}?activePage=${currentPage}&pageSize=${entriesPerPage}`
     );
     const data = await response.json();
+    setLoading(false);
     console.log("Test data:", data);
     setData(data.data);
     if (data.totalPages) {
@@ -55,7 +58,7 @@ Props) {
 
   useEffect(() => {
     fetchInventory();
-  }, [currentPage, entriesPerPage]);
+  }, [typeOfInventory, currentPage, entriesPerPage]);
 
   return (
     <>
@@ -66,7 +69,8 @@ Props) {
               <TestInventoryDisplayQuery />
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ base: 10, lg: 8 }}>
+          <Grid.Col span={{ base: 10, lg: 8 }} pos={"relative"}>
+            <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
             <Paper p={"xl"} h={900} withBorder radius={0}>
               <Stack justify="space-between" h={"100%"}>
                 <InventoryFlex data={data} />

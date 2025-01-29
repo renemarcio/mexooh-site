@@ -94,7 +94,10 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
-      thumbnailUrl,
+      thumbnailUrl: `/photos/Outdoors/${String(outdoor.pon_codigo).padStart(
+        6,
+        "0"
+      )}.webp`,
     }));
     const result = {
       data: billboards,
@@ -109,7 +112,10 @@ export async function GET(req: NextRequest) {
       address: outdoor.pon_compl,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
-      thumbnailUrl,
+      thumbnailUrl: `/photos/Outdoors/${String(outdoor.pon_codigo).padStart(
+        6,
+        "0"
+      )}.webp`,
     }));
     const result = {
       data: billboards,

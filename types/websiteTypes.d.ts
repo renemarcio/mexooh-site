@@ -1,5 +1,7 @@
+// INTERFACES
+
+//#region Interfaces
 export interface Fortnight {
-  //bisemana -> fortnight
   id: number;
   number: number;
   year: number;
@@ -50,3 +52,25 @@ export interface InfoOOHPanelInfoType {
   CPM7: number;
   CPM1: number;
 }
+//#endregion
+
+// UNION TYPES
+
+//#region UnionTypes
+
+export type inventoryTypes = "panels" | "mup" | "billboards" | "LEDpanels";
+
+//#endregion
+
+// ENUMS
+
+//#region Enums
+
+export enum InventoryType {
+  panels = "panels",
+  mup = "mup",
+  billboards = "billboards",
+  LEDpanels = "LEDpanels",
+}
+
+//#endregion
