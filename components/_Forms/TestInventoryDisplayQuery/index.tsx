@@ -1,3 +1,5 @@
+import { TextInput } from "@mantine/core";
+
 export default function TestInventoryDisplayQuery() {
-  return <form>Hello world!</form>;
+  return <form>Teste</form>;
 }

@@ -4,12 +4,21 @@ import { useState } from "react";
 
 interface Props {
   inventory: Inventory;
+  onClick: (inventory: Inventory) => void;
 }
 
-export default function InventoryCard({ inventory }: Props) {
+export default function InventoryCard({ inventory, onClick }: Props) {
   const [loading, setLoading] = useState(true);
   return (
-    <Card shadow="sm" padding={"md"} radius={"sm"} withBorder w={280} h={220}>
+    <Card
+      shadow="sm"
+      padding={"md"}
+      radius={"sm"}
+      withBorder
+      w={280}
+      h={225}
+      onClick={() => onClick(inventory)}
+    >
       <Card.Section pos={"relative"}>
         <LoadingOverlay visible={loading} />
         <Image
