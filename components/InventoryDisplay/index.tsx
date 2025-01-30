@@ -45,8 +45,9 @@ Props) {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [cities, setCities] = useState<ComboboxData>([]);
-  // const { width: viewportWidth, height: viewportHeight } = useViewportSize();
-  const entriesPerPage = 9;
+  const { width: viewportWidth, height: viewportHeight } = useViewportSize();
+  const entriesPerPage =
+    viewportWidth > 1300 ? (viewportWidth > 1500 ? 9 : 6) : 3;
   const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
