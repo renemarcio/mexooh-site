@@ -3,6 +3,7 @@ import { modals } from "@mantine/modals";
 import MUPForm from "../_Forms/MUPForm";
 import PanelRentForm from "../_Forms/PanelRentForm";
 import RentBillboardModal from "../_Forms/RentBillboardModal";
+import LEDPanelForm from "../_Forms/LEDPanelForm";
 
 export default async function onClickHandler(
   inventory: Inventory,
@@ -55,6 +56,17 @@ export default async function onClickHandler(
       });
       break;
     case "LEDpanels":
+      modals.open({
+        centered: true,
+        size: "lg",
+        children: (
+          <LEDPanelForm
+            key={fullInventory.id}
+            panel={fullInventory}
+            closeFn={() => modals.closeAll()}
+          />
+        ),
+      });
       break;
     default:
       break;

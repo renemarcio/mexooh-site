@@ -1,5 +1,6 @@
 import { Inventory } from "@/types/websiteTypes";
 import { Card, Text, Image, LoadingOverlay } from "@mantine/core";
+import { randomId } from "@mantine/hooks";
 import { useState } from "react";
 
 interface Props {
@@ -18,6 +19,8 @@ export default function InventoryCard({ inventory, onClick }: Props) {
       w={280}
       h={225}
       onClick={() => onClick(inventory)}
+      style={{ cursor: "pointer" }}
+      key={inventory.id}
     >
       <Card.Section pos={"relative"}>
         <LoadingOverlay visible={loading} />

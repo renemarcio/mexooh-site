@@ -14,18 +14,38 @@ export async function GET(req: NextRequest) {
   const id = searchParams.get("id") || null;
   const address = searchParams.get("address") || null;
   const city = searchParams.get("city") || null;
+  const date = searchParams.get("date") || null;
+  console.log(date);
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
   const thumbnailUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.webp`;
   let listOfRentedInventoryIDs: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
-      "Select itensnegocios.Pontos_pon_codigo from   itensnegocios Where  itensnegocios.biSemana_bi_codigo In (" +
+      "Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.biSemana_bi_codigo In (" +
       fortnights +
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
     const responseRentedInventory = await query(SQLRentedInventory);
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
+    );
+  }
+
+  let listOfRentedInventoriesAtDate: number[] = [];
+  if (date !== null && date !== "") {
+    const SQLRentedInventory =
+      'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
+      date +
+      '" AND itensnegocios.dtExib_Final >= "' +
+      date +
+      '" And itensnegocios.Tipo In ("L","B","C","D","T","M")';
+    const responseRentedInventory = await query(SQLRentedInventory);
+    listOfRentedInventoriesAtDate = (
+      responseRentedInventory as RowDataPacket[]
+    ).map((obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo);
+    console.log(
+      "listOfRentedInventoriesAtDate: ",
+      listOfRentedInventoriesAtDate
     );
   }
 
@@ -73,6 +93,10 @@ export async function GET(req: NextRequest) {
 
   if (fortnights !== null) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  }
+
+  if (date !== null) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedInventoriesAtDate + ")");
   }
 
   if (conditions.length > 0) {
