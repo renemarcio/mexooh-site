@@ -42,6 +42,7 @@ Props) {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [cities, setCities] = useState<ComboboxData>([]);
+  const [fortnights, setFortnights] = useState<ComboboxData>([]);
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const entriesPerPage =
     viewportWidth > 1300 ? (viewportWidth > 1500 ? 9 : 6) : 3;
@@ -51,6 +52,7 @@ Props) {
       address: "",
       city: "",
       date: "",
+      fortnight: "",
     },
   });
   const [debouncedAddress] = useDebouncedValue(form.values.address, 500);
@@ -58,7 +60,7 @@ Props) {
   async function fetchInventory() {
     setLoading(true);
     const response = await fetch(
-      `/api/${typeOfInventory}?activePage=${currentPage}&pageSize=${entriesPerPage}&address=${debouncedAddress}&city=${form.values.city}&date=${form.values.date}`
+      `/api/${typeOfInventory}?activePage=${currentPage}&pageSize=${entriesPerPage}&address=${debouncedAddress}&city=${form.values.city}&date=${form.values.date}&fortnights=${form.values.fortnight}`
     );
     const data = await response.json();
     setLoading(false);
@@ -85,12 +87,23 @@ Props) {
     setCities(data.data);
   }
 
+  async function fetchFortnightsAsComboboxData() {
+    const response = await fetch(
+      `/api/fortnights?asCombobox=true&years=${new Date().getFullYear()},${
+        new Date().getFullYear() + 1
+      }`
+    );
+    const data = await response.json();
+    setFortnights(data.data);
+  }
+
   useEffect(() => {
     fetchInventory();
   }, [
     typeOfInventory,
     form.values.city,
     form.values.date,
+    form.values.fortnight,
     debouncedAddress,
     currentPage,
     entriesPerPage,
@@ -98,7 +111,12 @@ Props) {
 
   useEffect(() => {
     fetchCitiesAsComboboxData();
+    form.setFieldValue("fortnight", "");
   }, [typeOfInventory]);
+
+  useEffect(() => {
+    fetchFortnightsAsComboboxData();
+  }, []);
 
   return (
     <>
@@ -123,6 +141,13 @@ Props) {
                     setCurrentPage(1);
                   }}
                 />
+                {typeOfInventory === "billboards" && (
+                  <Select
+                    label={"Disponibilidade de bisemana"}
+                    data={fortnights}
+                    {...form.getInputProps("fortnight")}
+                  />
+                )}
                 <Text my={"lg"} ta={"center"}>
                   Disponibilidade de data
                 </Text>

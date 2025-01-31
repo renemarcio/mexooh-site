@@ -57,13 +57,14 @@ export async function GET(req: NextRequest) {
     if (asCombobox) {
       const fortnights: ComboboxData = bisemanas.map((fortnight) => ({
         value: fortnight.bi_codigo.toString(),
-        label: `${fortnight.bi_numero}-${
-          fortnight.bi_ano
-        } - (${fortnight.bi_inicio.getDate()}/${
+        label: `BI ${fortnight.bi_numero}-${fortnight.bi_ano} - (${String(
+          fortnight.bi_inicio.getDate()
+        ).padStart(2, "0")}/${String(
           fortnight.bi_inicio.getMonth() + 1
-        } - ${fortnight.bi_final.getDate()}/${
-          fortnight.bi_final.getMonth() + 1
-        })`,
+        ).padStart(2, "0")} - ${String(fortnight.bi_final.getDate()).padStart(
+          2,
+          "0"
+        )}/${String(fortnight.bi_final.getMonth() + 1).padStart(2, "0")})`,
       }));
       const result = {
         data: fortnights,
