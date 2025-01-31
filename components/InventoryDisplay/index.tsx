@@ -132,6 +132,7 @@ Props) {
                   <DatePicker
                     allowDeselect
                     minDate={new Date()}
+                    // maxDate={new Date(new Date().getFullYear() + 2, 11, 31)}
                     {...form.getInputProps("date")}
                     onChange={(value) => {
                       value
@@ -150,7 +151,7 @@ Props) {
           </Grid.Col>
           <Grid.Col span={{ base: 8, lg: 9 }} pos={"relative"}>
             <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
-            <Paper p={"xl"} h={900} withBorder radius={0}>
+            <Paper p={"xl"} h={850} withBorder radius={0}>
               <Stack justify="space-between" h={"100%"}>
                 <InventoryFlex
                   data={data}

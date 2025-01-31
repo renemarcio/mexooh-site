@@ -83,11 +83,11 @@ export async function GET(req: NextRequest) {
     conditions.push("Cidades_cid_codigo IN(" + city + ")");
   }
 
-  if (fortnights !== null) {
+  if (listOfRentedInventoryIDs.length > 0) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
   }
 
-  if (date !== null) {
+  if (listOfRentedInventoriesAtDate.length > 0) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoriesAtDate + ")");
   }
 
