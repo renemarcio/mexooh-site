@@ -111,7 +111,9 @@ Props) {
 
   useEffect(() => {
     fetchCitiesAsComboboxData();
-    form.setFieldValue("fortnight", "");
+    form.reset();
+    form.setFieldValue("city", "");
+    // document.getElementById("citySelect")?.setAttribute("searchValue", "");
   }, [typeOfInventory]);
 
   useEffect(() => {
@@ -131,14 +133,15 @@ Props) {
                   {...form.getInputProps("address")}
                 />
                 <Select
+                  id="citySelect"
                   label="Cidade"
                   data={cities}
-                  searchable
+                  // searchable
                   nothingFoundMessage="Nenhuma cidade encontrada"
                   {...form.getInputProps("city")}
                   onChange={(value) => {
                     form.setFieldValue("city", value ? value : "");
-                    setCurrentPage(1);
+                    // setCurrentPage(1);
                   }}
                 />
                 {typeOfInventory === "billboards" && (

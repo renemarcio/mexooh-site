@@ -54,7 +54,6 @@ export default function Hero({ slides }: HeroProps) {
       slideSize={"90vw"}
       slideGap={"xs"}
       withIndicators
-      // h={{ sm: "70vh", md: "80vh", lg: "90vh", xl: "100vh" }}
       height={"500px"}
       loop
       plugins={[autoplay.current]}
