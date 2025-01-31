@@ -23,7 +23,7 @@ export default function Hero({ slides }: HeroProps) {
     },
     {
       src: "slides/MEX_SITE_mup_fix.jpg",
-      alt: "",
+      alt: "MUP",
       button: {
         text: "Veja as opções",
         link: "#mup",
@@ -31,7 +31,7 @@ export default function Hero({ slides }: HeroProps) {
     },
     {
       src: "slides/MEX_SITE_OUTDOOR.jpg",
-      alt: "",
+      alt: "OUTDOOR",
       button: {
         text: "Veja as opções",
         link: "#rent",
@@ -39,7 +39,7 @@ export default function Hero({ slides }: HeroProps) {
     },
     {
       src: "slides/MEX_SITE_PAINEL_LED_FIX.jpg",
-      alt: "",
+      alt: "LED",
       button: {
         text: "Veja as opções",
         link: "#ledpanels",

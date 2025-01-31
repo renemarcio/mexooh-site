@@ -11,7 +11,11 @@ export default function InventoryFlex({ data = [], onClick }: Props) {
   const items =
     data.length > 0 ? (
       data.map((inventory) => (
-        <InventoryCard inventory={inventory} onClick={onClick} />
+        <InventoryCard
+          inventory={inventory}
+          onClick={onClick}
+          key={inventory.id}
+        />
       ))
     ) : (
       <Text c={"dimmed"} size={"sm"} ta={"center"} fs={"italic"}>

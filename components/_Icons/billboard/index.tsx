@@ -20,7 +20,7 @@ export default function BillboardIcon({
     >
       <g transform="translate(-1.0405 -1.9265)" fill="none">
         <rect x="1.223" y="2.109" width="10.254" height="6.3276" ry=".68143" />
-        <g stroke-linecap="round">
+        <g strokeLinecap="round">
           <path d="m2.3001 8.67v1.9145" />
           <path d="m4.9717 8.67v1.9145" />
           <path d="m7.6433 8.6699v1.9145" />

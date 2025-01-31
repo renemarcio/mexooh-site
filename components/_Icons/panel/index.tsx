@@ -17,7 +17,7 @@ export default function PanelIcon({ size, style, ...props }: PanelIconProps) {
       <g
         transform="translate(-2.2177 -1.0284)"
         fill="none"
-        stroke-linecap="round"
+        strokeLinecap="round"
       >
         <rect
           x="2.4032"

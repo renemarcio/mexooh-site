@@ -17,9 +17,9 @@ export default function LEDpanelIcon({ size, style, ...props }: any) {
       <g
         transform="translate(-2.2177 -1.0284)"
         fill="none"
-        stroke-miterlimit="5"
+        strokeMiterlimit="5"
       >
-        <g stroke-linecap="round">
+        <g strokeLinecap="round">
           <rect
             x="2.4032"
             y="1.2139"
@@ -32,7 +32,7 @@ export default function LEDpanelIcon({ size, style, ...props }: any) {
         </g>
         <path
           d="m6.8016 3.633-0.90325 0.90325v-1.8065z"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
         />
       </g>
     </svg>
