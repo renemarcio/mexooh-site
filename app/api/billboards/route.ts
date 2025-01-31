@@ -1,12 +1,8 @@
 import { Pontos } from "@/types/databaseTypes";
 import { Billboard } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
-// import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
-// import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
-// import { bucket } from "@/utils/bucket";
-import { list } from "@vercel/blob";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -43,10 +39,6 @@ export async function GET(req: NextRequest) {
     listOfRentedInventoriesAtDate = (
       responseRentedInventory as RowDataPacket[]
     ).map((obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo);
-    console.log(
-      "listOfRentedInventoriesAtDate: ",
-      listOfRentedInventoriesAtDate
-    );
   }
 
   let SQL =
