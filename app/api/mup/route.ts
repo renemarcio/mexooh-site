@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
   const fortnights = searchParams.get("fortnights") || null;
-
+  const date = searchParams.get("date") || null;
   let listOfRentedInventoryIDs: number[] = [];
   try {
     if (fortnights !== null && fortnights !== "") {
@@ -95,6 +95,20 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.log("Couldn't fetch list of rented inventories.", error);
     throw error;
+  }
+
+  let listOfRentedMUPsAtDate: number[] = [];
+  if (date !== null && date !== "") {
+    const SQLRentedInventory =
+      'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
+      date +
+      '" AND itensnegocios.dtExib_Final >= "' +
+      date +
+      '" And itensnegocios.Tipo In ("L","B","C","D","T","M") AND itensnegocios.TipoPonto = "M"';
+    const responseRentedInventory = await query(SQLRentedInventory);
+    listOfRentedMUPsAtDate = (responseRentedInventory as RowDataPacket[]).map(
+      (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
+    );
   }
 
   let SQL =
@@ -114,8 +128,12 @@ export async function GET(req: NextRequest) {
     conditions.push("Cidades_cid_codigo IN(" + city + ")");
   }
 
-  if (fortnights !== null) {
+  if (listOfRentedInventoryIDs.length > 0) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  }
+
+  if (listOfRentedMUPsAtDate.length > 0) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedMUPsAtDate + ")");
   }
 
   if (conditions.length > 0) {

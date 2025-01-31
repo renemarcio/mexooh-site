@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-
+  const date = searchParams.get("date") || null;
   let listOfRentedInventoryIDs: number[] = [];
 
   if (fortnights !== null && fortnights !== "") {
@@ -24,6 +24,20 @@ export async function GET(req: NextRequest) {
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
     );
+  }
+
+  let listOfRentedLEDPanelsAtDate: number[] = [];
+  if (date !== null && date !== "") {
+    const SQLRentedInventory =
+      'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
+      date +
+      '" AND itensnegocios.dtExib_Final >= "' +
+      date +
+      '" And itensnegocios.Tipo In ("L","B","C","D","T","M") AND itensnegocios.TipoPonto = "L"';
+    const responseRentedInventory = await query(SQLRentedInventory);
+    listOfRentedLEDPanelsAtDate = (
+      responseRentedInventory as RowDataPacket[]
+    ).map((obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo);
   }
 
   let SQL =
@@ -43,8 +57,12 @@ export async function GET(req: NextRequest) {
     conditions.push("Cidades_cid_codigo IN(" + city + ")");
   }
 
-  if (fortnights !== null) {
+  if (listOfRentedInventoryIDs.length > 0) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  }
+
+  if (listOfRentedLEDPanelsAtDate.length > 0) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedLEDPanelsAtDate + ")");
   }
 
   if (conditions.length > 0) {

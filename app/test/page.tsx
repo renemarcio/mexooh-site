@@ -1,57 +1,23 @@
-"use client";
-
+import Hero from "@/components/Hero";
+import Info from "@/components/Info";
 import InventoryDisplay from "@/components/InventoryDisplay";
-import BillboardIcon from "@/components/_Icons/billboard";
-import LEDpanelIcon from "@/components/_Icons/ledpanel";
-import MUPIcon from "@/components/_Icons/mup";
-import PanelIcon from "@/components/_Icons/panel";
-import { inventoryTypes } from "@/types/websiteTypes";
-import { Tabs } from "@mantine/core";
-import { useState } from "react";
+import { Title, Text, Center } from "@mantine/core";
 
 export default function TestPage() {
-  const [typeOfInventory, setTypeOfInventory] =
-    useState<inventoryTypes>("panels");
-
   return (
     <>
-      <Tabs
-        // defaultValue={"panels"}
-        w={"80%"}
-        mx={"auto"}
-        value={typeOfInventory}
-        defaultValue={"panels"}
-        onChange={(value) => {
-          if (value !== null) {
-            setTypeOfInventory(value as inventoryTypes);
-          }
-        }}
-      >
-        <Tabs.List>
-          <Tabs.Tab leftSection={<PanelIcon size={16} />} value={"panels"}>
-            Painéis
-          </Tabs.Tab>
-          <Tabs.Tab
-            leftSection={<MUPIcon size={16} strokeWidth={0.6} />}
-            value={"mup"}
-          >
-            Mupis
-          </Tabs.Tab>
-          <Tabs.Tab
-            leftSection={<BillboardIcon size={16} />}
-            value={"billboards"}
-          >
-            Outdoors
-          </Tabs.Tab>
-          <Tabs.Tab
-            leftSection={<LEDpanelIcon size={16} />}
-            value={"LEDpanels"}
-          >
-            Painéis de LED
-          </Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-      <InventoryDisplay typeOfInventory={typeOfInventory} />
+      <Hero />
+      <Info />
+      <Title ta={"center"}>Confira nosso inventário</Title>
+      <Center>
+        <Text ta={"center"} w={"50%"} mb={"xl"} mt={"md"}>
+          Oferecemos visibilidade para o seu negócio se várias formas, seja por
+          um outdoor na rua ou um painel de publicidade em uma estrada, nossos
+          pontos são as melhores maneiras de divulgar seu negócio. Coloque já no
+          carrinho e faça seu negocio crescer.
+        </Text>
+      </Center>
+      <InventoryDisplay />
     </>
   );
 }

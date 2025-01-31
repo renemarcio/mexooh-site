@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   const city = searchParams.get("city") || null;
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
-
+  const date = searchParams.get("date") || null;
   const thumbnailUrl = `/photos/Paineis/${String(id).padStart(6, "0")}.webp`;
 
   let listOfRentedInventoryIDs: number[] = [];
@@ -31,6 +31,20 @@ export async function GET(req: NextRequest) {
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
     const responseRentedInventory = await query(SQLRentedInventory);
     listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
+      (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
+    );
+  }
+
+  let listOfRentedPanelsAtDate: number[] = [];
+  if (date !== null && date !== "") {
+    const SQLRentedInventory =
+      'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
+      date +
+      '" AND itensnegocios.dtExib_Final >= "' +
+      date +
+      '" And itensnegocios.Tipo In ("L","B","C","D","T","M") AND itensnegocios.TipoPonto = "P"';
+    const responseRentedInventory = await query(SQLRentedInventory);
+    listOfRentedPanelsAtDate = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
     );
   }
@@ -69,8 +83,12 @@ export async function GET(req: NextRequest) {
     conditions.push("Cidades_cid_codigo IN(" + city + ")");
   }
 
-  if (fortnights !== null) {
+  if (listOfRentedInventoryIDs.length > 0) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  }
+
+  if (listOfRentedPanelsAtDate.length > 0) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedPanelsAtDate + ")");
   }
 
   if (conditions.length > 0) {

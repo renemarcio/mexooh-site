@@ -15,28 +15,28 @@ export async function GET(req: NextRequest) {
   const activePage = Number(searchParams.get("activePage")) || null;
   const pageSize = Number(searchParams.get("pageSize")) || null;
   const thumbnailUrl = `/photos/Outdoors/${String(id).padStart(6, "0")}.webp`;
-  let listOfRentedInventoryIDs: number[] = [];
+  let listOfRentedInventoriesAtFortnight: number[] = [];
   if (fortnights !== null && fortnights !== "") {
     const SQLRentedInventory =
       "Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.biSemana_bi_codigo In (" +
       fortnights +
       ") And itensnegocios.Tipo In ('L','B','C','D','T','M')";
     const responseRentedInventory = await query(SQLRentedInventory);
-    listOfRentedInventoryIDs = (responseRentedInventory as RowDataPacket[]).map(
-      (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
-    );
+    listOfRentedInventoriesAtFortnight = (
+      responseRentedInventory as RowDataPacket[]
+    ).map((obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo);
   }
 
-  let listOfRentedInventoriesAtDate: number[] = [];
+  let listOfRentedBillboardsAtDate: number[] = [];
   if (date !== null && date !== "") {
     const SQLRentedInventory =
       'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
       date +
       '" AND itensnegocios.dtExib_Final >= "' +
       date +
-      '" And itensnegocios.Tipo In ("L","B","C","D","T","M")';
+      '" And itensnegocios.Tipo In ("L","B","C","D","T","M") AND itensnegocios.TipoPonto = "O"';
     const responseRentedInventory = await query(SQLRentedInventory);
-    listOfRentedInventoriesAtDate = (
+    listOfRentedBillboardsAtDate = (
       responseRentedInventory as RowDataPacket[]
     ).map((obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo);
   }
@@ -83,12 +83,14 @@ export async function GET(req: NextRequest) {
     conditions.push("Cidades_cid_codigo IN(" + city + ")");
   }
 
-  if (listOfRentedInventoryIDs.length > 0) {
-    conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
+  if (listOfRentedInventoriesAtFortnight.length > 0) {
+    conditions.push(
+      "NOT pon_codigo IN(" + listOfRentedInventoriesAtFortnight + ")"
+    );
   }
 
-  if (listOfRentedInventoriesAtDate.length > 0) {
-    conditions.push("NOT pon_codigo IN(" + listOfRentedInventoriesAtDate + ")");
+  if (listOfRentedBillboardsAtDate.length > 0) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedBillboardsAtDate + ")");
   }
 
   if (conditions.length > 0) {
