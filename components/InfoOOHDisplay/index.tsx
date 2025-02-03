@@ -8,6 +8,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import classes from "./styles.module.css";
+import Link from "next/link";
 interface Props {
   data?: InfoOOHPanelInfoType;
 }
@@ -123,20 +124,28 @@ export default function InfoOOHDisplay({ data }: Props) {
               </Group>
             </Grid.Col>
             <Grid.Col span={12}>
-              <Group gap={"sm"} justify="center">
-                <IconCompass
-                  size={30}
-                  color={"var(--mantine-color-midiagreen-7)"}
-                />
-                <div>
-                  <Text size="md" className={classes.statTitle}>
-                    Coordenadas
-                  </Text>
-                  <Text size="xl" className={classes.statValue}>
-                    {data.latitude + ", " + data.longitude}
-                  </Text>
-                </div>
-              </Group>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&basemap=satellite&query=${
+                  data.latitude + "," + data.longitude
+                }`}
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                <Group gap={"sm"} justify="center">
+                  <IconCompass
+                    size={30}
+                    color={"var(--mantine-color-midiagreen-7)"}
+                  />
+                  <div>
+                    <Text size="md" className={classes.statTitle}>
+                      Coordenadas
+                    </Text>
+                    <Text size="xl" className={classes.statValue}>
+                      {data.latitude + ", " + data.longitude}
+                    </Text>
+                  </div>
+                </Group>
+              </a>
             </Grid.Col>
           </Grid>
         </Center>
