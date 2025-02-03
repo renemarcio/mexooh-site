@@ -45,7 +45,11 @@ Props) {
   const [fortnights, setFortnights] = useState<ComboboxData>([]);
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const entriesPerPage =
-    viewportWidth > 1300 ? (viewportWidth > 1500 ? 9 : 6) : 3;
+    viewportWidth > 1300 ? (viewportWidth > 1575 ? 9 : 6) : 3;
+  const paginationSiblings =
+    viewportWidth > 1300 ? (viewportWidth > 1575 ? 2 : 1) : 0;
+  const paginationBoundaries =
+    viewportWidth > 1300 ? (viewportWidth > 1575 ? 1 : 0) : 0;
   const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
@@ -185,6 +189,8 @@ Props) {
                 <Center mt={"xl"}>
                   {totalPages > 0 && (
                     <Pagination
+                      siblings={paginationSiblings}
+                      boundaries={paginationBoundaries}
                       total={totalPages}
                       value={currentPage}
                       onChange={(value) => setCurrentPage(value)}
