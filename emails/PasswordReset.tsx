@@ -51,7 +51,7 @@ export default function PasswordResetEmail({
             </Text>
             <Text className="text-center">
               <Link
-                href={`https://www.mexooh.com//password-reset/${uuid}`}
+                href={`https://www.midiapaineis.com.br/password-reset/${uuid}`}
                 className="decoration-emerald-400"
               >
                 Clique aqui para redefinir a sua senha!
