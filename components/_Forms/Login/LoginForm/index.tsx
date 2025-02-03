@@ -4,6 +4,7 @@ import PasswordInputWithRecovery from "../../../Inputs/PasswordInputWithRecovery
 import RegisterAnchor from "../../../_Buttons/RegisterAnchor";
 import { UseFormInput, isEmail, useForm } from "@mantine/form";
 import { signIn } from "next-auth/react";
+import { modals } from "@mantine/modals";
 type LoginProps = {
   nextStepFn?: () => void;
 };
@@ -19,6 +20,8 @@ export default function LoginForm({ nextStepFn }: LoginProps) {
     if (response?.ok) {
       if (nextStepFn) {
         nextStepFn();
+      } else {
+        modals.closeAll();
       }
     } else {
       console.log(response?.error);
