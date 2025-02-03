@@ -126,7 +126,6 @@ Props) {
         <Grid gutter={0}>
           <Grid.Col span={{ base: 4, lg: 3 }}>
             <Paper withBorder radius={0} h={"100%"} p={"lg"}>
-              {/* <TestInventoryDisplayQuery /> */}
               <form>
                 <TextInput
                   label="Endereço"

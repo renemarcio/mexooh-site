@@ -17,6 +17,8 @@ export default async function onClickHandler(
       modals.open({
         centered: true,
         size: "lg",
+        withCloseButton: false,
+        yOffset: "10vh",
         children: (
           <PanelRentForm
             key={fullInventory.id}
@@ -33,6 +35,8 @@ export default async function onClickHandler(
       modals.open({
         centered: true,
         size: "lg",
+        withCloseButton: false,
+        yOffset: "10vh",
         children: (
           <MUPForm
             key={fullInventory.id}
@@ -46,6 +50,8 @@ export default async function onClickHandler(
       modals.open({
         centered: true,
         size: "lg",
+        withCloseButton: false,
+        yOffset: "10vh",
         children: (
           <RentBillboardModal
             key={fullInventory.id}
@@ -59,6 +65,8 @@ export default async function onClickHandler(
       modals.open({
         centered: true,
         size: "lg",
+        withCloseButton: false,
+        yOffset: "10vh",
         children: (
           <LEDPanelForm
             key={fullInventory.id}

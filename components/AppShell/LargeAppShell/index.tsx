@@ -252,6 +252,7 @@ export default function LargeAppShell({
           ) : (
             <Tooltip //@ts-ignore
               label={`Logado como ${session.data?.nome}, clique para sair.`}
+              zIndex={10000}
             >
               <Avatar
                 color="var(--mantine-primary-color-filled)"
