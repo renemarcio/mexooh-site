@@ -4,7 +4,7 @@ import { Tabs } from "@mantine/core";
 import { useState } from "react";
 import BillboardIcon from "../_Icons/billboard";
 import LEDpanelIcon from "../_Icons/ledpanel";
-import MUPIcon from "../_Icons/mup";
+import MUPIIcon from "../_Icons/mupi";
 import PanelIcon from "../_Icons/panel";
 import InventoryDisplayMainLayout from "./InventoryDisplayMainLayout";
 
@@ -30,10 +30,10 @@ export default function InventoryDisplay() {
             Painéis
           </Tabs.Tab>
           <Tabs.Tab
-            leftSection={<MUPIcon size={16} strokeWidth={0.6} />}
-            value={"mup"}
+            leftSection={<MUPIIcon size={16} strokeWidth={0.6} />}
+            value={"mupi"}
           >
-            Mupis
+            Mupiis
           </Tabs.Tab>
           <Tabs.Tab
             leftSection={<BillboardIcon size={16} />}

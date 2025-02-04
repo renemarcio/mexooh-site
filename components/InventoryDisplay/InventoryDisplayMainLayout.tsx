@@ -17,7 +17,7 @@ import { useDebouncedValue, useViewportSize } from "@mantine/hooks";
 
 import onClickHandler from "./onClickHandler";
 import { useForm } from "@mantine/form";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DatePickerInput } from "@mantine/dates";
 
 interface Props {
   typeOfInventory?: inventoryTypes;
@@ -79,7 +79,7 @@ Props) {
     const typeMapping = {
       billboards: "O",
       panels: "P",
-      mup: "M",
+      mupi: "M",
       LEDpanels: "L",
     };
 
@@ -127,8 +127,9 @@ Props) {
   return (
     <>
       <Paper withBorder shadow="md" w={"80%"} m={"auto"}>
-        <Grid gutter={0}>
-          <Grid.Col span={{ base: 4, lg: 3 }}>
+        <Grid gutter={0} overflow="hidden">
+          {/* <Grid.Col span={{ base: 4, lg: 3 }} miw={"300px"}> */}
+          <Grid.Col span="content">
             <Paper withBorder radius={0} h={"100%"} p={"lg"}>
               <form>
                 <TextInput
@@ -159,9 +160,9 @@ Props) {
                 </Text>
                 <Center>
                   <DatePicker
+                    visibleFrom="sm"
                     allowDeselect
                     minDate={new Date()}
-                    // maxDate={new Date(new Date().getFullYear() + 2, 11, 31)}
                     {...form.getInputProps("date")}
                     onChange={(value) => {
                       value
@@ -178,7 +179,11 @@ Props) {
               </form>
             </Paper>
           </Grid.Col>
-          <Grid.Col span={{ base: 8, lg: 9 }} pos={"relative"}>
+          <Grid.Col
+            // span={{ base: 8, lg: 9 }}
+            span={"auto"}
+            pos={"relative"}
+          >
             <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
             <Paper p={"xl"} h={850} withBorder radius={0}>
               <Stack justify="space-between" h={"100%"}>

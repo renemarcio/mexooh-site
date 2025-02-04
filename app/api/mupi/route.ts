@@ -8,7 +8,7 @@
 //   const perPage = 11;
 
 import { Pontos } from "@/types/databaseTypes";
-import { MUP } from "@/types/websiteTypes";
+import { MUPI } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
     throw error;
   }
 
-  let listOfRentedMUPsAtDate: number[] = [];
+  let listOfRentedMUPIsAtDate: number[] = [];
   if (date !== null && date !== "") {
     const SQLRentedInventory =
       'Select itensnegocios.Pontos_pon_codigo from itensnegocios Where itensnegocios.dtExib_Inicial <= "' +
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
       date +
       '" And itensnegocios.Tipo In ("L","B","C","D","T","M") AND itensnegocios.TipoPonto = "M"';
     const responseRentedInventory = await query(SQLRentedInventory);
-    listOfRentedMUPsAtDate = (responseRentedInventory as RowDataPacket[]).map(
+    listOfRentedMUPIsAtDate = (responseRentedInventory as RowDataPacket[]).map(
       (obj) => (obj as { Pontos_pon_codigo: number }).Pontos_pon_codigo
     );
   }
@@ -132,8 +132,8 @@ export async function GET(req: NextRequest) {
     conditions.push("NOT pon_codigo IN(" + listOfRentedInventoryIDs + ")");
   }
 
-  if (listOfRentedMUPsAtDate.length > 0) {
-    conditions.push("NOT pon_codigo IN(" + listOfRentedMUPsAtDate + ")");
+  if (listOfRentedMUPIsAtDate.length > 0) {
+    conditions.push("NOT pon_codigo IN(" + listOfRentedMUPIsAtDate + ")");
   }
 
   if (conditions.length > 0) {
@@ -151,28 +151,28 @@ export async function GET(req: NextRequest) {
       }
       const paginatedResponse = await query(SQL);
       const inventory = paginatedResponse as Pontos[];
-      const MUPs: MUP[] = inventory.map((mup) => ({
-        id: mup.pon_codigo,
-        address: mup.pon_compl,
-        coordinates: mup.LinkMapa ? mup.LinkMapa : "0,0",
-        value: mup.pon_iluminado === "S" ? 1190 : 1090,
+      const MUPIs: MUPI[] = inventory.map((mupi) => ({
+        id: mupi.pon_codigo,
+        address: mupi.pon_compl,
+        coordinates: mupi.LinkMapa ? mupi.LinkMapa : "0,0",
+        value: mupi.pon_iluminado === "S" ? 1190 : 1090,
       }));
       const result = {
-        data: MUPs,
+        data: MUPIs,
         totalPages,
       };
       return NextResponse.json(result);
     } else {
       const response = await query(SQL);
       const inventory = response as Pontos[];
-      const MUPs: MUP[] = inventory.map((mup) => ({
-        id: mup.pon_codigo,
-        address: mup.pon_compl,
-        coordinates: mup.LinkMapa ? mup.LinkMapa : "0,0",
-        value: mup.pon_iluminado === "S" ? 1190 : 1090,
+      const MUPIs: MUPI[] = inventory.map((mupi) => ({
+        id: mupi.pon_codigo,
+        address: mupi.pon_compl,
+        coordinates: mupi.LinkMapa ? mupi.LinkMapa : "0,0",
+        value: mupi.pon_iluminado === "S" ? 1190 : 1090,
       }));
       const result = {
-        data: MUPs,
+        data: MUPIs,
       };
       return NextResponse.json(result);
     }

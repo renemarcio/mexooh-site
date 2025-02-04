@@ -108,7 +108,7 @@ export default function LargeAppShell({
                   my="lg"
                 />
                 <Link
-                  href={"/#mup"}
+                  href={"/#mupi"}
                   style={{
                     textDecoration: "none",
                     color: "var(--mantine-color-text)",

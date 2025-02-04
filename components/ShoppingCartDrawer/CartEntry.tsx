@@ -9,6 +9,7 @@ import {
   NumberFormatter,
   Text,
   Code,
+  HoverCard,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
@@ -46,28 +47,53 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       <Text size="sm">{entry.item.address}</Text>
       <Group grow gap={0}>
         {entry.value > 0 && (
-          <Text size="sm">R$ {entry.value},00 / Bi-Semana</Text>
+          <Text size="sm">
+            R$ {entry.value},00 / {entry.periodStart ? "Mês" : "Bi-Semana"}
+          </Text>
         )}
         <Text ta={"right"}>
-          {entry.fortnights === undefined
-            ? null
-            : entry.fortnights.length > 1
-            ? `${entry.fortnights.length} Bi-Semanas`
-            : `${entry.fortnights.length} Bi-Semana`}
+          {entry.fortnights === undefined ? null : (
+            <HoverCard>
+              <HoverCard.Target>
+                <Text>
+                  {entry.fortnights.length > 1
+                    ? `${entry.fortnights.length} Bi-Semanas`
+                    : `${entry.fortnights.length} Bi-Semana`}
+                </Text>
+              </HoverCard.Target>
+              <HoverCard.Dropdown>
+                {entry.fortnights.map((fortnight) => (
+                  <Text>{`BI-${fortnight.number} ${String(fortnight.year).slice(
+                    2
+                  )} (${new Date(fortnight.start).toLocaleDateString(
+                    "pt-BR"
+                  )} - ${new Date(fortnight.finish).toLocaleDateString(
+                    "pt-BR"
+                  )})`}</Text>
+                ))}
+              </HoverCard.Dropdown>
+            </HoverCard>
+          )}
+
+          {entry.periodStart != undefined && entry.periodFinish != undefined ? (
+            <div>
+              Inicio: {new Date(entry.periodStart).toLocaleDateString("pt-BR")}
+              <br />
+              Fim: {new Date(entry.periodFinish).toLocaleDateString("pt-BR")}
+            </div>
+          ) : null}
         </Text>
       </Group>
       <Center>
         <Text size="lg" fw={700} c={"midiagreen.8"}>
-          {entry.value > 0 ? (
+          {entry.totalValue > 0 ? (
             <NumberFormatter
               prefix="R$ "
               thousandSeparator="."
               decimalSeparator=","
               decimalScale={2}
               fixedDecimalScale
-              value={
-                entry.fortnights ? entry.value * entry.fortnights.length : 0
-              }
+              value={entry.totalValue}
             />
           ) : (
             <>À negociar</>

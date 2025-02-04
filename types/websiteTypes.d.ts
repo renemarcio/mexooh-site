@@ -20,7 +20,7 @@ export interface Billboard extends Inventory {
   value: number;
 }
 
-export interface MUP extends Inventory {}
+export interface MUPI extends Inventory {}
 
 export interface Panel extends Inventory {}
 
@@ -58,7 +58,7 @@ export interface InfoOOHPanelInfoType {
 
 //#region UnionTypes
 
-export type inventoryTypes = "panels" | "mup" | "billboards" | "LEDpanels";
+export type inventoryTypes = "panels" | "mupi" | "billboards" | "LEDpanels";
 
 //#endregion
 
@@ -68,7 +68,7 @@ export type inventoryTypes = "panels" | "mup" | "billboards" | "LEDpanels";
 
 export enum InventoryType {
   panels = "panels",
-  mup = "mup",
+  mupi = "mupi",
   billboards = "billboards",
   LEDpanels = "LEDpanels",
 }

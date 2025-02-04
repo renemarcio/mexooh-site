@@ -10,7 +10,6 @@ export async function middleware(req: NextRequest) {
   const user = token?.user;
 
   if (!user) {
-    console.log("Acesso negado.");
     if (req.nextUrl.pathname === "/access-denied") return NextResponse.next();
     return NextResponse.redirect(new URL("/access-denied", req.url));
   } else {

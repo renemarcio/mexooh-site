@@ -34,7 +34,8 @@ export default function ShoppingCartDrawer({
   // );
   const total = cartContext.cart
     .map((entry) => {
-      return entry.value * (entry.fortnights ? entry.fortnights.length : 0);
+      // return entry.value * (entry.fortnights ? entry.fortnights.length : 0);
+      return entry.totalValue;
     })
     .reduce((a, b) => a + b, 0);
   const billboardList = cartContext.cart.map((entry) => (
@@ -66,8 +67,8 @@ export default function ShoppingCartDrawer({
                   top={"50%"}
                   pos={"absolute"}
                 >
-                  Seu carrinho está vazio :( <br /> Que tal adicionar alguns
-                  outdoors?
+                  Seu carrinho está vazio :( <br /> Que tal dar uma olhada no
+                  que temos à oferecer?
                 </Text>
               </Center>
             </>

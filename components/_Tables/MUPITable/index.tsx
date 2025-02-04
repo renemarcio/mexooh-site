@@ -21,18 +21,18 @@ import { useDebouncedValue } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import Map from "../../Map";
 import { modals } from "@mantine/modals";
-import MUPForm from "../../_Forms/MUPForm";
-import { MUP } from "@/types/websiteTypes";
+import MUPIForm from "../../_Forms/MUPIForm";
+import { MUPI } from "@/types/websiteTypes";
 import { useCartContext } from "@/contexts/CartContext";
 import classes from "./styles.module.css";
 // import PanelRentForm from "../PanelRentForm";
 
-export default function MUPTable() {
+export default function MUPITable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [address, setAddress] = useState("");
   const [debouncedAddress] = useDebouncedValue(address, 500);
-  const [MUPs, setMUPs] = useState<MUP[]>([]);
+  const [MUPIs, setMUPIs] = useState<MUPI[]>([]);
   const [cities, setCities] = useState<ComboboxData>([]);
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
@@ -41,20 +41,20 @@ export default function MUPTable() {
   const cartContext = useCartContext();
   // const { city, setCity } = useCityContext();
 
-  async function fetchMUPs() {
+  async function fetchMUPIs() {
     try {
       const response = await fetch(
-        `/api/mup?activePage=${activePage}&pageSize=20&address=${address}&city=${
+        `/api/mupi?activePage=${activePage}&pageSize=20&address=${address}&city=${
           city === null ? "" : city
         }`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
-      setMUPs(data.data);
+      setMUPIs(data.data);
     } catch {
-      setMUPs([]);
+      setMUPIs([]);
       setTotalPages(0);
-      console.log("Couldn't fetch MUPs.");
+      console.log("Couldn't fetch MUPIs.");
     }
   }
 
@@ -73,41 +73,43 @@ export default function MUPTable() {
   }, []);
 
   useEffect(() => {
-    fetchMUPs();
+    fetchMUPIs();
   }, [debouncedAddress, city, activePage]);
 
   useEffect(() => {
     setPage(1);
   }, [city]);
 
-  const tableRows = MUPs ? (
-    MUPs.map((MUP) => (
+  const tableRows = MUPIs ? (
+    MUPIs.map((MUPI) => (
       <Table.Tr
-        key={MUP.id}
+        key={MUPI.id}
         onMouseEnter={() => {
-          setLat(Number(MUP.coordinates?.split(",")[0]));
-          setLong(Number(MUP.coordinates?.split(",")[1]));
+          setLat(Number(MUPI.coordinates?.split(",")[0]));
+          setLong(Number(MUPI.coordinates?.split(",")[1]));
         }}
         onClick={() => {
-          setLat(Number(MUP.coordinates?.split(",")[0]));
-          setLong(Number(MUP.coordinates?.split(",")[1]));
-          if (!cartContext.cart.find((e) => e.item.id === MUP.id)) {
+          setLat(Number(MUPI.coordinates?.split(",")[0]));
+          setLong(Number(MUPI.coordinates?.split(",")[1]));
+          if (!cartContext.cart.find((e) => e.item.id === MUPI.id)) {
             modals.open({
-              children: <MUPForm mup={MUP} closeFn={() => modals.closeAll()} />,
+              children: (
+                <MUPIForm mupi={MUPI} closeFn={() => modals.closeAll()} />
+              ),
               centered: true,
             });
           }
         }}
         style={{ cursor: "pointer" }}
         className={
-          cartContext.cart.find((e) => e.item.id === MUP.id)
+          cartContext.cart.find((e) => e.item.id === MUPI.id)
             ? classes.inCart
             : ""
         }
       >
         <Table.Td ta={"left"}>
           <Text lineClamp={1} tt={"capitalize"}>
-            {MUP.address?.toLowerCase()}
+            {MUPI.address?.toLowerCase()}
           </Text>
         </Table.Td>
       </Table.Tr>
@@ -160,7 +162,7 @@ export default function MUPTable() {
                             flex={3}
                             placeholder="Endereço..."
                             onBlur={() => {
-                              fetchMUPs();
+                              fetchMUPIs();
                             }}
                             onChange={(e) => setAddress(e.currentTarget.value)}
                           />
@@ -170,7 +172,7 @@ export default function MUPTable() {
                             data={cities}
                             onChange={(value) => {
                               setCity(value!);
-                              fetchMUPs();
+                              fetchMUPIs();
                             }}
                             allowDeselect={true}
                             value={city}
@@ -184,7 +186,7 @@ export default function MUPTable() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {MUPs && MUPs.length > 0 ? (
+                  {MUPIs && MUPIs.length > 0 ? (
                     tableRows
                   ) : (
                     <Table.Tr>

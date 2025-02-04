@@ -126,6 +126,7 @@ Props) {
       item: billboard,
       value: billboard.value,
       fortnights: rentedFortnights, //fortnights that match selectedFortnights IDS
+      totalValue: Number(billboard.value) * selectedFortnights.length,
     };
     cart.setCart([...cart.cart, newCartEntry]);
     closeFn();

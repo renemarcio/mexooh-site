@@ -15,7 +15,7 @@ export interface Bisemana {
 
 export interface Pontos {
   //pontos
-  //pon_out_pain P = Painel | O = Outdoor | L = LED | M = MUP
+  //pon_out_pain P = Painel | O = Outdoor | L = LED | M = MUPI
   pon_codigo: number;
   Empresas_Emp_codigo: number; //Empresas_Emp_codigo
   EmpresaCtaPagar: number; //EmpresaCtaPagar

@@ -26,61 +26,12 @@ type Props = {
 };
 
 export default function PanelRentForm({ panel, thumbnailUrl, closeFn }: Props) {
-  const [fortnights, setFortnights] = useState<Fortnight[]>([]);
-  const [rentedFortnights, setRentedFortnights] = useState<Number[]>([]);
   const [infoOOHData, setInfoOOHData] = useState<InfoOOHPanelInfoType>();
   const [loading, setLoading] = useState(false);
+  const [initialRentDate, setInitialRentDate] = useState(new Date());
+  const [monthQuantity, setMonthQuantity] = useState<number>(1);
 
   const cart = useContext(CartContext);
-  // const fortnightsData = fortnights.map((fortnight) => {
-  //   return {
-  //     value: fortnight.id.toString(),
-  //     label: `BI-${fortnight.number} -
-  //         ${Number(new Date(fortnight.start).getUTCDate()).toLocaleString(
-  //           "pt-BR",
-  //           {
-  //             minimumIntegerDigits: 2,
-  //           }
-  //         )}/${Number(
-  //       new Date(fortnight.start).getUTCMonth() + 1
-  //     ).toLocaleString("pt-BR", {
-  //       minimumIntegerDigits: 2,
-  //     })}/${new Date(fortnight.start).getUTCFullYear()} -
-  //       ${Number(new Date(fortnight.finish).getUTCDate()).toLocaleString(
-  //         "pt-BR",
-  //         {
-  //           minimumIntegerDigits: 2,
-  //         }
-  //       )}/${Number(
-  //       new Date(fortnight.finish).getUTCMonth() + 1
-  //     ).toLocaleString("pt-BR", {
-  //       minimumIntegerDigits: 2,
-  //     })}/${new Date(fortnight.finish).getUTCFullYear()}`,
-  //     disabled: !rentedFortnights.includes(fortnight.id),
-  //   };
-  // });
-  // async function fetchFortnights() {
-  //   const res = await fetch("/api/fortnights", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const data = await res.json();
-  //   setFortnights(data.data);
-  // }
-
-  // async function fetchRentedFortnights() {
-  //   const res = await fetch("/api/fortnights/rented?id=" + panel.id, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   const data = await res.json();
-  //   const rentedFortnightsIDs = data.data.map((obj: { id: number }) => obj.id);
-  //   setRentedFortnights(rentedFortnightsIDs);
-  // }
 
   async function fetchInfoOOHData() {
     setLoading(true);
@@ -91,8 +42,6 @@ export default function PanelRentForm({ panel, thumbnailUrl, closeFn }: Props) {
   }
 
   useEffect(() => {
-    // fetchFortnights();
-    // fetchRentedFortnights();
     fetchInfoOOHData();
   }, []);
 
@@ -116,18 +65,36 @@ export default function PanelRentForm({ panel, thumbnailUrl, closeFn }: Props) {
               label={"Data de aluguel"}
               placeholder={"Data..."}
               valueFormat="DD/MM/YYYY"
+              minDate={new Date()}
+              value={initialRentDate}
+              onChange={(value) => setInitialRentDate(value!)}
             />
             <NumberInput
               min={1}
               defaultValue={1}
               label={"Quantidade de meses à alugar"}
               placeholder={"Quero alugar por..."}
+              value={monthQuantity}
+              onChange={(value) => setMonthQuantity(Number(value!))}
             />
           </Group>
           <Button
             fullWidth
             onClick={() => {
-              cart.setCart([...cart.cart, { item: panel, value: 0 }]);
+              cart.setCart([
+                ...cart.cart,
+                {
+                  item: panel,
+                  value: 0,
+                  totalValue: 0,
+                  periodStart: initialRentDate,
+                  periodFinish: new Date(
+                    new Date(initialRentDate).setMonth(
+                      new Date(initialRentDate).getMonth() + monthQuantity
+                    )
+                  ),
+                }, //TODO: Replace values when we have them
+              ]);
               closeFn();
             }}
             disabled={

@@ -1,5 +1,7 @@
+import FortnightCalendarButton from "@/components/FortnightCalendarButton";
 import Logo from "@/components/Logo";
 import ThemeToggleIcon from "@/components/_Buttons/ThemeToggleIcon";
+import StaffLogin from "@/components/_Forms/Login/StaffLogin";
 import { CartContextType } from "@/contexts/CartContext";
 import {
   ActionIcon,
@@ -7,11 +9,13 @@ import {
   Avatar,
   Box,
   Burger,
+  Button,
   Center,
   Group,
   Indicator,
   Tooltip,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -34,18 +38,35 @@ export default function SmallAppShell({
   const session = useSession();
   return (
     <>
-      <Group justify="space-between" px={"lg"} w={"100vw"}>
-        <Box>
+      <Group h={70} justify="space-between" px={"lg"} w={"100vw"}>
+        <Group>
           <Burger opened={burgerMenuOpened} onClick={burgerMenuToggle} />
-        </Box>
-        <Center>
           <Box h={70} p={10} component={Link} href="/">
             <Logo />
           </Box>
-        </Center>
+        </Group>
         <Box>
           <Center>
             <Group gap={5}>
+              <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
+              <Button component={Link} href="/admin" visibleFrom="sm">
+                Área de Colaboradores
+              </Button>
+              {/* <Button
+                variant="filled"
+                onClick={() =>
+                  modals.open({
+                    title: "Login",
+                    centered: true,
+                    children: <StaffLogin />,
+                    size: "auto",
+                    closeOnClickOutside: true,
+                    onClose: () => modals.closeAll(),
+                  })
+                }
+              >
+                Área de Colaboradores
+              </Button> */}
               <ThemeToggleIcon size="lg" />
               {session.status !== "authenticated" ? (
                 <ActionIcon

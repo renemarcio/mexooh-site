@@ -1,12 +1,12 @@
 .navbarHiddenFrom {
-  @media (min-width: em(1521px)) {
+  @media (min-width: em(1550px)) {
     display: none;
   }
 }
 
 .navbarHiddenTo {
   display: none;
-  @media (min-width: em(1521px)) {
+  @media (min-width: em(1550px)) {
     display: block;
   }
 }

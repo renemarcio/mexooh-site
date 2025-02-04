@@ -1,8 +1,8 @@
-interface MUPIconProps extends React.ComponentPropsWithoutRef<"svg"> {
+interface MUPIIconProps extends React.ComponentPropsWithoutRef<"svg"> {
   size?: number | string;
 }
 
-export default function MUPIcon({ size, style, ...props }: MUPIconProps) {
+export default function MUPIIcon({ size, style, ...props }: MUPIIconProps) {
   return (
     <svg
       width="19.78"

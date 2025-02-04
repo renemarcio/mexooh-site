@@ -22,11 +22,11 @@ export default function Hero({ slides }: HeroProps) {
       },
     },
     {
-      src: "slides/MEX_SITE_mup_fix.jpg",
-      alt: "MUP",
+      src: "slides/MEX_SITE_mupi_fix.jpg",
+      alt: "MUPI",
       button: {
         text: "Veja as opções",
-        link: "#mup",
+        link: "#mupi",
       },
     },
     {

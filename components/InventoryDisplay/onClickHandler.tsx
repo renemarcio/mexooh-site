@@ -1,6 +1,6 @@
 import { Inventory } from "@/types/websiteTypes";
 import { modals } from "@mantine/modals";
-import MUPForm from "../_Forms/MUPForm";
+import MUPIForm from "../_Forms/MUPIForm";
 import PanelRentForm from "../_Forms/PanelRentForm";
 import RentBillboardModal from "../_Forms/RentBillboardModal";
 import LEDPanelForm from "../_Forms/LEDPanelForm";
@@ -31,16 +31,16 @@ export default async function onClickHandler(
         ),
       });
       break;
-    case "mup":
+    case "mupi":
       modals.open({
         centered: true,
         size: "lg",
         withCloseButton: false,
         yOffset: "10vh",
         children: (
-          <MUPForm
+          <MUPIForm
             key={fullInventory.id}
-            mup={fullInventory}
+            mupi={fullInventory}
             closeFn={() => modals.closeAll()}
           />
         ),
