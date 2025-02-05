@@ -83,7 +83,9 @@ export default function SmallAppShell({
                 >
                   <Avatar
                     color="var(--mantine-primary-color-filled)"
-                    onClick={() => signOut({ redirect: false })}
+                    onClick={() =>
+                      signOut({ redirect: true, callbackUrl: "/" })
+                    }
                   />
                 </Tooltip>
               )}

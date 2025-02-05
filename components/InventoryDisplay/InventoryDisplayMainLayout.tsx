@@ -45,11 +45,29 @@ Props) {
   const [fortnights, setFortnights] = useState<ComboboxData>([]);
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
   const entriesPerPage =
-    viewportWidth > 1300 ? (viewportWidth > 1575 ? 9 : 6) : 3;
+    viewportWidth > 1300
+      ? viewportWidth > 1575
+        ? viewportWidth > 2321
+          ? 15
+          : 9
+        : 6
+      : 3;
   const paginationSiblings =
-    viewportWidth > 1300 ? (viewportWidth > 1575 ? 2 : 1) : 0;
+    viewportWidth > 1300
+      ? viewportWidth > 1575
+        ? viewportWidth > 2321
+          ? 3
+          : 2
+        : 1
+      : 0;
   const paginationBoundaries =
-    viewportWidth > 1300 ? (viewportWidth > 1575 ? 1 : 0) : 0;
+    viewportWidth > 1300
+      ? viewportWidth > 1575
+        ? viewportWidth > 2321
+          ? 2
+          : 1
+        : 0
+      : 0;
   const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
@@ -148,34 +166,37 @@ Props) {
                     // setCurrentPage(1);
                   }}
                 />
-                {typeOfInventory === "billboards" && (
+                {typeOfInventory === "billboards" ? (
                   <Select
                     label={"Disponibilidade de bisemana"}
                     data={fortnights}
                     {...form.getInputProps("fortnight")}
                   />
+                ) : (
+                  <>
+                    <Text my={"lg"} ta={"center"}>
+                      Disponibilidade de data
+                    </Text>
+                    <Center>
+                      <DatePicker
+                        visibleFrom="sm"
+                        allowDeselect
+                        minDate={new Date()}
+                        {...form.getInputProps("date")}
+                        onChange={(value) => {
+                          value
+                            ? form.setFieldValue(
+                                "date",
+                                new Date(value ? value : "")
+                                  .toISOString()
+                                  .split("T")[0]
+                              )
+                            : form.setFieldValue("date", "");
+                        }}
+                      />
+                    </Center>
+                  </>
                 )}
-                <Text my={"lg"} ta={"center"}>
-                  Disponibilidade de data
-                </Text>
-                <Center>
-                  <DatePicker
-                    visibleFrom="sm"
-                    allowDeselect
-                    minDate={new Date()}
-                    {...form.getInputProps("date")}
-                    onChange={(value) => {
-                      value
-                        ? form.setFieldValue(
-                            "date",
-                            new Date(value ? value : "")
-                              .toISOString()
-                              .split("T")[0]
-                          )
-                        : form.setFieldValue("date", "");
-                    }}
-                  />
-                </Center>
               </form>
             </Paper>
           </Grid.Col>

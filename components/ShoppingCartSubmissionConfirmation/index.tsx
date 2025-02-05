@@ -13,6 +13,7 @@ import React, { useContext, useState } from "react";
 import BillboardTable from "../_Tables/BillboardTable";
 import { CartContext } from "@/contexts/CartContext";
 import PanelTable from "../_Tables/PanelTable";
+import InventoryDisplay from "../InventoryDisplay";
 
 export default function ShoppingCartSubmissionConfirmation() {
   const [needsMoreOutdoors, setNeedsMoreOutdoors] = useState(false);
@@ -208,11 +209,12 @@ export default function ShoppingCartSubmissionConfirmation() {
       )}
       {needsMoreOutdoors && (
         <>
-          <Title ta={"center"}>Outdoors</Title>
+          <InventoryDisplay />
+          {/* <Title ta={"center"}>Outdoors</Title>
           <BillboardTable />
           <Divider my={"lg"} />
           <Title ta={"center"}>Painéis</Title>
-          <PanelTable />
+          <PanelTable /> */}
         </>
       )}
     </>

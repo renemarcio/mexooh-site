@@ -241,7 +241,6 @@ export default function LargeAppShell({
                 </>
               )
             : null}
-
           <ThemeToggleIcon />
           {session.status !== "authenticated" ? (
             <ActionIcon variant="default" onClick={loginModalOpen}>
@@ -254,7 +253,7 @@ export default function LargeAppShell({
             >
               <Avatar
                 color="var(--mantine-primary-color-filled)"
-                onClick={() => signOut({ redirect: false })}
+                onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
               />
             </Tooltip>
           )}
