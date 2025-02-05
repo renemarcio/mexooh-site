@@ -22,16 +22,16 @@ export default function ShoppingCartSubmissionConfirmation() {
     return (
       <Table.Tr key={entry.item.id}>
         <Table.Td>{entry.item.address}</Table.Td>
-
-        <HoverCard shadow="md">
-          <HoverCard.Target>
-            <Table.Td ta={"center"}>
-              {entry.fortnights ? entry.fortnights.length : 0}
-            </Table.Td>
-          </HoverCard.Target>
-          <HoverCard.Dropdown>
-            {entry.fortnights ? (
-              entry.fortnights.map((fortnight) => (
+        {entry.fortnights ? (
+          <HoverCard shadow="md">
+            <HoverCard.Target>
+              <Table.Td ta={"center"}>
+                {entry.fortnights.length}{" "}
+                {entry.fortnights.length > 1 ? "Bi-Semanas" : "Bi-Semana"}
+              </Table.Td>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              {entry.fortnights.map((fortnight) => (
                 <Text>
                   BI-{fortnight.number} (
                   {Number(
@@ -60,35 +60,88 @@ export default function ShoppingCartSubmissionConfirmation() {
                   })}
                   /{new Date(fortnight.finish).getUTCFullYear()})
                 </Text>
-              ))
-            ) : (
-              <Text>À negociar.</Text>
-            )}
-          </HoverCard.Dropdown>
-        </HoverCard>
+              ))}
+            </HoverCard.Dropdown>
+          </HoverCard>
+        ) : (
+          entry.periodStart &&
+          entry.periodFinish && (
+            <Table.Td ta="center">
+              {new Date(entry.periodFinish).getMonth() -
+                new Date(entry.periodStart).getMonth() +
+                12 *
+                  (new Date(entry.periodFinish).getFullYear() -
+                    new Date(entry.periodStart).getFullYear())}{" "}
+              {new Date(entry.periodFinish).getMonth() -
+                new Date(entry.periodStart).getMonth() +
+                12 *
+                  (new Date(entry.periodFinish).getFullYear() -
+                    new Date(entry.periodStart).getFullYear()) >
+              1
+                ? "meses"
+                : "mês"}
+            </Table.Td>
+          )
+        )}
         <Table.Td ta={"center"}>
-          {entry.fortnights ? (
+          {entry.value ? (
             <>
-              <NumberFormatter
-                value={entry.value * entry.fortnights.length}
-                prefix=" R$ "
-                thousandSeparator="."
-                decimalSeparator=","
-                decimalScale={2}
-                fixedDecimalScale
-              />
-              <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
-                (
-                <NumberFormatter
-                  value={entry.value}
-                  prefix="R$ "
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  decimalScale={2}
-                  fixedDecimalScale
-                />{" "}
-                por Bi-Semana)
-              </Text>
+              {entry.fortnights && (
+                <>
+                  <NumberFormatter
+                    // value={entry.value * entry.fortnights.length}
+                    value={entry.totalValue}
+                    prefix=" R$ "
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    decimalScale={2}
+                    fixedDecimalScale
+                  />
+                  <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
+                    (
+                    <NumberFormatter
+                      value={entry.value}
+                      prefix="R$ "
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      fixedDecimalScale
+                    />{" "}
+                    por Bi-Semana)
+                  </Text>
+                </>
+              )}
+              {entry.periodStart && entry.periodFinish && (
+                <>
+                  <NumberFormatter
+                    value={entry.totalValue}
+                    prefix="R$ "
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    decimalScale={2}
+                    fixedDecimalScale
+                  />
+                  <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
+                    (
+                    <NumberFormatter
+                      value={entry.value}
+                      prefix="R$ "
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      fixedDecimalScale
+                    />{" "}
+                    por mês)
+                  </Text>
+                  <Text c={"dimmed"} fs={"italic"} ta={"center"} size="xs">
+                    {`${new Date(entry.periodStart).toLocaleDateString(
+                      "pt-BR"
+                    )} - ${new Date(entry.periodFinish).toLocaleDateString(
+                      "pt-BR"
+                    )}`}
+                  </Text>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -114,26 +167,33 @@ export default function ShoppingCartSubmissionConfirmation() {
           <Divider my={"md"} />
           <Table withTableBorder withRowBorders withColumnBorders striped>
             <Table.Caption c={"midiagreen"}>
-              Total:
-              <NumberFormatter
-                value={cartContext.cart.reduce(
-                  (sum, cartItem) =>
-                    sum +
-                    cartItem.value *
-                      (cartItem.fortnights ? cartItem.fortnights.length : 0),
-                  0
-                )}
-                prefix=" R$ "
-                thousandSeparator="."
-                decimalSeparator=","
-                decimalScale={2}
-                fixedDecimalScale
-              />
+              {cartContext.cart.reduce(
+                (sum, cartItem) => sum + cartItem.totalValue,
+                0
+              ) > 0 ? (
+                <Text>
+                  Total:
+                  <NumberFormatter
+                    value={cartContext.cart.reduce(
+                      (sum, cartItem) => sum + cartItem.totalValue,
+                      // sum + cartItem.value * (cartItem.fortnights ? cartItem.fortnights.length : 0),
+                      0
+                    )}
+                    prefix=" R$ "
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    decimalScale={2}
+                    fixedDecimalScale
+                  />
+                </Text>
+              ) : (
+                <Text>À negociar</Text>
+              )}
             </Table.Caption>
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Localização</Table.Th>
-                <Table.Th ta={"center"}>Bi-Semanas</Table.Th>
+                <Table.Th ta={"center"}>Período</Table.Th>
                 <Table.Th ta={"center"}>Valor</Table.Th>
               </Table.Tr>
             </Table.Thead>

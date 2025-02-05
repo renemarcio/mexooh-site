@@ -16,6 +16,7 @@ import {
   Tooltip,
   Avatar,
   Indicator,
+  Code,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconLogin2, IconShoppingCart } from "@tabler/icons-react";
@@ -228,21 +229,18 @@ export default function LargeAppShell({
         </Center>
         <Group>
           <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
-          <Button
-            variant="filled"
-            onClick={() =>
-              modals.open({
-                title: "Login",
-                centered: true,
-                children: <StaffLogin />,
-                size: "auto",
-                closeOnClickOutside: true,
-                onClose: () => modals.closeAll(),
-              })
-            }
-          >
-            Área de Colaboradores
-          </Button>
+          {session.status === "authenticated"
+            ? //@ts-ignore
+              session.data.Funcionario === 1 &&
+              //@ts-ignore
+              session.data.fun_data_dem === null && (
+                <>
+                  <Button variant="filled" component={Link} href={"/admin"}>
+                    Área de Colaboradores
+                  </Button>
+                </>
+              )
+            : null}
 
           <ThemeToggleIcon />
           {session.status !== "authenticated" ? (
