@@ -184,7 +184,7 @@ Props) {
             span={"auto"}
             pos={"relative"}
           >
-            <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
+            {/* <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} /> */}
             <Paper p={"xl"} h={850} withBorder radius={0}>
               <Stack justify="space-between" h={"100%"}>
                 <InventoryFlex

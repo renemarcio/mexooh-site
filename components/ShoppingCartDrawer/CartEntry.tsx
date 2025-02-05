@@ -10,8 +10,9 @@ import {
   Text,
   Code,
   HoverCard,
+  Button,
 } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { IconCheck, IconTrash } from "@tabler/icons-react";
 import React from "react";
 
 type ShoppingCartDrawerProps = {
@@ -19,6 +20,7 @@ type ShoppingCartDrawerProps = {
 };
 
 export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
+  const [needsProduction, setNeedsProduction] = React.useState(false);
   const cartContext = useCartContext();
   return (
     <Paper
@@ -84,6 +86,15 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
           ) : null}
         </Text>
       </Group>
+      <Button
+        size="xs"
+        fullWidth
+        onClick={() => setNeedsProduction(!needsProduction)}
+        leftSection={needsProduction ? <IconCheck size={16} /> : null}
+        variant={needsProduction ? "light" : "subtle"}
+      >
+        Produção
+      </Button>
       <Center>
         <Text size="lg" fw={700} c={"midiagreen.8"}>
           {entry.totalValue > 0 ? (
@@ -98,6 +109,7 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
           ) : (
             <>À negociar</>
           )}
+          {needsProduction ? " (+ Produção)" : ""}
         </Text>
       </Center>
     </Paper>

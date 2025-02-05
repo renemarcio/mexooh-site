@@ -8,4 +8,5 @@ export type CartEntry = {
   fortnights?: Fortnight[];
   periodStart?: Date;
   periodFinish?: Date;
+  needsProduction?: boolean;
 };

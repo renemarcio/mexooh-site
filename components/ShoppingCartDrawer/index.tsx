@@ -87,7 +87,7 @@ export default function ShoppingCartDrawer({
             />
           </Text>
         )}
-        {cartContext.cart.length > 0 && (
+        {/* {cartContext.cart.length > 0 && (
           <Text ta={"center"}>
             O valor acima{" "}
             <Text
@@ -106,10 +106,10 @@ export default function ShoppingCartDrawer({
             inclui impressão da lona ou papel. Para contratar este serviço,
             clique no botão "Produção", abaixo.
           </Text>
-        )}
+        )} */}
         {cartContext.cart.length > 0 && (
           <Button.Group orientation="vertical">
-            <ServiceButton />
+            {/* <ServiceButton /> */}
             <Button component={Link} href="/checkout" onClick={close} fullWidth>
               Ir para Checkout
             </Button>
