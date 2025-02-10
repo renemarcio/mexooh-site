@@ -11,13 +11,13 @@ export default function TestPage() {
       <Title ta={"center"}>Confira nosso inventário</Title>
       <Center>
         <Text ta={"center"} w={"50%"} mb={"xl"} mt={"md"}>
-          Oferecemos visibilidade para o seu negócio se várias formas, seja por
+          Oferecemos visibilidade para o seu negócio de várias formas, seja por
           um outdoor na rua ou um painel de publicidade em uma estrada, nossos
           pontos são as melhores maneiras de divulgar seu negócio. Coloque já no
           carrinho e faça seu negocio crescer.
         </Text>
       </Center>
-      <InventoryDisplay />
+      {/* <InventoryDisplay /> */}
     </>
   );
 }

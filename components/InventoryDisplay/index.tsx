@@ -8,9 +8,17 @@ import MUPIIcon from "../_Icons/mupi";
 import PanelIcon from "../_Icons/panel";
 import InventoryDisplayMainLayout from "./InventoryDisplayMainLayout";
 
-export default function InventoryDisplay() {
-  const [typeOfInventory, setTypeOfInventory] =
-    useState<inventoryTypes>("panels");
+interface Props {
+  typeOfInventory: inventoryTypes;
+  setTypeOfInventory: (value: inventoryTypes) => void;
+}
+
+export default function InventoryDisplay({
+  typeOfInventory,
+  setTypeOfInventory,
+}: Props) {
+  // const [typeOfInventory, setTypeOfInventory] =
+  //   useState<inventoryTypes>("panels");
 
   return (
     <>
@@ -27,13 +35,13 @@ export default function InventoryDisplay() {
       >
         <Tabs.List>
           <Tabs.Tab leftSection={<PanelIcon size={16} />} value={"panels"}>
-            Painéis
+            Rodovia
           </Tabs.Tab>
           <Tabs.Tab
             leftSection={<MUPIIcon size={16} strokeWidth={0.6} />}
             value={"mupi"}
           >
-            Mupiis
+            Mupis
           </Tabs.Tab>
           <Tabs.Tab
             leftSection={<BillboardIcon size={16} />}

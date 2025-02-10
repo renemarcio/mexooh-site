@@ -5,11 +5,13 @@ import React, { useRef } from "react";
 import Autoplay, { AutoplayOptionsType } from "embla-carousel-autoplay";
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
+import { inventoryTypes } from "@/types/websiteTypes";
 type HeroProps = {
   slides?: SlideData[];
+  setTypeOfInventory?: (value: inventoryTypes) => void;
 };
 
-export default function Hero({ slides }: HeroProps) {
+export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
   const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
 
   const cardsData: SlideData[] = [
@@ -18,7 +20,10 @@ export default function Hero({ slides }: HeroProps) {
       alt: "",
       button: {
         text: "Veja as opções",
-        link: "#panels",
+        link: "#inventory",
+        onClick: () =>
+          setTypeOfInventory ? setTypeOfInventory("panels") : null,
+        // link: "#panels",
       },
     },
     {
@@ -26,7 +31,9 @@ export default function Hero({ slides }: HeroProps) {
       alt: "MUPI",
       button: {
         text: "Veja as opções",
-        link: "#mupi",
+        link: "#inventory",
+        onClick: () => (setTypeOfInventory ? setTypeOfInventory("mupi") : null),
+        // link: "#mupi",
       },
     },
     {
@@ -34,7 +41,10 @@ export default function Hero({ slides }: HeroProps) {
       alt: "OUTDOOR",
       button: {
         text: "Veja as opções",
-        link: "#rent",
+        link: "#inventory",
+        onClick: () =>
+          setTypeOfInventory ? setTypeOfInventory("billboards") : null,
+        // link: "#rent",
       },
     },
     {
@@ -42,7 +52,10 @@ export default function Hero({ slides }: HeroProps) {
       alt: "LED",
       button: {
         text: "Veja as opções",
-        link: "#ledpanels",
+        link: "#inventory",
+        onClick: () =>
+          setTypeOfInventory ? setTypeOfInventory("LEDpanels") : null,
+        // link: "#ledpanels",
       },
     },
   ];

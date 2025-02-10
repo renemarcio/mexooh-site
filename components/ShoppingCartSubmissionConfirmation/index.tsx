@@ -14,9 +14,12 @@ import BillboardTable from "../_Tables/BillboardTable";
 import { CartContext } from "@/contexts/CartContext";
 import PanelTable from "../_Tables/PanelTable";
 import InventoryDisplay from "../InventoryDisplay";
+import { inventoryTypes } from "@/types/websiteTypes";
 
 export default function ShoppingCartSubmissionConfirmation() {
   const [needsMoreOutdoors, setNeedsMoreOutdoors] = useState(false);
+  const [typeOfInventory, setTypeOfInventory] =
+    useState<inventoryTypes>("panels");
   const cartContext = useContext(CartContext);
 
   const shoppingCartTable = cartContext.cart.map((entry) => {
@@ -209,7 +212,10 @@ export default function ShoppingCartSubmissionConfirmation() {
       )}
       {needsMoreOutdoors && (
         <>
-          <InventoryDisplay />
+          <InventoryDisplay
+            setTypeOfInventory={setTypeOfInventory}
+            typeOfInventory={typeOfInventory}
+          />
           {/* <Title ta={"center"}>Outdoors</Title>
           <BillboardTable />
           <Divider my={"lg"} />
