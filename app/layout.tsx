@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorSchemeScript, Box, Button } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
-
+import { Metadata } from "next";
 import Providers from "../contexts/providers";
 
 export const metadata = {

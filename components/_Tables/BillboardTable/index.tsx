@@ -144,6 +144,21 @@ export default function BillboardTable() {
         handleBillboardFetch(billboard.id);
         setActiveBillboard(billboard);
       }}
+      onDoubleClick={() => {
+        if (activeBillboard) {
+          modals.open({
+            title: "Adicionar ao carrinho",
+            centered: true,
+            size: "xl",
+            children: (
+              <RentBillboardModal
+                billboard={activeBillboard}
+                closeFn={() => modals.closeAll()}
+              />
+            ),
+          });
+        }
+      }}
       style={{ cursor: "pointer" }}
       className={
         activeBillboard?.id === billboard.id

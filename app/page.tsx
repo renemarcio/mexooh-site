@@ -9,7 +9,6 @@ import Rent from "@/components/Rent";
 export default function HomePage() {
   return (
     <>
-      {/* <PasswordResetEmail uuid="test" /> */}
       <Hero />
       <Info />
       <Panels />

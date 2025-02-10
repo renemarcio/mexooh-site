@@ -145,9 +145,9 @@ Props) {
   return (
     <>
       <Paper withBorder shadow="md" w={"80%"} m={"auto"}>
-        <Grid gutter={0} overflow="hidden">
+        <Grid gutter={0} overflow="hidden" columns={12}>
           {/* <Grid.Col span={{ base: 4, lg: 3 }} miw={"300px"}> */}
-          <Grid.Col span="content">
+          <Grid.Col span={3}>
             <Paper withBorder radius={0} h={"100%"} p={"lg"}>
               <form>
                 <TextInput
