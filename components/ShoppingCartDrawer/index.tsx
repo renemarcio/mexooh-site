@@ -9,12 +9,14 @@ import {
   NumberFormatter,
   ScrollArea,
   Stack,
+  Tabs,
   Text,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import CartEntry from "./CartEntry";
+import { Billboard } from "@/types/websiteTypes";
 import ServiceButton from "../_Buttons/ServiceButton";
 
 type ShoppingCartDrawerProps = {
@@ -27,6 +29,7 @@ export default function ShoppingCartDrawer({
   opened,
   close,
 }: ShoppingCartDrawerProps) {
+  const [selectedTab, setSelectedTab] = useState("billboards");
   const cartContext = useCartContext();
   // const total = cartContext.cart.reduce(
   //   (sum, cartItem) => sum + cartItem.value * cartItem.fortnights.length,
@@ -38,9 +41,20 @@ export default function ShoppingCartDrawer({
       return entry.totalValue;
     })
     .reduce((a, b) => a + b, 0);
-  const billboardList = cartContext.cart.map((entry) => (
-    <CartEntry key={entry.item.id} entry={entry} />
-  ));
+
+  //Only add entries if entry.item is of interface Billboard, as described in websiteTypes.d.ts
+  // const billboardArray = cartContext.cart.map((entry) =>
+  //   entry.fortnights ? entry : null
+  // );
+
+  const billboardArray = cartContext.cart.filter((entry) => entry.fortnights);
+  const miscArray = cartContext.cart.filter((entry) => !entry.fortnights);
+  const billboardList = billboardArray.map((entry) =>
+    entry.fortnights ? <CartEntry key={entry.item.id} entry={entry} /> : null
+  );
+  const miscList = miscArray.map((entry) =>
+    !entry.fortnights ? <CartEntry key={entry.item.id} entry={entry} /> : null
+  );
 
   return (
     <Drawer
@@ -55,7 +69,51 @@ export default function ShoppingCartDrawer({
         <Box>
           {cartContext.cart.length > 0 ? (
             <ScrollArea h={"68vh"} pr={"sm"}>
-              {billboardList}
+              <Tabs
+                value={selectedTab}
+                onChange={(event) => setSelectedTab(event!)}
+              >
+                <Tabs.List>
+                  <Tabs.Tab value="billboards">Outdoors</Tabs.Tab>
+                  <Tabs.Tab value="Others">Outros</Tabs.Tab>
+                </Tabs.List>
+              </Tabs>
+              {selectedTab === "billboards" ? (
+                billboardList.length > 0 ? (
+                  <>
+                    Lista de Outdoors ({billboardList.length} itens)
+                    {billboardList}
+                  </>
+                ) : (
+                  <Center>
+                    <Text
+                      c={"dimmed"}
+                      fs={"italic"}
+                      ta={"center"}
+                      top={"50%"}
+                      pos={"absolute"}
+                    >
+                      Seu carrinho de outdoors está vazio :( <br /> Que tal dar
+                      uma olhada no que temos à oferecer?
+                    </Text>
+                  </Center>
+                )
+              ) : miscList.length > 0 ? (
+                miscList
+              ) : (
+                <Center>
+                  <Text
+                    c={"dimmed"}
+                    fs={"italic"}
+                    ta={"center"}
+                    top={"50%"}
+                    pos={"absolute"}
+                  >
+                    Você não tem nenhum item que não seja outdoors no seu
+                    carrinho, que tal adicionar alguns?
+                  </Text>
+                </Center>
+              )}
             </ScrollArea>
           ) : (
             <>
