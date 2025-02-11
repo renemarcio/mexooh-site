@@ -20,7 +20,9 @@ type ShoppingCartDrawerProps = {
 };
 
 export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
-  const [needsProduction, setNeedsProduction] = React.useState(false);
+  const [needsProduction, setNeedsProduction] = React.useState(
+    entry.needsProduction
+  );
   const cartContext = useCartContext();
   return (
     <Paper
@@ -89,7 +91,11 @@ export default function CartEntry({ entry }: ShoppingCartDrawerProps) {
       <Button
         size="xs"
         fullWidth
-        onClick={() => setNeedsProduction(!needsProduction)}
+        onClick={() => {
+          setNeedsProduction(!needsProduction);
+          entry.needsProduction = !needsProduction;
+          cartContext.setCart([...cartContext.cart]);
+        }}
         leftSection={needsProduction ? <IconCheck size={16} /> : null}
         variant={needsProduction ? "light" : "subtle"}
       >

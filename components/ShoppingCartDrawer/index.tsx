@@ -80,10 +80,13 @@ export default function ShoppingCartDrawer({
               </Tabs>
               {selectedTab === "billboards" ? (
                 billboardList.length > 0 ? (
-                  <>
-                    Lista de Outdoors ({billboardList.length} itens)
-                    {billboardList}
-                  </>
+                  <Text ta={"center"}>
+                    Lista de Outdoors (
+                    {billboardList.length > 1
+                      ? `${billboardList.length} itens`
+                      : `${billboardList.length} item`}
+                    ){billboardList}
+                  </Text>
                 ) : (
                   <Center>
                     <Text
@@ -99,7 +102,13 @@ export default function ShoppingCartDrawer({
                   </Center>
                 )
               ) : miscList.length > 0 ? (
-                miscList
+                <Text ta={"center"}>
+                  Outros (
+                  {miscList.length > 1
+                    ? `${miscList.length} itens`
+                    : `${miscList.length} item`}
+                  ){miscList}
+                </Text>
               ) : (
                 <Center>
                   <Text

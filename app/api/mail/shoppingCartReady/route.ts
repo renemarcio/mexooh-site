@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       // to: ["criacao@midiapaineis.com.br"], //test @ employee mail
       // to: ["brunoscachetti@hotmail.com"], //test @ dev mail
       subject: "[Site Mex] Cliente fechou o carrinho!",
-      react: ShoppingCartReadyEmail({ user, cart, service, telephones }),
+      react: ShoppingCartReadyEmail({ user, cart, telephones }),
     });
 
     if (error) {

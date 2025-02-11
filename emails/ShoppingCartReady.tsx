@@ -20,14 +20,12 @@ import { CadGeral } from "@/types/databaseTypes";
 interface Props {
   user: CadGeral;
   cart: CartEntry[];
-  service: boolean;
   telephones: string[];
 }
 
 export default function ShoppingCartReadyEmail({
   user,
   cart,
-  service,
   telephones,
 }: Props) {
   const main: React.CSSProperties = {
@@ -38,45 +36,90 @@ export default function ShoppingCartReadyEmail({
 
   let total = 0;
 
-  const cartList = cart?.map((entry, index) => {
+  const billboardArray = cart.filter((entry) => entry.fortnights);
+  const miscArray = cart.filter((entry) => !entry.fortnights);
+
+  const billboardList = billboardArray.map((entry, index) => {
     total += entry.value * (entry.fortnights ? entry.fortnights.length : 0);
-    if (index % 2 === 1) {
-      return (
-        <div className="flex w-full">
-          <div className="p-4 basis-2/5">{entry.item.address}</div>
-          <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
-          <div className="p-4 basis-1/5">
-            {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
-          </div>
-          <div className="p-4 basis-1/5">
-            {entry.value > 0
-              ? "R$" +
-                entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
-                ",00"
-              : "Á NEGOCIAR"}
-            {/* R${entry.value * entry.fortnights.length},00 */}
-          </div>
+    return (
+      <div className={`${index % 2 === 1 ? "bg-zinc-500" : ""} flex w-full`}>
+        <div className="p-4 basis-2/6">{`${entry.item.address} (Código: ${entry.item.id})`}</div>
+        {/* <div className="p-4 basis-1/6">R$ {entry.value},00 / Bi-Semana</div> */}
+        <div className="p-4 basis-1/6">
+          {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
         </div>
-      );
-    } else {
-      return (
-        <div className="bg-zinc-500 flex w-full">
-          <div className="p-4 basis-2/5">{entry.item.address}</div>
-          <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
-          <div className="p-4 basis-1/5">
-            {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
-          </div>
-          <div className="p-4 basis-1/5">
-            {entry.value > 0
-              ? "R$" +
-                entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
-                ",00"
-              : "PAINEL"}
-          </div>
+        <div className="p-4 basis-1/6">
+          {entry.needsProduction ? "Requer impressão" : "Não requer impressão"}
         </div>
-      );
-    }
+        <div className="p-4 basis-1/6">
+          {entry.value > 0
+            ? "R$" +
+              entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+              ",00"
+            : "Á NEGOCIAR"}
+        </div>
+      </div>
+    );
   });
+
+  const miscList = miscArray.map((entry, index) => {
+    return (
+      <div className={`${index % 2 === 1 ? "bg-zinc-500" : ""} flex w-full`}>
+        <div className="p-4 basis-2/4">{`${entry.item.address} (Código: ${entry.item.id})`}</div>
+        {/* <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div> */}
+        <div className="p-4 basis-1/4">
+          {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
+        </div>
+        <div className="p-4 basis-1/4">
+          {entry.value > 0
+            ? "R$" +
+              entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+              ",00"
+            : "Á NEGOCIAR"}
+        </div>
+      </div>
+    );
+  });
+
+  // const cartList = cart?.map((entry, index) => {
+  //   total += entry.value * (entry.fortnights ? entry.fortnights.length : 0);
+  //   if (index % 2 === 1) {
+  //     return (
+  //       <div className="flex w-full">
+  //         <div className="p-4 basis-2/5">{entry.item.address}</div>
+  //         <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
+  //         <div className="p-4 basis-1/5">
+  //           {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
+  //         </div>
+  //         <div className="p-4 basis-1/5">
+  //           {entry.value > 0
+  //             ? "R$" +
+  //               entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+  //               ",00"
+  //             : "Á NEGOCIAR"}
+  //           {/* R${entry.value * entry.fortnights.length},00 */}
+  //         </div>
+  //       </div>
+  //     );
+  //   } else {
+  //     return (
+  //       <div className="bg-zinc-500 flex w-full">
+  //         <div className="p-4 basis-2/5">{entry.item.address}</div>
+  //         <div className="p-4 basis-1/5">R$ {entry.value},00 / Bi-Semana</div>
+  //         <div className="p-4 basis-1/5">
+  //           {entry.fortnights && <>{entry.fortnights.length} Bi-Semanas</>}
+  //         </div>
+  //         <div className="p-4 basis-1/5">
+  //           {entry.value > 0
+  //             ? "R$" +
+  //               entry.value * (entry.fortnights ? entry.fortnights.length : 0) +
+  //               ",00"
+  //             : "PAINEL"}
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // });
 
   return (
     <Html lang="pt-BR" dir="ltr">
@@ -104,13 +147,20 @@ export default function ShoppingCartReadyEmail({
               {`Este é o carrinho que o cliente fez.`}
             </Text>
             <>
+              <Text>Outdoors:</Text> <br />
               <div className="outline outline-green-500 bg-zinc-700 text-white rounded my-4">
-                {cartList}
+                {billboardList}
               </div>
             </>
-            <Text style={main}>
+            <>
+              <Text>Outros:</Text> <br />
+              <div className="outline outline-green-500 bg-zinc-700 text-white rounded my-4">
+                {miscList}
+              </div>
+            </>
+            {/* <Text style={main}>
               O cliente {service ? "REQUER" : "NÃO REQUER"} impressão.
-            </Text>
+            </Text> */}
             <Text style={main} className="font-bold mt-4">
               Total: R$ {total},00
             </Text>
