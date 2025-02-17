@@ -1,13 +1,20 @@
 export function areAllDigitsEqual(number: string | number) {
-  let str = number.toString();
-  let firstDigit = str.charAt(0);
-  for (let index = 1; index < str.length; index++) {
-    if (firstDigit !== str.charAt(index)) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // let str = number.toString();
+  // let firstDigit = str.charAt(0);
+  // for (let index = 1; index < str.length; index++) {
+  //   if (firstDigit !== str.charAt(index)) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  //^ Never again get stuff from the internet smh
+
+  const numberString = number.toString();
+  return numberString
+    .split("")
+    .every((digit) => digit === numberString.charAt(0));
 }
 
 export function isCPFValid(cpf: string) {
