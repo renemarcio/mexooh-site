@@ -1,4 +1,5 @@
 "use client";
+import CompanyInfo from "@/components/CompanyInfo";
 import Hero from "@/components/Hero";
 import Info from "@/components/Info";
 import InventoryDisplay from "@/components/InventoryDisplay";
@@ -7,7 +8,22 @@ import MUPI from "@/components/MUPI";
 import Panels from "@/components/Panels";
 import Rent from "@/components/Rent";
 import { inventoryTypes } from "@/types/websiteTypes";
-import { Title, Center, Text } from "@mantine/core";
+import {
+  Title,
+  Center,
+  Text,
+  ActionIcon,
+  Group,
+  Stack,
+  Tooltip,
+  Box,
+} from "@mantine/core";
+import {
+  IconMail,
+  IconBrandWhatsapp,
+  IconPhoneCall,
+} from "@tabler/icons-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -34,10 +50,13 @@ export default function HomePage() {
           carrinho e faça seu negocio crescer.
         </Text>
       </Center>
+      {/* <CompanyInfo/> */}
       <InventoryDisplay
         setTypeOfInventory={setTypeOfInventory}
         typeOfInventory={typeOfInventory}
       />
+      <Box mt={"xl"} />
+      <CompanyInfo />
     </>
   );
 }
