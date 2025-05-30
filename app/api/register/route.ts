@@ -5,7 +5,7 @@ import { query } from "@/utils/mysqlConnection";
 import { UserRegisterData } from "@/types/userRegisterData";
 import { isCNPJValid, isCPFValid } from "../../../utils/documentValidation";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const data = (await req.json()) as UserRegisterData;
   //Transform this into a compatible variable for the DB
   let userData;
@@ -40,8 +40,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   //Check if a client exists with the same document.
   const dbUserResponse = (await query(
-    `SELECT * FROM cadgeral WHERE cli_cnpj_cpf = ${userData.cnpj_cpf}`
+    `SELECT * FROM cadgeral WHERE cli_cnpj_cpf = ?`,
+    [userData.cnpj_cpf]
   )) as CadGeral[];
+
 
   //If there is only one record, update with missing info, if needed. Else, something's wrong.
   if (dbUserResponse.length === 1) {
