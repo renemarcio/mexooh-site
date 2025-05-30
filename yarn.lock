@@ -574,7 +574,7 @@
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@prisma/client@>=2.26.0 || >=3 || >=4 || >=5 || >=6":
+"@prisma/client@^6.8.2", "@prisma/client@>=2.26.0 || >=3 || >=4 || >=5 || >=6":
   version "6.8.2"
   resolved "https://registry.npmjs.org/@prisma/client/-/client-6.8.2.tgz"
   integrity sha512-5II+vbyzv4si6Yunwgkj0qT/iY0zyspttoDrL3R4BYgLdp42/d2C8xdi9vqkrYtKt9H32oFIukvyw3Koz5JoDg==
@@ -2528,10 +2528,10 @@ embla-carousel-react@^7.1.0, embla-carousel-react@>=7.0.0:
   dependencies:
     embla-carousel "7.1.0"
 
-embla-carousel@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.npmjs.org/embla-carousel/-/embla-carousel-7.1.0.tgz"
-  integrity sha512-Bh8Pa8NWzgugLkf8sAGexQlBCNDFaej5BXiKgQdRJ1mUC9NWBrw9Z23YVPVGkguWoz5LMjZXXFVGCobl3UPt/Q==
+embla-carousel@^8.6.0, embla-carousel@7.1.0:
+  version "8.6.0"
+  resolved "https://registry.npmjs.org/embla-carousel/-/embla-carousel-8.6.0.tgz"
+  integrity sha512-SjWyZBHJPbqxHOzckOfo8lHisEaJWmwd23XppYFYVh10bU66/Pn5tkVkbkCMZVdbUE5eTCI2nD8OyIP4Z+uwkA==
 
 emoji-regex@^10.3.0:
   version "10.4.0"
