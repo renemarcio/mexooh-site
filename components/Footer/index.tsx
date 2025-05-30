@@ -39,6 +39,7 @@ export function Footer() {
               CEP 18204-121 • Vale San Fernando
             </Text>
           </div>
+         
           {/* <div className={classes.wrapper}>
             <Text className={classes.title}>Formas de pagamento</Text>
             <Group mt={6} className={classes.paymentOptions}>
