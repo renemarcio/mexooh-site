@@ -49,6 +49,7 @@ export function Footer() {
               <FaBarcode size={30} color="black" />
             </Group>
           </div> */}
+
         </Group>
       </Container>
       <Box

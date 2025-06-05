@@ -2,7 +2,9 @@
 import classes from "./styles.module.css";
 import { Carousel } from "@mantine/carousel";
 import React, { useRef } from "react";
-import Autoplay, { AutoplayOptionsType } from "embla-carousel-autoplay";
+import { Autoplay } from "@/lib/carouselPlugins";
+
+
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
 import { inventoryTypes } from "@/types/websiteTypes";
@@ -12,7 +14,13 @@ type HeroProps = {
 };
 
 export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
-  const autoplay = useRef(Autoplay({ delay: 7000 } as AutoplayOptionsType));
+const autoplay = useRef<any>(
+  Autoplay(
+    { delay: 7000, stopOnInteraction: true },
+    (emblaRoot) => emblaRoot.parentElement
+  )
+);
+
 
   const cardsData: SlideData[] = [
     {
@@ -63,19 +71,20 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
   const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
 
   return (
-    <Carousel
-      slideSize={"90vw"}
-      slideGap={"xs"}
-      withIndicators
-      height={"500px"}
-      loop
-      plugins={[autoplay.current]}
-      onMouseEnter={autoplay.current.stop}
-      onMouseLeave={autoplay.current.reset}
-      speed={5}
-      classNames={classes}
-    >
-      {cards}
-    </Carousel>
+  <Carousel
+    slideSize={"90vw"}
+    slideGap={"xs"}
+    withIndicators
+    height={"500px"}
+    loop
+    plugins={[autoplay.current]}
+    onMouseEnter={() => autoplay.current?.stop()}
+    onMouseLeave={() => autoplay.current?.reset()}
+    speed={5}
+    classNames={classes}
+  >
+    {cards}
+  </Carousel>
+
   );
 }

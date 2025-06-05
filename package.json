@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint",
     "mail": "email dev"
@@ -34,6 +35,7 @@
     "mysql2": "^3.12.0",
     "next": "14.2.23",
     "next-auth": "^4.24.11",
+    "or": "^0.2.0",
     "papaparse": "^5.5.1",
     "path": "^0.12.7",
     "pdfmake": "^0.2.18",
