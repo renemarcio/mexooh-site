@@ -27,6 +27,7 @@ import { CartContext } from "@/contexts/CartContext";
 import styles from "./styles.module.css";
 import InfoOOHDisplay from "../../InfoOOHDisplay";
 import ThumbnailWithZoomModal from "@/components/ThumbnailWithZoomModal";
+
 export default function PanelTable() {
   const [activePage, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -37,61 +38,59 @@ export default function PanelTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  //TODO: CITY FETCH FIX
-  const [city, setCity] = useState<string | null>("25"); //Hardcoded Alphaville ID because of issues with first fetch. Remove when able to fix.
+  const [city, setCity] = useState<string | null>(null);
   const cart = useContext(CartContext);
   const [infoOOHStats, setInfoOOHStats] = useState<InfoOOHPanelInfoType>();
 
   async function fetchPanels() {
     try {
       const response = await fetch(
-        `/api/panels?activePage=${activePage}&pageSize=20&address=${address}&city=${
-          city === null ? "" : city
-        }`
+        `/api/panels?activePage=${activePage}&pageSize=20&address=${debouncedAddress}&city=${city ?? ""}`
       );
-      const data = await response.json();
-      setTotalPages(data.totalPages);
-      setPanels(data.data);
-    } catch {
+      const json = await response.json();
+      setTotalPages(json?.totalPages || 0);
+      setPanels(json?.data || []);
+    } catch (err) {
+      console.error("Erro ao buscar painéis:", err);
       setPanels([]);
       setTotalPages(0);
-      console.log("Couldn't fetch panels.");
     }
   }
 
   async function fetchCities() {
     try {
       const response = await fetch("/api/cities?asCombobox=true&type=P");
-      const data: ComboboxItem[] = (await response.json()).data;
-      setCities(data);
-      setCity(
-        data.find((element) => element.label === "ALPHAVILLE")?.value ?? null
-      );
-    } catch {
+      const json: { data: ComboboxItem[] } = await response.json();
+      setCities(json.data);
+      if (!city && json.data.length > 0) {
+        setCity(json.data[0].value ?? null);
+      }
+    } catch (err) {
+      console.error("Erro ao buscar cidades:", err);
       setCities([]);
-      console.log("Couldn't fetch cities.");
     }
   }
 
   async function fetchInfoOOHStats(panelId: number) {
     try {
       const response = await fetch(`/api/infooh/panels?id=${panelId}`);
-      const data = await response.json();
-      setInfoOOHStats(data.data[0]);
-    } catch {
-      console.log("Couldn't fetch info.");
+      const json = await response.json();
+      setInfoOOHStats(json?.data?.[0]);
+    } catch (err) {
+      console.error("Erro ao buscar infoOH stats:", err);
     }
   }
 
   async function fetchThumbnail(panelId: number) {
     try {
       const response = await fetch(`/api/panels?id=${panelId}`);
-      const data = await response.json();
-      setThumbnailUrl(data.data[0].thumbnailUrl);
-    } catch {
-      console.log("Couldn't fetch thumbnail.");
+      const json = await response.json();
+      setThumbnailUrl(json?.data?.[0]?.thumbnailUrl || "");
+    } catch (err) {
+      console.error("Erro ao buscar thumbnail:", err);
     }
   }
+
   useEffect(() => {
     fetchPanels();
   }, [debouncedAddress, activePage]);
@@ -108,17 +107,13 @@ export default function PanelTable() {
   const tableRows = panels.map((panel) => (
     <Table.Tr
       key={panel.id}
-      className={
-        cart.cart.find((e) => e.item.id === panel.id) ? styles.inCart : ""
-      }
+      className={cart.cart.find((e) => e.item.id === panel.id) ? styles.inCart : ""}
       onMouseEnter={() => {
-        setLat(Number(panel.coordinates?.split(",")[0]));
-        setLong(Number(panel.coordinates?.split(",")[1]));
+        const [latitude, longitude] = (panel.coordinates || "0,0").split(",").map(Number);
+        setLat(latitude);
+        setLong(longitude);
         fetchInfoOOHStats(panel.id);
         fetchThumbnail(panel.id);
-      }}
-      onMouseLeave={() => {
-        // setInfoOOHStats(undefined);
       }}
       onClick={() => {
         modals.open({
@@ -136,8 +131,8 @@ export default function PanelTable() {
       }}
       style={{ cursor: "pointer" }}
     >
-      <Table.Td ta={"left"}>
-        <Text lineClamp={1} tt={"capitalize"}>
+      <Table.Td ta="left">
+        <Text lineClamp={1} tt="capitalize">
           {panel.address?.toLowerCase()}
         </Text>
       </Table.Td>
@@ -145,111 +140,75 @@ export default function PanelTable() {
   ));
 
   return (
-    <>
-      {/* <Code>
-        {lat}, {long} //Debug/Test Lat Long fetch
-      </Code> */}
-      <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
-        <Grid>
-          <Grid.Col span={5} visibleFrom="lg">
-            <Stack h={"100%"} gap={0}>
-              {/* <Image
-                src={thumbnailUrl}
-                h={"300px"}
-                w={"auto"}
-                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                lightHidden
-              />
-              <Image
-                src={thumbnailUrl}
-                h={"300px"}
-                w={"auto"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                darkHidden
-              /> */}
-              <ThumbnailWithZoomModal
-                src={thumbnailUrl}
-                fallbackDarkSrc={
-                  "https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                }
-                fallbackLightSrc={
-                  "https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                }
-                h="300px"
-              />
-              <Box h={"250px"}>
-                <Map lat={lat} long={long} />
-              </Box>
-              <Paper withBorder h={"300px"}>
-                <InfoOOHDisplay data={infoOOHStats} />
-              </Paper>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={{ lg: 7, xs: 12 }}>
-            <Stack h={"100%"} justify="space-between" gap={5}>
-              <Table highlightOnHover striped>
-                <Table.Thead>
+    <Paper withBorder w="80vw" p="lg" m="auto" my="lg">
+      <Grid>
+        <Grid.Col span={5} visibleFrom="lg">
+          <Stack h="100%" gap={0}>
+            <ThumbnailWithZoomModal
+              src={thumbnailUrl}
+              fallbackDarkSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
+              fallbackLightSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+              h="300px"
+            />
+            <Box h="250px">
+              <Map lat={lat} long={long} />
+            </Box>
+            <Paper withBorder h="300px">
+              <InfoOOHDisplay data={infoOOHStats} />
+            </Paper>
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ lg: 7, xs: 12 }}>
+          <Stack h="100%" justify="space-between" gap={5}>
+            <Table highlightOnHover striped>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>
+                    <Box>
+                      <Flex gap={5} p={0} direction={{ base: "column", md: "row" }}>
+                        <TextInput
+                          flex={3}
+                          placeholder="Endereço..."
+                          onBlur={fetchPanels}
+                          onChange={(e) => setAddress(e.currentTarget.value)}
+                        />
+                        <Select
+                          flex={1}
+                          placeholder="Cidade..."
+                          data={cities}
+                          searchable
+                          onChange={(value) => setCity(value)}
+                          allowDeselect
+                          value={city}
+                        />
+                      </Flex>
+                    </Box>
+                  </Table.Th>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Th>Endereço</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {tableRows.length > 0 ? (
+                  tableRows
+                ) : (
                   <Table.Tr>
-                    <Table.Th>
-                      <Box>
-                        <Flex
-                          gap={5}
-                          p={0}
-                          direction={{ base: "column", md: "row" }}
-                        >
-                          <TextInput
-                            flex={3}
-                            placeholder="Endereço..."
-                            onBlur={() => {
-                              fetchPanels();
-                            }}
-                            onChange={(e) => setAddress(e.currentTarget.value)}
-                          />
-                          <Select
-                            flex={1}
-                            placeholder="Cidade..."
-                            data={cities}
-                            searchable
-                            onChange={(value) => {
-                              setCity(value);
-                            }}
-                            allowDeselect={true}
-                            value={city}
-                          />
-                        </Flex>
-                      </Box>
-                    </Table.Th>
+                    <Table.Td>
+                      <Text fs="italic" ta="center" c="dimmed">
+                        Nenhum resultado encontrado
+                      </Text>
+                    </Table.Td>
                   </Table.Tr>
-                  <Table.Tr>
-                    <Table.Th>Endereço</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {tableRows.length > 0 ? (
-                    tableRows
-                  ) : (
-                    <Table.Tr>
-                      <Table.Td>
-                        <Text fs={"italic"} ta={"center"} c={"dimmed"}>
-                          Nenhum resultado encontrado
-                        </Text>
-                      </Table.Td>
-                    </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
-              <Center w={"100%"}>
-                <Pagination
-                  pb={"xs"}
-                  total={totalPages}
-                  value={activePage}
-                  onChange={setPage}
-                />
-              </Center>
-            </Stack>
-          </Grid.Col>
-        </Grid>
-      </Paper>
-    </>
+                )}
+              </Table.Tbody>
+            </Table>
+            <Center w="100%">
+              <Pagination pb="xs" total={totalPages} value={activePage} onChange={setPage} />
+            </Center>
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </Paper>
   );
 }
