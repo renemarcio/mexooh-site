@@ -57,14 +57,21 @@ export async function GET(req: NextRequest) {
     };
   });
 
-  if (searchParams.get("asCombobox")) {
-    const comboboxData = cities.map((city) => {
-      return {
-        label: city.name,
-        value: city.id.toString(),
-      };
-    });
+if (searchParams.get("asCombobox")) {
+  try {
+    if (!cities || cities.length === 0) {
+      return NextResponse.json({ data: [] });
+    }
+
+    const comboboxData = cities.map((city) => ({
+      label: city.name,
+      value: city.id.toString(),
+    }));
+
     return NextResponse.json({ data: comboboxData });
+  } catch (err) {
+    console.error("Erro ao montar combobox de cidades:", err);
+    return NextResponse.json({ data: [], error: "Erro interno" }, { status: 500 });
   }
-  return NextResponse.json({ data: cities });
+}
 }
