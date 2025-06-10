@@ -15,10 +15,10 @@ type HeroProps = {
 };
 
 export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
-  const autoplay = useRef(
+  const autoplay = useRef<any>(
     createAutoplay(
       { delay: 7000, stopOnInteraction: true },
-      (emblaRoot: HTMLElement) => emblaRoot.parentElement
+      (emblaRoot: HTMLElement) => emblaRoot.parentElement!
     )
   );
 
@@ -71,11 +71,10 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
       slideGap="xs"
       withIndicators
       height="500px"
-      loop
+
       plugins={[autoplay.current]}
-      onMouseEnter={() => autoplay.current?.stop()}
-      onMouseLeave={() => autoplay.current?.reset()}
-      speed={5}
+      onMouseEnter={() => autoplay.current?.stop?.()}
+      onMouseLeave={() => autoplay.current?.reset?.()}
       classNames={classes}
     >
       {cards}
