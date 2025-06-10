@@ -1,20 +1,9 @@
+import Autoplay from "embla-carousel-autoplay";
+import type { EmblaPluginType } from "embla-carousel";
 
-import { Autoplay as AutoplayPlugin } from "@/lib/carouselPlugins";
-import type { EmblaPluginType } from 'embla-carousel';
-
-
-/**
- * Wrapper para tipagem correta do plugin Autoplay
- */
-
-interface AutoplayOptions {
-  delay?: number;
-  stopOnInteraction?: boolean;
-}
-
-export function Autoplay(
-  options?: AutoplayOptions,
-  rootNode?: (root: HTMLElement) => HTMLElement | null
+export function createAutoplay(
+  options?: ConstructorParameters<typeof Autoplay>[0],
+  rootNode?: ConstructorParameters<typeof Autoplay>[1]
 ): EmblaPluginType {
-  return AutoplayPlugin(options, rootNode) as unknown as EmblaPluginType;
+  return new Autoplay(options, rootNode);
 }

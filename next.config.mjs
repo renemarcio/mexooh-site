@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configura a saída como exportação estática
-  output: 'export',
 
   // Outras configurações que desejar podem ser adicionadas aqui
   reactStrictMode: true,
