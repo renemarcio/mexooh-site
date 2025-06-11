@@ -1,4 +1,3 @@
-import { useCityContext } from "@/contexts/CityContext";
 import {
   Box,
   Paper,
@@ -31,19 +30,11 @@ export default function LEDPanelTable() {
   const [long, setLong] = useState(0);
   const [lat, setLat] = useState(0);
   const [videoURL, setVideoURL] = useState("");
-  const [city, setCity] = useState<string | null>(""); // ✅ Aceita string ou null
-
+  const [city, setCity] = useState<string | null>("");
 
   async function fetchLEDPanels() {
     try {
-      // const response = await fetch(
-      //   `/api/LEDpanels?activePage=${activePage}&pageSize=17&endereco=${address}&cidade=${city}`
-      // );
-      // const data = await response.json();
-      // setTotalPages(data.totalPages);
-      // setLEDPanels(data.data);
-      // This works, but the database is still not supporting this. In the meantime, faux data will be used.
-
+      // Dados simulados enquanto a API real não está disponível
       setLEDPanels([
         {
           id: 1,
@@ -70,39 +61,40 @@ export default function LEDPanelTable() {
     }
   }
 
-async function fetchCities() {
-  try {
-    const response = await fetch("/api/cities?asCombobox=true&type=O");
+  async function fetchCities() {
+    try {
+      const response = await fetch("/api/cities?asCombobox=true&type=O");
 
+      if (!response.ok) {
+        console.error("Erro ao buscar cidades (LED):", response.statusText);
+        setCities([]);
+        return;
+      }
 
-    if (!response.ok) {
-      console.error("Erro ao buscar cidades (LED):", response.statusText);
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        console.error("Dados inválidos da API (LED):", data);
+        setCities([]);
+        return;
+      }
+
+      setCities(data);
+
+      if (data.length > 0 && data[0]?.value) {
+        setCity(data[0].value);
+      } else {
+        setCity("");
+      }
+    } catch (error) {
+      console.error("Erro inesperado ao buscar cidades (LED):", error);
       setCities([]);
-      return;
     }
-
-    const data = await response.json();
-
-    if (!data || !Array.isArray(data.data)) {
-      console.error("Dados inválidos da API (LED):", data);
-      setCities([]);
-      return;
-    }
-
-if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
-  setCities(data.data);
-  setCity(data.data[0].value);
-} else {
-  setCities([]);
-  setCity(""); // ou null
-}
-
-  } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (OUTDOOR):", error);
-    setCities([]);
   }
-}
 
+  useEffect(() => {
+    fetchCities();
+  }, []);
 
   useEffect(() => {
     fetchLEDPanels();
@@ -121,7 +113,6 @@ if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
         modals.open({
           title: <p>{LEDPanel.address}</p>,
           centered: true,
-          // children: <p>WIP</p>,
           children: (
             <LEDPanelForm panel={LEDPanel} closeFn={() => modals.closeAll()} />
           ),
@@ -138,120 +129,83 @@ if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
   ));
 
   return (
-    <>
-      <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
-        <Grid>
-          <Grid.Col span={5} visibleFrom="lg">
-            <Stack h={"100%"} gap={0}>
-              {/* <Image
-                src={thumbnailUrl}
-                height={"300px"}
-                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                lightHidden
-                h={"50%"}
-              />
-              <Image
-                src={thumbnailUrl}
-                height={"300px"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                darkHidden
-                h={"50%"}
-              /> */}
-              <Image
-                src={"photos/led.jpeg"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-              />
-              {/* <video loop muted height={"300px"}> //Reenable when we have videos for this.
-                <source src={videoURL} type="video/mp4" />
-                <Image
-                  height={"300px"}
-                  src="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Video"
-                  lightHidden
-                  h={"50%"}
-                />
-                <Image
-                  height={"300px"}
-                  src="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Video"
-                  darkHidden
-                  h={"50%"}
-                />
-                Vídeo indisponível
-              </video> */}
-              {/* <Map lat={lat} long={long} />  // Reenable this when we have coordinates for panels.*/}
-              <Paper withBorder h={"300px"}>
-                <Center h={"100%"}>
-                  <Title c={"dimmed"}>InfoOOH</Title>
-                </Center>
-              </Paper>
-            </Stack>
-          </Grid.Col>
-          <Grid.Col span={{ lg: 7, xs: 12 }}>
-            <Stack h={"100%"} justify="space-between" gap={5}>
-              <Table highlightOnHover striped>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>
-                      <Box>
-                        <Flex
-                          gap={5}
-                          p={0}
-                          direction={{ base: "column", sm: "row" }}
-                        >
-                          <TextInput
-                            flex={3}
-                            placeholder="Endereço..."
-                            onBlur={() => {
-                              fetchLEDPanels();
-                            }}
-                            onChange={(e) => setAddress(e.currentTarget.value)}
-                          />
-                          <Select
-                            flex={1}
-                            placeholder="Cidade..."
-                            data={cities}
-                            onChange={(value) => {
-                              setCity(value!);
-                              fetchLEDPanels();
-                            }}
-                            allowDeselect={false}
-                            value={city}
-                          />
-                        </Flex>
-                      </Box>
-                    </Table.Th>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Th>Endereço</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {LEDpanels && LEDpanels.length > 0 ? (
-                    tableRows
-                  ) : (
-                    <Table.Tr>
-                      <Table.Td>
-                        <Text fs={"italic"} ta={"center"} c={"dimmed"}>
-                          Nenhum resultado encontrado
-                        </Text>
-                      </Table.Td>
-                    </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
-              <Center w={"100%"}>
-                <Pagination
-                  pb={"xs"}
-                  total={totalPages}
-                  value={activePage}
-                  onChange={setPage}
-                />
+    <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} my={"lg"}>
+      <Grid>
+        <Grid.Col span={5} visibleFrom="lg">
+          <Stack h={"100%"} gap={0}>
+            <Image
+              src={"photos/led.jpeg"}
+              fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
+            />
+            <Paper withBorder h={"300px"}>
+              <Center h={"100%"}>
+                <Title c={"dimmed"}>InfoOOH</Title>
               </Center>
-            </Stack>
-          </Grid.Col>
-        </Grid>
-        {/* TESTE
-        <LEDPanelForm panel={LEDpanels[0]} closeFn={() => {}} /> */}
-      </Paper>
-    </>
+            </Paper>
+          </Stack>
+        </Grid.Col>
+        <Grid.Col span={{ lg: 7, xs: 12 }}>
+          <Stack h={"100%"} justify="space-between" gap={5}>
+            <Table highlightOnHover striped>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>
+                    <Box>
+                      <Flex
+                        gap={5}
+                        p={0}
+                        direction={{ base: "column", sm: "row" }}
+                      >
+                        <TextInput
+                          flex={3}
+                          placeholder="Endereço..."
+                          onBlur={fetchLEDPanels}
+                          onChange={(e) => setAddress(e.currentTarget.value)}
+                        />
+                        <Select
+                          flex={1}
+                          placeholder="Cidade..."
+                          data={cities}
+                          onChange={(value) => {
+                            setCity(value!);
+                            fetchLEDPanels();
+                          }}
+                          allowDeselect={false}
+                          value={city}
+                        />
+                      </Flex>
+                    </Box>
+                  </Table.Th>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Th>Endereço</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {LEDpanels.length > 0 ? (
+                  tableRows
+                ) : (
+                  <Table.Tr>
+                    <Table.Td>
+                      <Text fs={"italic"} ta={"center"} c={"dimmed"}>
+                        Nenhum resultado encontrado
+                      </Text>
+                    </Table.Td>
+                  </Table.Tr>
+                )}
+              </Table.Tbody>
+            </Table>
+            <Center w={"100%"}>
+              <Pagination
+                pb={"xs"}
+                total={totalPages}
+                value={activePage}
+                onChange={setPage}
+              />
+            </Center>
+          </Stack>
+        </Grid.Col>
+      </Grid>
+    </Paper>
   );
 }
