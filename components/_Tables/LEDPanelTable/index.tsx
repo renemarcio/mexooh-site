@@ -72,6 +72,7 @@ async function fetchCities() {
     }
 
     const data = await response.json();
+    console.log("API response de cities", data);
 
     if (!Array.isArray(data)) {
       console.error("Resposta inesperada da API (esperado array):", data);

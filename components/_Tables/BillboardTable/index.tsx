@@ -57,6 +57,8 @@ export default function BillboardTable() {
         }&fortnights=${selectedFortnight}`
       );
       const data = await response.json();
+      console.log("API response de cities", data);
+
       setTotalPages(data.totalPages);
       setBillboards(data.data);
     } catch {

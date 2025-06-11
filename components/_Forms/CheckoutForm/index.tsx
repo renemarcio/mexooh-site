@@ -23,6 +23,8 @@ export default function CheckoutForm({ session }: Props) {
   async function sendMail() {
     const response = await fetch(`/api/phones?id=${session.Cad_codigo}`);
     const data = await response.json();
+ 
+
     const phoneNumbers = data.map((phone: any) => phone.Numero);
     fetch("/api/mail/shoppingCartReady", {
       method: "POST",
