@@ -45,7 +45,7 @@ export default function BillboardTable() {
   const [cities, setCities] = useState<ComboboxData>([]);
   const pageSize = 22;
 
-  const [city, setCity] = useState<string | null>(""); // ✅ Aceita string ou null
+  const [city, setCity] = useState<string | null>("");
 
   const cartContext = useCartContext();
 
@@ -97,37 +97,36 @@ export default function BillboardTable() {
     }
   }
 
-async function fetchCities() {
-  try {
-    const response = await fetch("/api/cities?asCombobox=true&type=O");
+  async function fetchCities() {
+    try {
+      const response = await fetch("/api/cities?asCombobox=true&type=O");
 
-    if (!response.ok) {
-      console.error("Erro ao buscar cidades (LED):", response.statusText);
+      if (!response.ok) {
+        console.error("Erro ao buscar cidades (LED):", response.statusText);
+        setCities([]);
+        return;
+      }
+
+      const json = await response.json();
+
+      if (!json || !Array.isArray(json.data)) {
+        console.error("Resposta inesperada da API (esperado array):", json);
+        setCities([]);
+        return;
+      }
+
+      setCities(json.data);
+
+      if (json.data.length > 0 && json.data[0].value) {
+        setCity(json.data[0].value);
+      } else {
+        setCity("");
+      }
+    } catch (error) {
+      console.error("Erro inesperado ao buscar cidades (LED):", error);
       setCities([]);
-      return;
     }
-
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      console.error("Resposta inesperada da API (esperado array):", data);
-      setCities([]);
-      return;
-    }
-
-    setCities(data);
-
-    if (data.length > 0 && data[0].value) {
-      setCity(data[0].value);
-    } else {
-      setCity("");
-    }
-  } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (LED):", error);
-    setCities([]);
   }
-}
-
 
   useEffect(() => {
     handleBillboardsFetch();
@@ -149,7 +148,6 @@ async function fetchCities() {
         setLat(Number(billboard.coordinates?.split(",")[0]));
         setLong(Number(billboard.coordinates?.split(",")[1]));
         handleBillboardFetch(billboard.id);
-        // setThumbnailUrl(`/photos/Outdoors/${billboard.id}.jpg`);
       }}
       onClick={() => {
         setLat(Number(billboard.coordinates?.split(",")[0]));
@@ -193,7 +191,7 @@ async function fetchCities() {
           <NumberFormatter
             prefix="R$ "
             thousandSeparator="."
-            decimalSeparator=","
+            decimalSeparator="," 
             decimalScale={2}
             fixedDecimalScale
             //@ts-ignore
@@ -210,21 +208,6 @@ async function fetchCities() {
         <Grid p={"sm"}>
           <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
-              {/* <Image src={thumbnailUrl} height={"300px"} /> */}
-              {/* <Image
-                src={thumbnailUrl}
-                h={"300px"}
-                w={"auto"}
-                fallbackSrc="https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                lightHidden
-              />
-              <Image
-                src={thumbnailUrl}
-                h={"300px"}
-                w={"auto"}
-                fallbackSrc="https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                darkHidden
-              /> */}
               <ThumbnailWithZoomModal
                 src={thumbnailUrl}
                 fallbackDarkSrc={
@@ -260,7 +243,6 @@ async function fetchCities() {
                   />
                   <Select
                     flex={1}
-                    // classNames={{ pillsList: classes.pillsList }}
                     placeholder="Bi-Semana..."
                     data={fortnights || []}
                     onChange={(value) => {
