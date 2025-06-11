@@ -89,7 +89,13 @@ async function fetchCities() {
     }
 
 if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
-  setCities(data.data);
+  setCities(data);
+if (Array.isArray(data) && data.length > 0 && data[0]?.value) {
+  setCity(data[0].value);
+} else {
+  setCity("");
+}
+
   setCity(data.data[0].value);
 } else {
   setCities([]);
