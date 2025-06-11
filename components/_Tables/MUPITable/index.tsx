@@ -38,48 +38,69 @@ export default function MUPITable() {
   const [city, setCity] = useState<string | null>("");
   const cartContext = useCartContext();
 
-  async function fetchMUPIs() {
-    try {
-      const response = await fetch(
-        `/api/mupi?activePage=${activePage}&pageSize=20&address=${address}&city=${city === null ? "" : city}`
-      );
-      const data = await response.json();
-      setTotalPages(data.totalPages);
-      setMUPIs(data.data);
-    } catch {
+async function fetchMUPIs() {
+  try {
+    const response = await fetch(
+      `/api/mupi?activePage=${activePage}&pageSize=20&address=${address}&city=${city === null ? "" : city}`
+    );
+
+    if (!response.ok) {
+      console.error("Erro ao buscar MUPIs:", response.statusText);
       setMUPIs([]);
       setTotalPages(0);
-      console.log("Couldn't fetch MUPIs.");
+      return;
     }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.data)) {
+      console.error("Dados inválidos da API de MUPIs:", data);
+      setMUPIs([]);
+      setTotalPages(0);
+      return;
+    }
+
+    setTotalPages(data.totalPages ?? 1);
+    setMUPIs(data.data);
+  } catch (error) {
+    console.error("Erro inesperado ao buscar MUPIs:", error);
+    setMUPIs([]);
+    setTotalPages(0);
   }
+}
 
-  async function fetchCities() {
-    try {
-      const response = await fetch("/api/cities?asCombobox=true&type=M");
-      if (!response.ok) {
-        console.error("Erro ao buscar cidades (MUPI):", response.statusText);
-        setCities([]);
-        return;
-      }
+async function fetchCities() {
+  try {
+    const response = await fetch("/api/cities?asCombobox=true&type=L");
 
-      const data = await response.json();
-      if (!data || !Array.isArray(data.data)) {
-        console.error("Dados inválidos da API (MUPI):", data);
-        setCities([]);
-        return;
-      }
-
-      setCities(data.data);
-      if (data.data.length > 0) {
-        setCity(data.data[0].value);
-      } else {
-        setCity(null);
-      }
-    } catch (error) {
-      console.error("Erro inesperado ao buscar cidades (MUPI):", error);
+    if (!response.ok) {
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
       setCities([]);
+      return;
     }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.data)) {
+      console.error("Dados inválidos da API (LED):", data);
+      setCities([]);
+      return;
+    }
+
+    setCities(data.data);
+
+    if (data.data.length > 0) {
+      setCity(data.data[0].value);
+    } else {
+      setCity(null);
+    }
+  } catch (error) {
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    setCities([]);
   }
+}
+
+
 
   useEffect(() => {
     fetchCities();

@@ -45,7 +45,8 @@ export default function BillboardTable() {
   const [cities, setCities] = useState<ComboboxData>([]);
   const pageSize = 22;
 
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState<string | null>(""); // ✅ Aceita string ou null
+
   const cartContext = useCartContext();
 
   async function handleBillboardsFetch() {
@@ -96,26 +97,37 @@ export default function BillboardTable() {
     }
   }
 
-  async function fetchCities() {
-    const res = await fetch("/api/cities?asCombobox=true&type=O", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res) {
-      const data = await res.json();
-      setCities(data.data);
-      // setCity(data.data[0].value);
-      setCity(
-        data.data.find(
-          (city: { label: string; value: string }) => city.label === "SOROCABA"
-        )?.value
-      );
-    } else {
-      console.log("Server unreachable.");
+async function fetchCities() {
+  try {
+    const response = await fetch("/api/cities?asCombobox=true&type=L");
+
+    if (!response.ok) {
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
+      setCities([]);
+      return;
     }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.data)) {
+      console.error("Dados inválidos da API (LED):", data);
+      setCities([]);
+      return;
+    }
+
+    setCities(data.data);
+
+    if (data.data.length > 0) {
+      setCity(data.data[0].value);
+    } else {
+      setCity(null);
+    }
+  } catch (error) {
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    setCities([]);
   }
+}
+
   useEffect(() => {
     handleBillboardsFetch();
   }, [debouncedAddress, city, activePage, selectedFortnight]);

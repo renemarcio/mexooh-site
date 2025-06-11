@@ -57,18 +57,37 @@ export default function PanelTable() {
     }
   }
 
-  async function fetchCities() {
-    try {
-      const response = await fetch("/api/cities?asCombobox=true&type=L");
-      const data = await response.json();
-      setCities(data.data);
-      setCity(data.data[0].value);
-    } catch (error) {
-      console.log(error);
+async function fetchCities() {
+  try {
+    const response = await fetch("/api/cities?asCombobox=true&type=L");
+
+    if (!response.ok) {
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
       setCities([]);
-      console.log("LED PANEL Couldn't fetch cities.");
+      return;
     }
+
+    const data = await response.json();
+
+    if (!data || !Array.isArray(data.data)) {
+      console.error("Dados inválidos da API (LED):", data);
+      setCities([]);
+      return;
+    }
+
+    setCities(data.data);
+
+    if (data.data.length > 0) {
+      setCity(data.data[0].value);
+    } else {
+      setCity(null);
+    }
+  } catch (error) {
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    setCities([]);
   }
+}
+
 
   async function fetchInfoOOHStats(panelId: number) {
     try {
