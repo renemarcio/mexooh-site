@@ -76,18 +76,14 @@ async function fetchCities() {
       return;
     }
 
-    setCities(data.data);
+if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
+  setCities(data.data);
+  setCity(data.data[0].value);
+} else {
+  setCities([]);
+  setCity(""); // ou null
+}
 
-  // ✅ Aqui entra o trecho de segurança
-    if (
-      Array.isArray(data.data) &&
-      data.data.length > 0 &&
-      data.data[0]?.value
-    ) {
-      setCity(data.data[0].value);
-    } else {
-      setCity(""); // ou null, se seu estado aceitar null
-    }
   } catch (error) {
     console.error("Erro inesperado ao buscar cidades (OUTDOOR):", error);
     setCities([]);
