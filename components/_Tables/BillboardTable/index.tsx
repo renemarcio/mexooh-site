@@ -99,7 +99,7 @@ export default function BillboardTable() {
 
 async function fetchCities() {
   try {
-    const response = await fetch("/api/cities?asCombobox=true&type=L");
+    const response = await fetch("/api/cities?asCombobox=true&type=O");
 
     if (!response.ok) {
       console.error("Erro ao buscar cidades (LED):", response.statusText);
@@ -117,13 +117,17 @@ async function fetchCities() {
 
     setCities(data.data);
 
-    if (data.data.length > 0) {
+    if (
+      Array.isArray(data.data) &&
+      data.data.length > 0 &&
+      data.data[0]?.value
+    ) {
       setCity(data.data[0].value);
     } else {
-      setCity(null);
+      setCity(""); // ou null, se seu estado aceitar null
     }
   } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    console.error("Erro inesperado ao buscar cidades (OUTDOOR):", error);
     setCities([]);
   }
 }
