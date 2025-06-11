@@ -109,32 +109,25 @@ async function fetchCities() {
 
     const data = await response.json();
 
-    if (!data || !Array.isArray(data.data)) {
-      console.error("Dados inválidos da API (LED):", data);
+    if (!Array.isArray(data)) {
+      console.error("Resposta inesperada da API (esperado array):", data);
       setCities([]);
       return;
     }
 
+    setCities(data);
 
-if (Array.isArray(data.data) && data.data.length > 0 && data.data[0]?.value) {
-  setCities(data);
-if (Array.isArray(data) && data.length > 0 && data[0]?.value) {
-  setCity(data[0].value);
-} else {
-  setCity("");
-}
-
-  setCity(data.data[0].value);
-} else {
-  setCities([]);
-  setCity(""); // ou null
-}
-
+    if (data.length > 0 && data[0].value) {
+      setCity(data[0].value);
+    } else {
+      setCity("");
+    }
   } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (OUTDOOR):", error);
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
     setCities([]);
   }
 }
+
 
   useEffect(() => {
     handleBillboardsFetch();

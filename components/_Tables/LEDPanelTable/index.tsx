@@ -61,36 +61,37 @@ export default function LEDPanelTable() {
     }
   }
 
-  async function fetchCities() {
-    try {
-      const response = await fetch("/api/cities?asCombobox=true&type=O");
+async function fetchCities() {
+  try {
+    const response = await fetch("/api/cities?asCombobox=true&type=O");
 
-      if (!response.ok) {
-        console.error("Erro ao buscar cidades (LED):", response.statusText);
-        setCities([]);
-        return;
-      }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        console.error("Dados inválidos da API (LED):", data);
-        setCities([]);
-        return;
-      }
-
-      setCities(data);
-
-      if (data.length > 0 && data[0]?.value) {
-        setCity(data[0].value);
-      } else {
-        setCity("");
-      }
-    } catch (error) {
-      console.error("Erro inesperado ao buscar cidades (LED):", error);
+    if (!response.ok) {
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
       setCities([]);
+      return;
     }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      console.error("Resposta inesperada da API (esperado array):", data);
+      setCities([]);
+      return;
+    }
+
+    setCities(data);
+
+    if (data.length > 0 && data[0].value) {
+      setCity(data[0].value);
+    } else {
+      setCity("");
+    }
+  } catch (error) {
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    setCities([]);
   }
+}
+
 
   useEffect(() => {
     fetchCities();
