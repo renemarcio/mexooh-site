@@ -62,31 +62,34 @@ async function fetchCities() {
     const response = await fetch("/api/cities?asCombobox=true&type=O");
 
     if (!response.ok) {
-      console.error("Erro ao buscar cidades (PanelTable):", response.statusText);
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
       setCities([]);
       return;
     }
 
-    const result = await response.json();
+    const json = await response.json();
 
-    if (!result || !Array.isArray(result.data)) {
-      console.error("Resposta inesperada da API (esperado data como array):", result);
+    console.log("API response de cities:", json); // <-- AQUI!
+
+    if (!json || !Array.isArray(json.data)) {
+      console.error("Resposta inesperada da API (esperado array):", json);
       setCities([]);
       return;
     }
 
-    setCities(result.data);
+    setCities(json.data);
 
-    if (result.data.length > 0 && result.data[0].value) {
-      setCity(result.data[0].value);
+    if (json.data.length > 0 && json.data[0].value) {
+      setCity(json.data[0].value);
     } else {
       setCity("");
     }
   } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (PanelTable):", error);
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
     setCities([]);
   }
 }
+
 
 
 

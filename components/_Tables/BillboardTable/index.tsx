@@ -99,36 +99,39 @@ export default function BillboardTable() {
     }
   }
 
-  async function fetchCities() {
-    try {
-      const response = await fetch("/api/cities?asCombobox=true&type=O");
+async function fetchCities() {
+  try {
+    const response = await fetch("/api/cities?asCombobox=true&type=O");
 
-      if (!response.ok) {
-        console.error("Erro ao buscar cidades (LED):", response.statusText);
-        setCities([]);
-        return;
-      }
-
-      const json = await response.json();
-
-      if (!json || !Array.isArray(json.data)) {
-        console.error("Resposta inesperada da API (esperado array):", json);
-        setCities([]);
-        return;
-      }
-
-      setCities(json.data);
-
-      if (json.data.length > 0 && json.data[0].value) {
-        setCity(json.data[0].value);
-      } else {
-        setCity("");
-      }
-    } catch (error) {
-      console.error("Erro inesperado ao buscar cidades (LED):", error);
+    if (!response.ok) {
+      console.error("Erro ao buscar cidades (LED):", response.statusText);
       setCities([]);
+      return;
     }
+
+    const json = await response.json();
+
+    console.log("API response de cities:", json); // <-- AQUI!
+
+    if (!json || !Array.isArray(json.data)) {
+      console.error("Resposta inesperada da API (esperado array):", json);
+      setCities([]);
+      return;
+    }
+
+    setCities(json.data);
+
+    if (json.data.length > 0 && json.data[0].value) {
+      setCity(json.data[0].value);
+    } else {
+      setCity("");
+    }
+  } catch (error) {
+    console.error("Erro inesperado ao buscar cidades (LED):", error);
+    setCities([]);
   }
+}
+
 
   useEffect(() => {
     handleBillboardsFetch();

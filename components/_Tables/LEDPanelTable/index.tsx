@@ -71,19 +71,20 @@ async function fetchCities() {
       return;
     }
 
-    const data = await response.json();
-    console.log("API response de cities", data);
+    const json = await response.json();
 
-    if (!Array.isArray(data)) {
-      console.error("Resposta inesperada da API (esperado array):", data);
+    console.log("API response de cities:", json); // <-- AQUI!
+
+    if (!json || !Array.isArray(json.data)) {
+      console.error("Resposta inesperada da API (esperado array):", json);
       setCities([]);
       return;
     }
 
-    setCities(data);
+    setCities(json.data);
 
-    if (data.length > 0 && data[0].value) {
-      setCity(data[0].value);
+    if (json.data.length > 0 && json.data[0].value) {
+      setCity(json.data[0].value);
     } else {
       setCity("");
     }
