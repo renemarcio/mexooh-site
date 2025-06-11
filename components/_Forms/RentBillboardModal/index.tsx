@@ -109,9 +109,10 @@ Props) {
       },
     });
     const data = await res.json();
-    const rentedFortnightsIDs = data.data.map((fortnight: Fortnight) => {
+    const rentedFortnightsIDs = data.map((fortnight: Fortnight) => {
       return fortnight.id;
     });
+
     setRentedFortnights(rentedFortnightsIDs);
   }
 

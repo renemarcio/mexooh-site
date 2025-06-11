@@ -37,7 +37,7 @@ export default function PresentationForm() {
     const response = await fetch("/api/panels");
     const data = await response.json();
 
-    const select = data.data.map((obj: Panel) => {
+    const select = data.map((obj: Panel) => {
       return {
         value: obj.id.toString(),
         label: obj.address,
