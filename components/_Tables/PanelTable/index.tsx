@@ -59,15 +59,14 @@ export default function PanelTable() {
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/cities?asCombobox=true&type=P");
-      const json: { data: ComboboxItem[] } = await response.json();
-      setCities(json.data);
-      if (!city && json.data.length > 0) {
-        setCity(json.data[0].value ?? null);
-      }
-    } catch (err) {
-      console.error("Erro ao buscar cidades:", err);
+      const response = await fetch("/api/cities?asCombobox=true&type=L");
+      const data = await response.json();
+      setCities(data.data);
+      setCity(data.data[0].value);
+    } catch (error) {
+      console.log(error);
       setCities([]);
+      console.log("LED PANEL Couldn't fetch cities.");
     }
   }
 

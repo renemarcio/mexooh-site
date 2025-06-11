@@ -81,9 +81,6 @@ export default function LEDPanelTable() {
       console.log("LED PANEL Couldn't fetch cities.");
     }
   }
-  useEffect(() => {
-    fetchCities();
-  }, []);
 
   useEffect(() => {
     fetchLEDPanels();

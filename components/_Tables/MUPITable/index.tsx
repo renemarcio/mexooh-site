@@ -17,7 +17,6 @@ import {
   Flex,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-// import { inventarios } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import Map from "../../Map";
 import { modals } from "@mantine/modals";
@@ -25,7 +24,6 @@ import MUPIForm from "../../_Forms/MUPIForm";
 import { MUPI } from "@/types/websiteTypes";
 import { useCartContext } from "@/contexts/CartContext";
 import classes from "./styles.module.css";
-// import PanelRentForm from "../PanelRentForm";
 
 export default function MUPITable() {
   const [activePage, setPage] = useState(1);
@@ -39,14 +37,11 @@ export default function MUPITable() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [city, setCity] = useState<string | null>("");
   const cartContext = useCartContext();
-  // const { city, setCity } = useCityContext();
 
   async function fetchMUPIs() {
     try {
       const response = await fetch(
-        `/api/mupi?activePage=${activePage}&pageSize=20&address=${address}&city=${
-          city === null ? "" : city
-        }`
+        `/api/mupi?activePage=${activePage}&pageSize=20&address=${address}&city=${city === null ? "" : city}`
       );
       const data = await response.json();
       setTotalPages(data.totalPages);
@@ -61,13 +56,31 @@ export default function MUPITable() {
   async function fetchCities() {
     try {
       const response = await fetch("/api/cities?asCombobox=true&type=M");
+      if (!response.ok) {
+        console.error("Erro ao buscar cidades (MUPI):", response.statusText);
+        setCities([]);
+        return;
+      }
+
       const data = await response.json();
+      if (!data || !Array.isArray(data.data)) {
+        console.error("Dados inválidos da API (MUPI):", data);
+        setCities([]);
+        return;
+      }
+
       setCities(data.data);
-      setCity(data.data[0]?.value);
+      if (data.data.length > 0) {
+        setCity(data.data[0].value);
+      } else {
+        setCity(null);
+      }
     } catch (error) {
+      console.error("Erro inesperado ao buscar cidades (MUPI):", error);
       setCities([]);
     }
   }
+
   useEffect(() => {
     fetchCities();
   }, []);
