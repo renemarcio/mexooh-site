@@ -63,6 +63,7 @@ export async function GET(req: NextRequest) {
         value: city.id.toString(),
       }));
       return NextResponse.json({ data: comboboxData });
+ 
     }
 
     return NextResponse.json({ data: cities });

@@ -48,7 +48,7 @@ export default function AdminDashboard() {
   async function fetchCheckingDirectoryTree() {
     const response = await fetch("/api/checking");
     const data = await response.json();
-    setTreeData(data);
+    setTreeData(data.data);
   }
 
   useEffect(() => {
