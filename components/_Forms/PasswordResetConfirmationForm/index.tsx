@@ -40,7 +40,7 @@ export default function PasswordResetConfirmationForm({ UUID }: Props) {
     const response = await fetch("/api/passwordreset?uuid=" + UUID);
     if (response.status == 200) setCanChangePassword(true);
     const data = await response.json();
-    console.log(data);
+    console.log(data.data);
   }
   async function handleSubmit() {
     setSubmitting(true);
