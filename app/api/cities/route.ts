@@ -1,7 +1,10 @@
 import { Cidade } from "@/types/databaseTypes";
 import { City } from "@/types/websiteTypes";
 import { query } from "@/utils/mysqlConnection";
+
 import { NextRequest, NextResponse } from "next/server";
+console.log('DATABASE_URL:', process.env.DATABASE_URL);
+
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -31,7 +34,7 @@ export async function GET(req: NextRequest) {
     }
     if (type) {
       const allTypes = type.split(",");
-      const allTypesWithQuotes = allTypes.map((t) => `"${t}"`).join(",");
+      const allTypesWithQuotes = allTypes.map((t: string) => `"${t}"`).join(",");
       conditions.push(
         `pontos.pon_outd_pain IN(${allTypesWithQuotes}) AND pontos.pon_alugado = 'S'`
       );

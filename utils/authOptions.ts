@@ -1,17 +1,12 @@
-// import { PrismaAdapter } from '@auth/prisma-adapter';
-// import { NextAuthOptions } from 'next-auth';
-// import { Adapter } from 'next-auth/adapters';
-// import CredentialsProvider from 'next-auth/providers/credentials';
-// import bcrypt from 'bcrypt';
-// import prisma from '@/lib/prisma';
-
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { query } from "./mysqlConnection";
 import { CadGeral } from "@/types/databaseTypes";
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
+
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -27,25 +22,29 @@ export const authOptions: NextAuthOptions = {
         );
 
         const user = userFetch as CadGeral[];
-        console.log("Retrieved users: ", user.length);
+
         if (user.length === 0) {
           throw new Error("Usuário não encontrado");
         }
+
         const isPasswordCorrect = await bcrypt.compare(
           credentials?.password!,
           user[0].password!
         );
+
         if (!isPasswordCorrect) {
           throw new Error("Senha incorreta");
         }
-        console.log("Logged as user: ", user[0]);
+
         return user[0] as any;
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
   },
+
   callbacks: {
     async jwt({ token, user, session, trigger }) {
       if (trigger === "update") {
@@ -55,15 +54,19 @@ export const authOptions: NextAuthOptions = {
             ...session,
           },
         };
-        user = updatedUser as any;
-        return { user };
+        return updatedUser as any;
       }
-      user && (token.user = user);
+
+      if (user) token.user = user;
       return token;
     },
+
     async session({ session, token }) {
-      session = token.user as any;
-      return session;
+      return token.user as any;
     },
+  },
+
+  pages: {
+    signIn: "/signin", // 👈 rota da sua página customizada de login
   },
 };

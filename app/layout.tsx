@@ -1,17 +1,19 @@
 import React from "react";
-import { ColorSchemeScript, Box, Button } from "@mantine/core";
+import { ColorSchemeScript } from "@mantine/core";
 import MyAppShell from "../components/AppShell";
-import { Metadata } from "next";
 import Providers from "../contexts/providers";
+import { Metadata } from "next";
+import "../styles/globals.css"; 
 
-export const metadata = {
+
+export const metadata: Metadata = {
   title: "Mex OOH",
   description: "Locação de painéis e outdoors é aqui!",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-br" style={{ scrollBehavior: "smooth" }}>
+    <html lang="pt-br" data-mantine-color-scheme="dark">
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
         <link rel="shortcut icon" href="/favicon.svg" />
@@ -27,15 +29,9 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <Providers>
           <MyAppShell>
-            <Box
-              style={{
-                backgroundColor: "var(--mantine-color-body)",
-              }}
-              pb={"100px"}
-              mb={"600px"}
-            >
+            <div style={{ backgroundColor: "var(--mantine-color-body)", paddingBottom: 100 }}>
               {children}
-            </Box>
+            </div>
           </MyAppShell>
         </Providers>
       </body>

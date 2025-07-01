@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useMemo } from "react";
 import { Carousel } from "@mantine/carousel";
+import Autoplay from 'embla-carousel-autoplay'; // ✅ sem AutoplayType
 import classes from "./styles.module.css";
 
 import Slide from "./Slide";
 import { SlideData } from "./slidedata";
 import { inventoryTypes } from "@/types/websiteTypes";
-import { createAutoplay } from "@/lib/carouselPlugins";
 
 type HeroProps = {
   slides?: SlideData[];
@@ -15,14 +15,18 @@ type HeroProps = {
 };
 
 export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
-  const autoplay = useRef<any>(
-    createAutoplay(
+  const autoplay = useMemo(() => {
+    return Autoplay(
       { delay: 7000, stopOnInteraction: true },
-      (emblaRoot: HTMLElement) => emblaRoot.parentElement!
-    )
-  );
+      (emblaRoot) => emblaRoot?.parentElement ?? emblaRoot
+    );
+  }, []) as ReturnType<typeof Autoplay> & {
+    stop?: () => void;
+    reset?: () => void;
+  };
 
-  const cardsData: SlideData[] = [
+
+  const cardsData: SlideData[] = slides ?? [
     {
       src: "slides/MEX_SITE_painel.jpg",
       alt: "Painel",
@@ -61,9 +65,9 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
     },
   ];
 
-  const cards = cardsData.map((card) => (
-    <Slide slide={card} key={card.alt} />
-  ));
+  const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
+
+  if (!cards?.length) return null;
 
   return (
     <Carousel
@@ -71,11 +75,9 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
       slideGap="xs"
       withIndicators
       height="500px"
-
-      plugins={[autoplay.current]}
-      onMouseEnter={() => autoplay.current?.stop?.()}
-      onMouseLeave={() => autoplay.current?.reset?.()}
-      classNames={classes}
+      plugins={[autoplay as any]}
+      onMouseEnter={() => autoplay.stop?.()}
+      onMouseLeave={() => autoplay.reset?.()}
     >
       {cards}
     </Carousel>

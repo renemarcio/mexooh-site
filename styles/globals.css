@@ -1,0 +1,36 @@
+/* styles/globals.css */
+
+:root {
+  --default-bg: var(--mantine-color-body);
+  --default-text: var(--mantine-color-text);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  min-height: 100%;
+  background-color: var(--default-bg); /* fundo escuro se theme.colorScheme = 'dark' */
+  color: var(--default-text);
+  font-family: var(--mantine-font-family, sans-serif); /* usa o tema */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
