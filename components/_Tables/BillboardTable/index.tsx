@@ -152,12 +152,12 @@ async function fetchCities() {
       onMouseEnter={() => {
         setLat(Number(billboard.coordinates?.split(",")[0]));
         setLong(Number(billboard.coordinates?.split(",")[1]));
-        handleBillboardFetch(billboard.id);
+        handleBillboardFetch(Number(billboard.id));
       }}
       onClick={() => {
         setLat(Number(billboard.coordinates?.split(",")[0]));
         setLong(Number(billboard.coordinates?.split(",")[1]));
-        handleBillboardFetch(billboard.id);
+        handleBillboardFetch(Number(billboard.id));
         setActiveBillboard(billboard);
       }}
       onDoubleClick={() => {

@@ -41,7 +41,46 @@ export async function GET(req: NextRequest) {
   }
 
   let SQL =
-    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'L' And pontos.pon_alugado = 'S'";
+  `
+  SELECT 
+    p.pon_codigo,
+    p.pon_iluminado,
+    p.pon_alugado,
+    p.pon_outd_pain,
+    p.LinkMapa,
+    SUBSTRING_INDEX(p.pon_compl, ' - ', 1) AS base_local
+  FROM pontos p
+  LEFT JOIN Cidades c ON c.cid_codigo = p.Cidades_cid_codigo
+  JOIN (
+    SELECT 
+      SUBSTRING_INDEX(pon_compl, ' - ', 1) AS base_local,
+      MIN(pon_codigo) AS menor_codigo
+    FROM pontos
+    WHERE 
+      pon_outd_pain = 'L' 
+      AND pon_alugado = 'S' 
+      AND pon_codigo > 0
+      AND pon_compl IS NOT NULL
+      AND (
+        pon_compl NOT RLIKE '[0-9]$'
+        OR pon_compl RLIKE ' 1$'
+      )
+    GROUP BY base_local
+  ) AS filtro
+  ON filtro.base_local = SUBSTRING_INDEX(p.pon_compl, ' - ', 1)
+  AND filtro.menor_codigo = p.pon_codigo
+  WHERE 
+    p.pon_outd_pain = 'L' 
+    AND p.pon_alugado = 'S' 
+    AND p.pon_codigo > 0
+    AND p.pon_compl IS NOT NULL
+    AND (
+      p.pon_compl NOT RLIKE '[0-9]$'
+      OR p.pon_compl RLIKE ' 1$'
+    )
+`;
+
+    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'L' And pontos.pon_alugado = 'S' and pontos.pon_codigo > 0 ";
 
   const conditions = [];
 

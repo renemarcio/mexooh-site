@@ -49,11 +49,28 @@ export default function LargeAppShell({
       >
         <Center>
           <Link href={"/"}>
-            <Group>
-              <Box h={70} p={10}>
-                <Logo />
-              </Box>
-            </Group>
+          <Group>
+            <Box h={70} p={10}>
+              <Logo />
+            </Box>
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <UnstyledButton
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--mantine-color-text)",
+                    fontWeight: "600",
+                  }}
+                >
+                  Teste <FaChevronCircleDown size={14} />
+                </UnstyledButton>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item component={Link} href="/teste1">Item 1</Menu.Item>
+                <Menu.Item component={Link} href="/teste2">Item 2</Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
           </Link>
           <Box>
             <Group gap={"sm"}>

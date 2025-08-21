@@ -14,19 +14,15 @@ interface Props {
 }
 
 export default function InventoryDisplay({
-  typeOfInventory,
   setTypeOfInventory,
+  typeOfInventory,
 }: Props) {
-  // const [typeOfInventory, setTypeOfInventory] =
-  //   useState<inventoryTypes>("panels");
-
   return (
     <>
       <Tabs
         w={"80%"}
         mx={"auto"}
         value={typeOfInventory}
-        defaultValue={"panels"}
         onChange={(value) => {
           if (value !== null) {
             setTypeOfInventory(value as inventoryTypes);
@@ -57,6 +53,7 @@ export default function InventoryDisplay({
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
+
       <InventoryDisplayMainLayout typeOfInventory={typeOfInventory} />
     </>
   );

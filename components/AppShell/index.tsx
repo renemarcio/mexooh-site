@@ -130,30 +130,30 @@ export default function MyAppShell({ children }: AppShellProps) {
                 label="Sobre"
                 leftSection={<IconInfoCircleFilled size={18} />}
               />
-              <NavLink
+              {/* <NavLink
                 onClick={burgerMenuClose}
                 href="/#panels"
                 label="Painéis"
                 leftSection={<PanelIcon size={18} />}
-              />
-              <NavLink
+              /> */}
+              {/* <NavLink
                 onClick={burgerMenuClose}
                 href="/#mupi"
                 label="Mobiliário Urbano"
                 leftSection={<MUPIIcon size={18} />}
-              />
-              <NavLink
+              /> */}
+              {/* <NavLink
                 onClick={burgerMenuClose}
                 href="/#rent"
                 label="Outdoor"
                 leftSection={<BillboardIcon size={18} />}
-              />
-              <NavLink
+              /> */}
+              {/* <NavLink
                 onClick={burgerMenuClose}
                 href="/#ledpanels"
                 label="Painéis de LED"
                 leftSection={<LEDpanelIcon size={18} />}
-              />
+              /> */}
               <NavLink
                 onClick={burgerMenuClose}
                 href="#"

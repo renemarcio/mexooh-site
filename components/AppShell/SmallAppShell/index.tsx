@@ -48,7 +48,22 @@ export default function SmallAppShell({
         <Box>
           <Center>
             <Group gap={5}>
+              <Button component={Link} href="/#billboards" color="green" variant="filled" visibleFrom="sm">
+                Outdoor
+              </Button>
+              <Button component={Link} href="/#panels" color="green" variant="filled" visibleFrom="sm">
+                Painéis
+              </Button>
+              <Button component={Link} href="/#ledpanels" color="green" variant="filled" visibleFrom="sm">
+                Painéis de LED
+              </Button>
+              <Button component={Link} href="/#mupi" color="green" variant="filled" visibleFrom="sm">
+                Mobiliário Urbano
+              </Button>
+
               <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
+                          
+
               <Button component={Link} href="/admin" visibleFrom="sm">
                 Área de Colaboradores
               </Button>

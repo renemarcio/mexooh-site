@@ -10,10 +10,17 @@ export interface Fortnight {
 }
 
 export interface Inventory {
+  id: string | number;
+  pon_compl?: string;
+  image?: {
+    alt: string;
+    src: string;
+  };
   id: number;
   address: string;
   coordinates: string;
   thumbnailUrl?: string;
+
 }
 
 export interface Billboard extends Inventory {

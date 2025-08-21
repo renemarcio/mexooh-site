@@ -28,6 +28,27 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
 
   const cardsData: SlideData[] = slides ?? [
     {
+      src: "slides/PainesLed.mp4",
+      alt: "Painel",
+      button: {
+        text: "Veja as opções",
+        link: "#inventory",
+        onClick: () => setTypeOfInventory?.("panels"),
+      },
+    },
+
+    {
+      src: "slides/PainelDigital.mp4",
+      alt: "Painel",
+      button: {
+        text: "Veja as opções",
+        link: "#inventory",
+        onClick: () => setTypeOfInventory?.("panels"),
+      },
+    },
+
+
+    {
       src: "slides/MEX_SITE_painel.jpg",
       alt: "Painel",
       button: {
@@ -65,7 +86,10 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
     },
   ];
 
-  const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
+  //const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
+  const cards = cardsData.map((card) => (
+  <Slide slide={card} key={`${card.alt}-${card.src}`} />
+  ));
 
   if (!cards?.length) return null;
 

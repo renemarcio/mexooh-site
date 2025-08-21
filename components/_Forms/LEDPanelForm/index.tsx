@@ -82,15 +82,15 @@ export default function LEDPanelForm({ panel, closeFn }: Props) {
         />
         <Fieldset legend={"Grade de horários"}>
           <Chip.Group multiple {...form.getInputProps("grid")}>
-            <Grid>
-              {gridSize.map((_, index) => (
-                <Grid.Col span={4}>
-                  <Center>
-                    <Chip value={`${index + 1}`}>{`${index + 1}`}</Chip>
-                  </Center>
-                </Grid.Col>
-              ))}
-            </Grid>
+          <Grid>
+            {gridSize.map((_, index) => (
+              <Grid.Col key={`grid-col-${index}`} span={4}>
+                <Center>
+                  <Chip value={`${index + 1}`}>{`${index + 1}`}</Chip>
+                </Center>
+              </Grid.Col>
+            ))}
+          </Grid>
           </Chip.Group>
         </Fieldset>
         {/* <Code>{JSON.stringify(form.getValues(), null, 2)}</Code> */}

@@ -3,28 +3,30 @@ import { Flex, Text } from "@mantine/core";
 import InventoryCard from "../_Cards/InventoryCard";
 
 interface Props {
+  type: string;
   data?: Inventory[];
-  onClick: (inventory: Inventory) => void;
+  onClick?: (inventory: Inventory) => void;
 }
 
-export default function InventoryFlex({ data = [], onClick }: Props) {
+export default function InventoryFlex({ data = [], onClick = () => {}, type }: Props) {
   const items =
     data.length > 0 ? (
       data.map((inventory) => (
-        <InventoryCard
-          inventory={inventory}
-          onClick={onClick}
-          key={inventory.id}
-        />
+        <div key={inventory.id}>
+          <Text ta="center" fw={700} mb="xs">
+            {inventory.pon_compl}
+          </Text>
+          <InventoryCard inventory={inventory} onClick={onClick} />
+        </div>
       ))
     ) : (
-      <Text c={"dimmed"} size={"sm"} ta={"center"} fs={"italic"}>
-        Nenhum resultado encontrado
+      <Text c="dimmed" size="sm" ta="center" fs="italic">
+        Nenhum resultado encontrado para o tipo: {type}
       </Text>
     );
 
   return (
-    <Flex wrap={"wrap"} justify={"center"} gap={"md"}>
+    <Flex wrap="wrap" justify="center" gap="md">
       {items}
     </Flex>
   );

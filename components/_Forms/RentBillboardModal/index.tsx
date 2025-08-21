@@ -69,7 +69,7 @@ Props) {
       };
     }) || [];
 
-  async function fetchThumbnail(id: number) {
+  async function fetchThumbnail(id: string | number) {
     const res = await fetch("/api/billboards?id=" + id, {
       method: "GET",
       headers: {
@@ -84,7 +84,7 @@ Props) {
   useEffect(() => {
     fetchFortnights();
     fetchRentedFortnights();
-    fetchThumbnail(billboard.id);
+    fetchThumbnail(String(billboard.id));
   }, []);
 
   async function fetchFortnights() {

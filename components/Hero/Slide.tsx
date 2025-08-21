@@ -9,17 +9,29 @@ type SlideProps = {
 };
 
 export default function Slide({ slide }: SlideProps) {
-  console.log("Slide renderizado:", slide);
+  const isVideo = slide.src.endsWith(".mp4") || slide.src.endsWith(".webm");
+
   return (
     <Carousel.Slide key={slide.alt}>
       <Anchor href={slide.button.link} onClick={slide.button.onClick}>
-        <Image
-          className={classes.bgImg}
-          fit="contain"
-          src={slide.src}
-          h="100%"
-          style={{ cursor: "pointer" }}
-        />
+        {isVideo ? (
+         <video
+        src={slide.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className={classes.video}
+      />
+        ) : (
+          <Image
+            className={classes.bgImg}
+            fit="contain"
+            src={slide.src}
+            h="100%"
+            style={{ cursor: "pointer" }}
+          />
+        )}
       </Anchor>
     </Carousel.Slide>
   );

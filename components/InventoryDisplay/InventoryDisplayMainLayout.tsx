@@ -236,13 +236,12 @@ export default function InventoryDisplayMainLayout({
         <Grid.Col span="auto" pos="relative">
           <Paper p="xl" h={850} withBorder radius={0}>
             <Stack justify="space-between" h="100%">
-              <InventoryFlex
-                data={data}
-                onClick={(value) =>
-                  onClickHandler(value, typeOfInventory)
-                }
-              />
-              <Center mt="xl">
+            <InventoryFlex
+              data={data}
+              type={typeOfInventory}
+              onClick={(value) =>
+                onClickHandler(value, typeOfInventory)}
+            />              <Center mt="xl">
                 {totalPages > 0 && (
                   <Pagination
                     siblings={paginationSiblings}

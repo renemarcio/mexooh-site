@@ -135,8 +135,8 @@ async function fetchCities() {
         const [latitude, longitude] = (panel.coordinates || "0,0").split(",").map(Number);
         setLat(latitude);
         setLong(longitude);
-        fetchInfoOOHStats(panel.id);
-        fetchThumbnail(panel.id);
+        fetchThumbnail(Number(panel.id));
+        fetchThumbnail(Number(panel.id));
       }}
       onClick={() => {
         modals.open({
