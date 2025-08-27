@@ -39,20 +39,21 @@ export default function InventoryDisplay(props: Props) {
   // Valor e setter unificados (controlado x não-controlado)
   const activeTab: inventoryTypes = (controlledTab ?? internalTab) as inventoryTypes;
   const setTab = (value: inventoryTypes) => {
-    if (isControlled) {
-      externalSetTab!(value);
-    } else {
-      setInternalTab(value);
-    }
+    if (isControlled) externalSetTab!(value);
+    else setInternalTab(value);
   };
 
   const [mounted, setMounted] = useState(false);
 
-  // Hash inicial -> seleciona a aba
+  /** 🔒 NOVO: só rolar quando houver hash válido (inicial ou via hashchange) */
+  const [shouldScroll, setShouldScroll] = useState(false);
+
+  // Hash inicial -> seleciona a aba e permite scroll apenas se houver hash
   useEffect(() => {
     const h = window.location.hash.slice(1) as inventoryTypes;
     if (validTabs.includes(h)) {
       setTab(h);
+      setShouldScroll(true); // só agora vamos rolar
     }
     setMounted(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,49 +63,58 @@ export default function InventoryDisplay(props: Props) {
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.slice(1) as inventoryTypes;
-      if (validTabs.includes(h)) setTab(h);
+      if (validTabs.includes(h)) {
+        setTab(h);
+        setShouldScroll(true); // rolar após mudar a aba por hash
+      }
     };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Scroll suave quando a aba ativa muda (robusto: tenta até montar)
+  // Scroll suave quando a aba ativa muda — MAS somente se houve hash válido pedindo scroll
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !shouldScroll) return;
 
     const domId = tabToDomId(activeTab);
-    let cancelled = false;
-    let tries = 0;
-    const maxTries = 40; // ~2s (40 x 50ms)
+    const currentHash = window.location.hash.slice(1);
 
+    if (currentHash !== domId) return; // hash não corresponde à aba atual -> não rola
+
+    let done = false;
     const tryScroll = () => {
-      if (cancelled) return;
       const el = document.getElementById(domId);
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return;
+        done = true;
+        setShouldScroll(false); // evita repetir sem novo hash
       }
-      if (tries++ < maxTries) setTimeout(tryScroll, 50);
     };
 
+    // tenta já e, se não der, re-tenta/observa o DOM por pouco tempo
     tryScroll();
+    if (done) return;
 
-    // Fallback adicional: observa o DOM até o alvo aparecer
+    const t = setInterval(() => {
+      if (!done) tryScroll();
+    }, 50);
+
     const obs = new MutationObserver(() => {
-      const el = document.getElementById(domId);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        obs.disconnect();
-      }
+      if (!done) tryScroll();
     });
     obs.observe(document.body, { childList: true, subtree: true });
 
+    setTimeout(() => {
+      clearInterval(t);
+      obs.disconnect();
+    }, 800);
+
     return () => {
-      cancelled = true;
+      clearInterval(t);
       obs.disconnect();
     };
-  }, [mounted, activeTab]);
+  }, [mounted, shouldScroll, activeTab]);
 
   // Evita hidratação errada
   if (!mounted) return null;
@@ -120,6 +130,7 @@ export default function InventoryDisplay(props: Props) {
           const tab = value as inventoryTypes;
           setTab(tab);
           // mantém a URL coerente (#billboards, #LEDpanels, etc.)
+          // ⚠️ não ligamos shouldScroll aqui de propósito — clicar na tab local não deve dar “pulo”
           window.history.replaceState(null, "", `#${tab}`);
         }}
       >
@@ -139,7 +150,7 @@ export default function InventoryDisplay(props: Props) {
         </Tabs.List>
       </Tabs>
 
-      {/* “Booster” invisível — igual ao LED, também para Outdoors */}
+      {/* Mantido exatamente como no seu arquivo */}
       {activeTab === "LEDpanels" && <LEDPanelsButton setTab={setTab} />}
       {activeTab === "billboards" && <OutdoorsButton setTab={setTab} />}
 
