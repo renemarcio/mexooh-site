@@ -19,8 +19,9 @@
     "incremental": true,
     "types": ["node"],
     "plugins": [{ "name": "next" }],
-    "paths": {
-      "@/*": ["./*"],
+
+        "paths": {
+          "@/*": ["./*"],
       "@/fonts": ["./styles/fonts"],
       "@/components/*": ["components/*"],
       "@/contexts/*": ["contexts/*"]

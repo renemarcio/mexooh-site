@@ -62,6 +62,7 @@ export interface Pontos {
   VlrInventario: number; //VlrInventario
   VlrDepreciacao: number; //VlrDepreciacao
   VlrNegocio: number; //VlrNegocio
+  base_local?: string;
 }
 
 export interface Cidade {

@@ -2,9 +2,10 @@ import { Box, Button, Center, Text, Title } from "@mantine/core";
 import React from "react";
 import LEDPanelTable from "../_Tables/LEDPanelTable";
 
+
 export default function LEDPanel() {
   return (
-    <Box id="ledpanels" p={"lg"}>
+    <Box id="LEDpanels" p={"lg"}>
       <Center>
         <Title>Painéis de LED</Title>
       </Center>

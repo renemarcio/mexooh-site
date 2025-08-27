@@ -20,6 +20,8 @@ import {
   getDefaultZIndex,
   NavLink,
 } from "@mantine/core";
+import useScrollToSection from "@/utils/useScrollToSection";
+
 import {
   IconBurger,
   IconDownload,
@@ -55,6 +57,7 @@ import PanelIcon from "../_Icons/panel";
 import MUPIIcon from "../_Icons/mupi";
 import BillboardIcon from "../_Icons/billboard";
 import LEDpanelIcon from "../_Icons/ledpanel";
+
 type AppShellProps = {
   children: React.ReactNode;
 };
@@ -76,6 +79,26 @@ export default function MyAppShell({ children }: AppShellProps) {
   const [loginModalOpened, { open: loginModalOpen, close: loginModalClose }] =
     useDisclosure(false);
   const cartContext = useCartContext();
+  const scrollToLEDPanel = useScrollToSection("LEDpanels");
+  const scrollToBillboards = useScrollToSection("billboards");
+
+  function scrollToInventory() {
+  const element = document.getElementById("LEDpanels");
+  const element_billboards = document.getElementById("billboards");
+  // if (element) {
+  //   element.scrollIntoView({ behavior: "smooth" });
+  // }
+}
+
+  function scrollToBillboardsOutdoors() {
+
+  const element_billboards = document.getElementById("billboards");
+  // if (element) {
+  //   element.scrollIntoView({ behavior: "smooth" });
+  // }
+}
+
+
   return (
     <>
       <ShoppingCartDrawer
@@ -89,6 +112,7 @@ export default function MyAppShell({ children }: AppShellProps) {
               cartContext={cartContext}
               loginModalOpen={loginModalOpen}
               shoppingCartDrawerToggle={shoppingCartDrawerToggle}
+              scrollToInventory={scrollToInventory}
             />
           </Box>
           <Box className={styles.navbarHiddenFrom}>
@@ -98,6 +122,10 @@ export default function MyAppShell({ children }: AppShellProps) {
               burgerMenuToggle={burgerMenuToggle}
               loginModalOpen={loginModalOpen}
               shoppingCartDrawerToggle={shoppingCartDrawerToggle}
+ 
+              scrollToInventory={scrollToLEDPanel}
+              scrollToBillboards={scrollToBillboards}
+              
             />
           </Box>
         </AppShell.Header>

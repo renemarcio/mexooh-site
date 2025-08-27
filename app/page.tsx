@@ -51,10 +51,7 @@ export default function HomePage() {
         </Text>
       </Center>
       {/* <CompanyInfo/> */}
-      <InventoryDisplay
-        setTypeOfInventory={setTypeOfInventory}
-        typeOfInventory={typeOfInventory}
-      />
+      <InventoryDisplay />
       <Box mt={"xl"} />
       <CompanyInfo />
     </>

@@ -1,102 +1,170 @@
-import { Fortnight, LEDPanel } from "@/types/websiteTypes";
-import VideoDropZone from "./VideoDropZone";
+// components/_Forms/LEDPanelForm.tsx
+"use client";
+
+import React from "react";
 import {
   Button,
-  Code,
-  MultiSelect,
-  Space,
-  TextInput,
   Text,
   Stack,
   NumberInput,
   Fieldset,
   Grid,
-  Radio,
   Chip,
-  Group,
   Center,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { FileWithPath } from "@mantine/dropzone";
 import { DatePickerInput } from "@mantine/dates";
+import VideoDropZone from "./VideoDropZone";
+import type { LEDPanel } from "@/types/websiteTypes";
 
-interface Props {
+type Props = {
   panel: LEDPanel;
   closeFn: () => void;
-}
+
+  /** opcionais: use se quiser fechar e rolar para alguma seção após ações */
+  scrollToInventory?: () => void;   // geralmente rolar para #LEDpanels
+  scrollToBillboards?: () => void;  // geralmente rolar para #billboards
+};
+
 export interface LEDPanelFormValues {
-  file: File;
-  grid: string[];
+  file: File | null;
+  grid: string[];           // horários selecionados
+  startDate: Date | null;   // data de início
+  fortnights: number;       // quantidade de quinzenas
 }
-export default function LEDPanelForm({ panel, closeFn }: Props) {
+
+export default function LEDPanelForm({
+  panel,
+  closeFn,
+  scrollToInventory,
+  scrollToBillboards,
+}: Props) {
   const form = useForm<LEDPanelFormValues>({
-    // mode: "uncontrolled",
     initialValues: {
-      file: {} as File,
+      file: null,
       grid: [],
+      startDate: null,
+      fortnights: 1,
+    },
+    validate: {
+      file: (v) => (!!v ? null : "Selecione um arquivo de vídeo"),
+      startDate: (v) => (!!v ? null : "Informe a data de início"),
+      fortnights: (v) => (v >= 1 ? null : "Mínimo de 1 quinzena"),
     },
   });
-  const gridSize = Array(18).fill(undefined);
+
+  const gridSize = Array.from({ length: 18 });
+
   async function handleSubmit(values: LEDPanelFormValues) {
-    const formData = new FormData();
-    formData.append("file", values.file);
-    formData.append("grid", JSON.stringify(values.grid));
-    const res = await fetch("/api/uploadFile", {
-      method: "POST",
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
-      body: formData,
-    });
-    console.log(await res.json());
+    try {
+      const formData = new FormData();
+      if (values.file) formData.append("file", values.file);
+      formData.append("grid", JSON.stringify(values.grid));
+      if (values.startDate)
+        formData.append("startDate", values.startDate.toISOString());
+      formData.append("fortnights", String(values.fortnights));
+      formData.append("panelId", String((panel as any)?.id ?? ""));
+
+      const res = await fetch("/api/uploadFile", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        // não quebra a UI – mostre um alerta/toast se preferir
+        console.error("Falha no upload:", await res.text());
+        return;
+      }
+
+      // sucesso: fecha e (opcional) rola para onde você quiser
+      closeFn();
+      // exemplo: após reservar, voltar para LED ou ir para outdoors
+      // scrollToInventory?.();
+      // scrollToBillboards?.();
+    } catch (err) {
+      console.error("Erro ao enviar formulário:", err);
+    }
   }
 
   return (
-    <form
-      // onSubmit={form.onSubmit(handleSubmit)}
-      onSubmit={form.onSubmit(() => console.log(":0)"))}
-    >
-      {/* <Text>
-        Olá! Nosso banco de dados ainda não tem suporte para o upload de vídeos.
-        Nosso especialista em Banco de Dados está trabalhando duro para
-        adicionar essa funcionalidade. Quando estiver pronto, ficará parecido
-        com isto:
-      </Text> */}
-      <Text c={"dimmed"} fs={"italic"} size="sm" ta={"center"} mb={"xl"}>
-        Em breve, novas funcionalidades! O que esperar:
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Text c="dimmed" fs="italic" size="sm" ta="center" mb="xl">
+        Envie seu vídeo e selecione os horários desejados.
       </Text>
-      <Stack gap={"lg"}>
-        <VideoDropZone form={form} />
-        {/* <Space h={"xl"} /> */}
+
+      <Stack gap="lg">
+        {/* upload */}
+        <VideoDropZone
+          form={form}
+          // se o componente espera uma prop específica para setar o arquivo,
+          // ele deve chamar form.setFieldValue("file", file)
+        />
+
+        {/* data de início */}
         <DatePickerInput
-          label={"Data de início do aluguel"}
-          placeholder={"Data..."}
+          label="Data de início do aluguel"
+          placeholder="Data..."
           valueFormat="DD/MM/YYYY"
           minDate={new Date()}
+          {...form.getInputProps("startDate")}
         />
+
+        {/* quantidade de quinzenas */}
         <NumberInput
           min={1}
-          defaultValue={1}
-          label={"Quantidade de quinzenas à alugar"}
-          placeholder={"Quero alugar por..."}
+          label="Quantidade de quinzenas a alugar"
+          placeholder="Quero alugar por..."
+          {...form.getInputProps("fortnights")}
         />
-        <Fieldset legend={"Grade de horários"}>
+
+        {/* grade de horários */}
+        <Fieldset legend="Grade de horários">
           <Chip.Group multiple {...form.getInputProps("grid")}>
-          <Grid>
-            {gridSize.map((_, index) => (
-              <Grid.Col key={`grid-col-${index}`} span={4}>
-                <Center>
-                  <Chip value={`${index + 1}`}>{`${index + 1}`}</Chip>
-                </Center>
-              </Grid.Col>
-            ))}
-          </Grid>
+            <Grid>
+              {gridSize.map((_, index) => (
+                <Grid.Col key={`grid-col-${index}`} span={4}>
+                  <Center>
+                    <Chip value={`${index + 1}`}>{index + 1}</Chip>
+                  </Center>
+                </Grid.Col>
+              ))}
+            </Grid>
           </Chip.Group>
         </Fieldset>
-        {/* <Code>{JSON.stringify(form.getValues(), null, 2)}</Code> */}
-        <Button type="submit" fullWidth>
-          Enviar vídeo e reservar
-        </Button>
+
+        {/* ações */}
+        <Stack gap="sm">
+          <Button type="submit" fullWidth>
+            Enviar vídeo e reservar
+          </Button>
+
+          {/* Botões auxiliares/opcionais; remova se não usar */}
+          {scrollToInventory && (
+            <Button
+              variant="light"
+              fullWidth
+              onClick={() => {
+                closeFn();
+                scrollToInventory?.();
+              }}
+            >
+              Voltar para Painéis de LED
+            </Button>
+          )}
+
+          {scrollToBillboards && (
+            <Button
+              variant="light"
+              fullWidth
+              onClick={() => {
+                closeFn();
+                scrollToBillboards?.();
+              }}
+            >
+              Ir para Outdoors
+            </Button>
+          )}
+        </Stack>
       </Stack>
     </form>
   );

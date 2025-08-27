@@ -87,9 +87,7 @@ export default function BillboardTable() {
     }&asCombobox`;
     const res = await fetch(url, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
     if (res) {
       const response = await res.json();
@@ -99,39 +97,31 @@ export default function BillboardTable() {
     }
   }
 
-async function fetchCities() {
-  try {
-    const response = await fetch("/api/cities?asCombobox=true&type=O");
-
-    if (!response.ok) {
-      console.error("Erro ao buscar cidades (LED):", response.statusText);
+  async function fetchCities() {
+    try {
+      const response = await fetch("/api/cities?asCombobox=true&type=O");
+      if (!response.ok) {
+        console.error("Erro ao buscar cidades (Outdoors):", response.statusText);
+        setCities([]);
+        return;
+      }
+      const json = await response.json();
+      if (!json || !Array.isArray(json.data)) {
+        console.error("Resposta inesperada da API (esperado array):", json);
+        setCities([]);
+        return;
+      }
+      setCities(json.data);
+      if (json.data.length > 0 && json.data[0].value) {
+        setCity(json.data[0].value);
+      } else {
+        setCity("");
+      }
+    } catch (error) {
+      console.error("Erro inesperado ao buscar cidades (Outdoors):", error);
       setCities([]);
-      return;
     }
-
-    const json = await response.json();
-
-    console.log("API response de cities:", json); // <-- AQUI!
-
-    if (!json || !Array.isArray(json.data)) {
-      console.error("Resposta inesperada da API (esperado array):", json);
-      setCities([]);
-      return;
-    }
-
-    setCities(json.data);
-
-    if (json.data.length > 0 && json.data[0].value) {
-      setCity(json.data[0].value);
-    } else {
-      setCity("");
-    }
-  } catch (error) {
-    console.error("Erro inesperado ao buscar cidades (LED):", error);
-    setCities([]);
   }
-}
-
 
   useEffect(() => {
     handleBillboardsFetch();
@@ -196,7 +186,7 @@ async function fetchCities() {
           <NumberFormatter
             prefix="R$ "
             thousandSeparator="."
-            decimalSeparator="," 
+            decimalSeparator=","
             decimalScale={2}
             fixedDecimalScale
             //@ts-ignore
@@ -208,19 +198,17 @@ async function fetchCities() {
   ));
 
   return (
-    <>
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // Wrapper com o ID-alvo para o scroll da aba "billboards"
+    <Box id="billboards" p={"lg"}>
       <Paper withBorder w={"80vw"} p={"lg"} m={"auto"} mt={"lg"}>
         <Grid p={"sm"}>
           <Grid.Col span={5} visibleFrom="lg">
             <Stack h={"100%"} gap={0}>
               <ThumbnailWithZoomModal
                 src={thumbnailUrl}
-                fallbackDarkSrc={
-                  "https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"
-                }
-                fallbackLightSrc={
-                  "https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"
-                }
+                fallbackDarkSrc={"https://placehold.co/600x400/2e2e2e/3b3b3b?text=Sem%20Foto"}
+                fallbackLightSrc={"https://placehold.co/600x400/f1f3f5/e9ecef?text=Sem%20Foto"}
                 h="300px"
               />
               <Box h={"250px"}>
@@ -233,6 +221,7 @@ async function fetchCities() {
               </Paper>
             </Stack>
           </Grid.Col>
+
           <Grid.Col span={{ lg: 7, xs: 12 }}>
             <Stack h={"100%"} justify="space-between" gap={5}>
               <Box>
@@ -241,18 +230,14 @@ async function fetchCities() {
                     flex={3}
                     value={address}
                     placeholder="Endereço..."
-                    onBlur={() => {
-                      handleBillboardsFetch();
-                    }}
+                    onBlur={() => { handleBillboardsFetch(); }}
                     onChange={(e) => setAddress(e.currentTarget.value)}
                   />
                   <Select
                     flex={1}
                     placeholder="Bi-Semana..."
                     data={fortnights || []}
-                    onChange={(value) => {
-                      setSelectedFortnight(value ?? "");
-                    }}
+                    onChange={(value) => setSelectedFortnight(value ?? "")}
                   />
                   <Select
                     flex={1}
@@ -267,6 +252,7 @@ async function fetchCities() {
                     }}
                   />
                 </Flex>
+
                 <Table striped highlightOnHover>
                   <Table.Thead>
                     <Table.Tr>
@@ -289,29 +275,23 @@ async function fetchCities() {
                   </Table.Tbody>
                 </Table>
               </Box>
+
               <Center w={"100%"}>
-                <Pagination
-                  pb={"xs"}
-                  total={totalPages}
-                  value={activePage}
-                  onChange={setPage}
-                />
+                <Pagination pb={"xs"} total={totalPages} value={activePage} onChange={setPage} />
               </Center>
             </Stack>
           </Grid.Col>
         </Grid>
+
         <Center>
-          {cartContext.cart.find((e) => e.item.id === activeBillboard?.id) !==
-          undefined ? (
+          {cartContext.cart.find((e) => e.item.id === activeBillboard?.id) !== undefined ? (
             <Button
               w={"80%"}
               color="red"
               onClick={() => {
                 if (activeBillboard) {
                   cartContext.setCart(
-                    cartContext.cart.filter(
-                      (e) => e.item.id !== activeBillboard.id
-                    )
+                    cartContext.cart.filter((e) => e.item.id !== activeBillboard.id)
                   );
                 } else {
                   console.log("ERRO!!! Não tem outdoor selecionado.");
@@ -349,6 +329,7 @@ async function fetchCities() {
           )}
         </Center>
       </Paper>
-    </>
+    </Box>
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   );
 }

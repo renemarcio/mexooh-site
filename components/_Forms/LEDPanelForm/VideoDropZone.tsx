@@ -13,6 +13,7 @@ import { LEDPanelFormValues } from ".";
 
 interface Props {
   form: UseFormReturnType<LEDPanelFormValues>;
+
 }
 
 export default function VideoDropZone({ form }: Props) {

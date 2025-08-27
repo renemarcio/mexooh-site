@@ -1,3 +1,5 @@
+"use client";
+
 import { Inventory, inventoryTypes } from "@/types/websiteTypes";
 import {
   Grid,
@@ -102,37 +104,56 @@ export default function InventoryDisplayMainLayout({
   }
 
   async function fetchCitiesAsComboboxData() {
+    // mapeamento já usado por você
+    const typeMapping = {
+      billboards: "O",
+      panels: "P",
+      mupi: "M",
+      LEDpanels: "L",
+    } as const;
+
+    const t = typeMapping[typeOfInventory];
+    const url = (type?: string) =>
+      `/api/cities?asCombobox=true${type ? `&type=${type}` : ""}`;
+
     try {
-      const typeMapping = {
-        billboards: "O",
-        panels: "P",
-        mupi: "M",
-        LEDpanels: "L",
-      };
+      // 1) tenta com type (ex.: L nos LEDs)
+      let res = await fetch(url(t));
+      let json: any = null;
 
-      const response = await fetch(
-        `/api/cities?type=${typeMapping[typeOfInventory]}&asCombobox=true`
-      );
-
-      let json = { data: [] };
-
-      if (response.ok) {
-        try {
-          json = await response.json();
-        } catch (err) {
-          console.error("Erro ao converter JSON em fetchCities:", err);
-        }
+      if (res.ok) {
+        json = await res.json().catch(() => ({ data: [] }));
       } else {
-        const text = await response.text();
-        console.error("Erro na API fetchCities:", response.status, text);
+        // 2) fallback: tenta sem type (ex.: retornar todas)
+        const text = await res.text();
+        console.warn("fetchCities (typed) falhou:", res.status, text);
+
+        const res2 = await fetch(url());
+        if (!res2.ok) {
+          console.error(
+            "fetchCities (fallback) também falhou:",
+            res2.status,
+            await res2.text()
+          );
+          setCities([]); // evita travar UI
+          return;
+        }
+        json = await res2.json().catch(() => ({ data: [] }));
       }
 
-      setCities(json.data || []);
+      if (!json || !Array.isArray(json.data)) {
+        console.warn("fetchCities: payload inesperado, usando lista vazia:", json);
+        setCities([]);
+        return;
+      }
+
+      setCities(json.data);
     } catch (err) {
       console.error("Erro inesperado em fetchCities:", err);
       setCities([]);
     }
   }
+
 
   async function fetchFortnightsAsComboboxData() {
     try {
@@ -184,6 +205,35 @@ export default function InventoryDisplayMainLayout({
     fetchFortnightsAsComboboxData();
   }, []);
 
+  // ------------------------------------------------------------
+  // 🔑 Âncoras para scroll controlado por hash:
+  // - billboards / panels / mupi: id no <Paper> do layout
+  // - LEDpanels: normalmente vem do <LEDPanel />; se não existir, criamos âncora "fantasma" para não quebrar o scroll
+  // ------------------------------------------------------------
+
+  // type guard para TS
+  const isNonLED = (t: inventoryTypes): t is Exclude<inventoryTypes, "LEDpanels"> =>
+    t !== "LEDpanels";
+
+  const containerIdMap: Record<Exclude<inventoryTypes, "LEDpanels">, string> = {
+    billboards: "billboards",
+    panels: "panels",
+    mupi: "mupi",
+  };
+
+  const containerId = isNonLED(typeOfInventory) ? containerIdMap[typeOfInventory] : undefined;
+
+  // âncora-condicional para LED (somente se o id ainda não existir no DOM)
+  const [needLEDAnchor, setNeedLEDAnchor] = useState(false);
+  useEffect(() => {
+    if (typeOfInventory === "LEDpanels") {
+      const exists = !!document.getElementById("LEDpanels");
+      setNeedLEDAnchor(!exists);
+    } else {
+      setNeedLEDAnchor(false);
+    }
+  }, [typeOfInventory]);
+
   return (
     <Paper withBorder shadow="md" w="80%" m="auto">
       <Grid gutter={0} overflow="hidden" columns={12}>
@@ -197,9 +247,7 @@ export default function InventoryDisplayMainLayout({
                 data={cities}
                 nothingFoundMessage="Nenhuma cidade encontrada"
                 {...form.getInputProps("city")}
-                onChange={(value) =>
-                  form.setFieldValue("city", value ?? "")
-                }
+                onChange={(value) => form.setFieldValue("city", value ?? "")}
               />
               {typeOfInventory === "billboards" ? (
                 <Select
@@ -233,15 +281,19 @@ export default function InventoryDisplayMainLayout({
             </form>
           </Paper>
         </Grid.Col>
+
         <Grid.Col span="auto" pos="relative">
-          <Paper p="xl" h={850} withBorder radius={0}>
+          <Paper id={containerId} p="xl" h={850} withBorder radius={0}>
+            {/* âncora fantasma para LED apenas se o <LEDPanel /> não estiver na página */}
+            {needLEDAnchor && <div id="LEDpanels" style={{ height: 0 }} />}
+
             <Stack justify="space-between" h="100%">
-            <InventoryFlex
-              data={data}
-              type={typeOfInventory}
-              onClick={(value) =>
-                onClickHandler(value, typeOfInventory)}
-            />              <Center mt="xl">
+              <InventoryFlex
+                data={data}
+                type={typeOfInventory}
+                onClick={(value) => onClickHandler(value, typeOfInventory)}
+              />
+              <Center mt="xl">
                 {totalPages > 0 && (
                   <Pagination
                     siblings={paginationSiblings}

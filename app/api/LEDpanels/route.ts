@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
     )
 `;
 
-    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'L' And pontos.pon_alugado = 'S' and pontos.pon_codigo > 0 ";
+   // "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'L' And pontos.pon_alugado = 'S' and pontos.pon_codigo > 0 ";
 
   const conditions = [];
 
@@ -120,7 +120,7 @@ export async function GET(req: NextRequest) {
     const outdoors = paginatedResponse as Pontos[];
     const billboards: LEDPanel[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,
-      address: outdoor.pon_compl,
+      address: (outdoor as any).base_local,
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       // value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
     }));
@@ -134,10 +134,10 @@ export async function GET(req: NextRequest) {
     const outdoors = response as Pontos[];
     const billboards: LEDPanel[] = outdoors.map((outdoor) => ({
       id: outdoor.pon_codigo,
-      address: outdoor.pon_compl,
+      address: outdoor.base_local || "", // ✔️ agora usa base_local
       coordinates: outdoor.LinkMapa ? outdoor.LinkMapa : "0,0",
       value: outdoor.pon_iluminado === "S" ? 1190 : 1090,
-    }));
+    }));    
     const result = {
       data: billboards,
     };

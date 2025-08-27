@@ -1,38 +1,47 @@
+// components/Hero/Slide.tsx
 import React from "react";
-import { SlideData } from "./slidedata";
 import { Carousel } from "@mantine/carousel";
-import { Anchor, Image } from "@mantine/core";
+import type { SlideData } from "./slidedata";
 import classes from "./styles.module.css";
 
-type SlideProps = {
+export type SlideProps = {
   slide: SlideData;
+  /** classe extra para o CTA (ex.: brilho dos LEDs) */
+  ctaClassName?: string;
 };
 
-export default function Slide({ slide }: SlideProps) {
-  const isVideo = slide.src.endsWith(".mp4") || slide.src.endsWith(".webm");
+export default function Slide({ slide, ctaClassName }: SlideProps) {
+  const isVideo =
+    slide.kind === "video" ||
+    /\.(mp4|webm|ogg)$/i.test(slide.src ?? "");
 
   return (
-    <Carousel.Slide key={slide.alt}>
-      <Anchor href={slide.button.link} onClick={slide.button.onClick}>
+    <Carousel.Slide>
+      <div className={classes.slide}>
         {isVideo ? (
-         <video
-        src={slide.src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className={classes.video}
-      />
-        ) : (
-          <Image
-            className={classes.bgImg}
-            fit="contain"
+          <video
+            className={classes.media}
             src={slide.src}
-            h="100%"
-            style={{ cursor: "pointer" }}
+            autoPlay
+            muted
+            loop
+            playsInline
           />
+        ) : (
+          <img className={classes.media} src={slide.src} alt={slide.alt} />
         )}
-      </Anchor>
+
+        <a
+          href={slide.button.link}
+          onClick={(e) => {
+            // mantém o comportamento existente
+            slide.button.onClick?.();
+          }}
+          className={`${classes.cta} ${ctaClassName ?? ""}`}
+        >
+          {slide.button.text}
+        </a>
+      </div>
     </Carousel.Slide>
   );
 }

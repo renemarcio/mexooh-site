@@ -1,97 +1,85 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { Carousel } from "@mantine/carousel";
-import Autoplay from 'embla-carousel-autoplay'; // ✅ sem AutoplayType
-import classes from "./styles.module.css";
+import Autoplay from "embla-carousel-autoplay";
+import type { EmblaPluginType } from "embla-carousel";
 
+import classes from "./styles.module.css";
 import Slide from "./Slide";
-import { SlideData } from "./slidedata";
-import { inventoryTypes } from "@/types/websiteTypes";
+import type { SlideData } from "./slidedata";
+import type { inventoryTypes } from "@/types/websiteTypes";
 
 type HeroProps = {
   slides?: SlideData[];
   setTypeOfInventory?: (value: inventoryTypes) => void;
+  scrollToInventory?: (type: inventoryTypes) => void;
 };
 
-export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
-  const autoplay = useMemo(() => {
-    return Autoplay(
-      { delay: 7000, stopOnInteraction: true },
-      (emblaRoot) => emblaRoot?.parentElement ?? emblaRoot
-    );
-  }, []) as ReturnType<typeof Autoplay> & {
+  // plugin do Embla + métodos opcionais do autoplay
+  type AutoplayPlugin = EmblaPluginType & {
     stop?: () => void;
     reset?: () => void;
   };
 
+  export default function Hero({ slides, setTypeOfInventory, scrollToInventory }: any) {
+    // ✅ inicialização correta (objeto fechado, parênteses fechados, cast no final)
+    const autoplay = useRef<AutoplayPlugin>(
+      Autoplay({ delay: 6000, stopOnInteraction: true }) as unknown as AutoplayPlugin
+    );
 
-  const cardsData: SlideData[] = slides ?? [
-    {
-      src: "slides/PainesLed.mp4",
-      alt: "Painel",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("panels"),
+  const cardsData: SlideData[] =
+    slides ??
+    [
+      {
+        src: "slides/PainesLed.mp4",
+        alt: "Painel (Rodovia)",
+        button: {
+          text: "Veja as opções",
+          link: "#inventory",
+          onClick: () => {
+            setTypeOfInventory?.("panels");
+            scrollToInventory?.("panels");
+          },
+        },
       },
-    },
-
-    {
-      src: "slides/PainelDigital.mp4",
-      alt: "Painel",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("panels"),
+      {
+        src: "slides/PainelDigital.mp4",
+        alt: "Painéis de LED",
+        button: {
+          text: "Veja as opções",
+          link: "#inventory",
+          onClick: () => {
+            setTypeOfInventory?.("LEDpanels");
+            scrollToInventory?.("LEDpanels");
+          },
+        },
       },
-    },
-
-
-    {
-      src: "slides/MEX_SITE_painel.jpg",
-      alt: "Painel",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("panels"),
+      {
+        src: "slides/MEX_SITE_painel.jpg",
+        alt: "Painel",
+        button: {
+          text: "Veja as opções",
+          link: "#inventory",
+          onClick: () => {
+            setTypeOfInventory?.("panels");
+            scrollToInventory?.("panels");
+          },
+        },
       },
-    },
-    {
-      src: "slides/MEX_SITE_mupi_fix.jpg",
-      alt: "MUPI",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("mupi"),
+      {
+        src: "slides/outdoors_3_9.jpg",
+        alt: "OUTDOOR",
+        button: {
+          text: "Veja as opções",
+          link: "#inventory",
+          onClick: () => {
+            setTypeOfInventory?.("billboards");
+            scrollToInventory?.("billboards");
+          },
+        },
       },
-    },
-    {
-      src: "slides/MEX_SITE_OUTDOOR.jpg",
-      alt: "OUTDOOR",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("billboards"),
-      },
-    },
-    {
-      src: "slides/MEX_SITE_PAINEL_LED_FIX.jpg",
-      alt: "LED",
-      button: {
-        text: "Veja as opções",
-        link: "#inventory",
-        onClick: () => setTypeOfInventory?.("LEDpanels"),
-      },
-    },
-  ];
-
-  //const cards = cardsData.map((card) => <Slide slide={card} key={card.alt} />);
-  const cards = cardsData.map((card) => (
-  <Slide slide={card} key={`${card.alt}-${card.src}`} />
-  ));
-
-  if (!cards?.length) return null;
+    ];
 
   return (
     <Carousel
@@ -99,11 +87,21 @@ export default function Hero({ slides, setTypeOfInventory }: HeroProps) {
       slideGap="xs"
       withIndicators
       height="500px"
-      plugins={[autoplay as any]}
-      onMouseEnter={() => autoplay.stop?.()}
-      onMouseLeave={() => autoplay.reset?.()}
+
+      // ✅ o Mantine espera EmblaPluginType — nossa instância é compatível
+      plugins={[autoplay.current]}
+
+      // ✅ envolvemos em funções para o TS não reclamar e para manter o this/closure correto
+      onMouseEnter={() => autoplay.current.stop?.()}
+      onMouseLeave={() => autoplay.current.reset?.()}
     >
-      {cards}
+      {cardsData.map((card) => (
+        <Slide key={`${card.alt}-${card.src}`} 
+        slide={card} 
+          // brilho especial só nos slides de LED
+          ctaClassName={/LED/i.test(card.alt) ? classes.ledGlow : undefined}
+        />
+      ))}
     </Carousel>
   );
 }
