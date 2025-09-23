@@ -1,6 +1,6 @@
 import { InfoOOHPanelInfoType } from "@/types/websiteTypes";
 import { Grid, Title, Text, Center, Group } from "@mantine/core";
-import { InlineInputClasses } from "@mantine/core/lib/components/InlineInput";
+
 import {
   IconCashBanknote,
   IconCompass,

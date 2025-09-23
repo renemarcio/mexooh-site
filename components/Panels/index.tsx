@@ -22,7 +22,7 @@ export default function Panels() {
   return (
     <Box id="panels" bg={"var(--mantine-primary-color-filled)"} p={"lg"}>
       <Title my={"lg"} ta={"center"} className={classes.title}>
-        Painéis Rodoviários
+        Painéis
       </Title>
       <PanelTable />
       <Text ta={"center"} size="lg" px={"10vw"} c={"white"}>

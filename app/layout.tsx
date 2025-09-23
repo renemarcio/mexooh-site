@@ -1,10 +1,10 @@
+// app/layout.tsx
 import React from "react";
 import { ColorSchemeScript } from "@mantine/core";
-import MyAppShell from "../components/AppShell";
-import Providers from "../contexts/providers";
 import { Metadata } from "next";
-import "../styles/globals.css"; 
-
+import Providers from "../contexts/providers";
+import MyAppShell from "../components/AppShell";
+import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Mex OOH",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-br" data-mantine-color-scheme="dark">
+    <html lang="pt-br" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
         <link rel="shortcut icon" href="/favicon.svg" />
@@ -21,10 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="upgrade-insecure-requests"
-        />
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       </head>
       <body>
         <Providers>

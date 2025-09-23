@@ -1,28 +1,28 @@
 "use client";
+
 import FortnightCalendarButton from "@/components/FortnightCalendarButton";
 import Logo from "@/components/Logo";
 import ThemeToggleIcon from "@/components/_Buttons/ThemeToggleIcon";
-import StaffLogin from "@/components/_Forms/Login/StaffLogin";
 import { CartContextType } from "@/contexts/CartContext";
-
 import {
   ActionIcon,
-  ActionIconGroup,
   Avatar,
   Box,
   Burger,
   Button,
   Center,
-  Indicator,
-  Tooltip,
   Group,
-  Text,
+  Indicator,
+  Menu,
+  Tooltip,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconLogin2, IconShoppingCart, IconDeviceTv } from "@tabler/icons-react";
+import { RiDownload2Line } from "react-icons/ri";
+import { FaChevronCircleDown } from "react-icons/fa";
+import { IconLogin2, IconShoppingCart, IconDeviceTv, IconBrandWhatsapp } from "@tabler/icons-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import useScrollToSection from "@/utils/useScrollToSection";
+import { buildWhatsAppLink } from "@/utils/whatsapp";
 
 interface Props {
   cartContext: CartContextType;
@@ -30,9 +30,8 @@ interface Props {
   burgerMenuToggle: () => void;
   loginModalOpen: () => void;
   shoppingCartDrawerToggle: () => void;
-  /** mantidas para compatibilidade; se vierem, usamos, senão caímos no hook */
-  scrollToInventory: () => void;     // normalmente rola para #LEDpanels
-  scrollToBillboards: () => void;    // normalmente rola para #billboards
+  scrollToInventory: () => void;      // rola para #LEDpanels
+  scrollToBillboards: () => void;     // rola para #billboards
 }
 
 export default function SmallAppShell({
@@ -46,17 +45,20 @@ export default function SmallAppShell({
 }: Props) {
   const session = useSession();
 
-  // Hooks de scroll
+  // Hooks de scroll (fallbacks)
   const scrollToLEDPanelHook   = useScrollToSection("LEDpanels");
   const scrollToBillboardsHook = useScrollToSection("billboards");
   const scrollToPanels         = useScrollToSection("panels");
   const scrollToMupi           = useScrollToSection("mupi");
 
-  // Preferir as funções passadas por props, se existirem (retrocompatibilidade)
+  // Preferir funções vindas por props
   const goLED        = scrollToInventory || scrollToLEDPanelHook;
   const goBillboards = scrollToBillboardsProp || scrollToBillboardsHook;
 
-  // estilo base das pílulas (versão compacta)
+  // Link do WhatsApp (mobile)
+  const whatsHref = buildWhatsAppLink({ utmCampaign: "header_cta_mobile" });
+
+  // Estilo base das pílulas
   const pillProps = {
     radius: "xl" as const,
     size: "sm" as const,
@@ -66,7 +68,8 @@ export default function SmallAppShell({
 
   return (
     <>
-      <Group h={70} justify="space-between" px={"lg"} w={"100vw"}>
+      <Group h={70} justify="space-between" px="lg" w="100vw">
+        {/* Logo + burger */}
         <Group>
           <Burger opened={burgerMenuOpened} onClick={burgerMenuToggle} />
           <Box h={70} p={10} component={Link} href="/">
@@ -74,65 +77,96 @@ export default function SmallAppShell({
           </Box>
         </Group>
 
+        {/* Navegação */}
         <Box>
           <Center>
             <Group gap={8} align="center">
-              {/* OUTDOORS -> #billboards */}
-              <Button
-                {...pillProps}
-                variant="gradient"
-                gradient={{ from: "orange", to: "red", deg: 35 }}
-                onClick={goBillboards}
-              >
+              {/* Pílulas principais */}
+              <Button {...pillProps} variant="gradient" gradient={{ from: "orange", to: "red", deg: 35 }} onClick={goBillboards}>
                 Outdoors
               </Button>
 
-              {/* PAINÉIS (RODOVIA) -> #panels */}
-              <Button
-                {...pillProps}
-                variant="gradient"
-                gradient={{ from: "teal", to: "lime", deg: 35 }}
-                onClick={scrollToPanels}
-                visibleFrom="sm"
-              >
-                Painéis Rodoviários
+              <Button {...pillProps} variant="gradient" gradient={{ from: "teal", to: "lime", deg: 35 }} onClick={scrollToPanels} visibleFrom="sm">
+                Rodovia
               </Button>
 
-              {/* LED -> #LEDpanels */}
-              <Button
-                {...pillProps}
-                variant="gradient"
-                gradient={{ from: "indigo", to: "cyan", deg: 35 }}
-                onClick={goLED}
-              >
+              <Button {...pillProps} variant="gradient" gradient={{ from: "indigo", to: "cyan", deg: 35 }} onClick={goLED}>
                 Painéis de LED
               </Button>
 
-              {/* MUPI -> #mupi */}
-              <Button
-                {...pillProps}
-                variant="gradient"
-                gradient={{ from: "grape", to: "pink", deg: 35 }}
-                onClick={scrollToMupi}
-                visibleFrom="sm"
-              >
+              <Button {...pillProps} variant="gradient" gradient={{ from: "grape", to: "pink", deg: 35 }} onClick={scrollToMupi} visibleFrom="sm">
                 Mobiliário Urbano
               </Button>
 
+              {/* Menu "Saiba mais" */}
+              <Menu
+                trigger="hover"
+                openDelay={100}
+                closeDelay={400}
+                withinPortal
+                shadow="md"
+                position="bottom-end"
+                zIndex={200000}
+              >
+                <Menu.Target>
+                  <Button
+                    variant="subtle"
+                    size="sm"
+                    radius="xl"
+                    leftSection={<FaChevronCircleDown size={14} />}
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Saiba mais
+                  </Button>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  <Menu.Item component={Link} href="/downloads/painel_led.pdf" target="_blank" leftSection={<RiDownload2Line />}>
+                    Mídia Kit Painéis
+                  </Menu.Item>
+                  <Menu.Item component={Link} href="/downloads/painel_led.pdf" target="_blank" leftSection={<RiDownload2Line />}>
+                    Mídia Kit Mobiliário Urbano
+                  </Menu.Item>
+                  <Menu.Item component={Link} href="/downloads/painel_led.pdf" target="_blank" leftSection={<RiDownload2Line />}>
+                    Mídia Kit Outdoor
+                  </Menu.Item>
+                  <Menu.Item component={Link} href="/downloads/painel_led.pdf" target="_blank" leftSection={<RiDownload2Line />}>
+                    Mídia Kit Painel de LED
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+
+              {/* Ações extras */}
               <FortnightCalendarButton variant="filled" title="Bi-Semanas" />
 
               <Button component={Link} href="/admin" visibleFrom="sm">
                 Área de Colaboradores
               </Button>
 
+              {/* WhatsApp compacto */}
+              <ActionIcon
+                component="a"
+                href={whatsHref}
+                target="_blank"
+                rel="noopener nofollow"
+                size="lg"
+                radius="xl"
+                variant="filled"
+                color="green"
+                aria-label="Fale no WhatsApp"
+              >
+                <IconBrandWhatsapp size={18} />
+              </ActionIcon>
+
               <ThemeToggleIcon size="lg" />
 
+              {/* Login / Avatar */}
               {session.status !== "authenticated" ? (
-                <ActionIcon variant="default" onClick={loginModalOpen} size={"lg"} radius={"xl"}>
+                <ActionIcon variant="default" onClick={loginModalOpen} size="lg" radius="xl">
                   <IconLogin2 size={14} />
                 </ActionIcon>
               ) : (
-                <Tooltip //@ts-ignore
+                <Tooltip // @ts-ignore
                   label={`Logado como ${session.data?.nome}, clique para sair.`}
                 >
                   <Avatar
@@ -142,12 +176,9 @@ export default function SmallAppShell({
                 </Tooltip>
               )}
 
-              <Indicator
-                label={cartContext.cart.length.toString()}
-                size={"xs"}
-                disabled={cartContext.cart.length === 0}
-              >
-                <ActionIcon variant="default" onClick={shoppingCartDrawerOpen} size={"lg"} radius={"xl"}>
+              {/* Carrinho */}
+              <Indicator label={cartContext.cart.length.toString()} size="xs" disabled={cartContext.cart.length === 0}>
+                <ActionIcon variant="default" onClick={shoppingCartDrawerOpen} size="lg" radius="xl">
                   <IconShoppingCart size={14} />
                 </ActionIcon>
               </Indicator>

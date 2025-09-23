@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
   }
 
   let SQL =
-    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'P' And pontos.pon_alugado = 'S'";
+    "SELECT pon_codigo, pon_compl, LinkMapa, pon_iluminado, pon_alugado, pon_outd_pain FROM pontos LEFT JOIN Cidades ON Cidades.cid_codigo = pontos.Cidades_cid_codigo WHERE Pontos.pon_outd_pain = 'P' And pontos.pon_alugado = 'S' and pontos.pon_codigo > 0";
 
   const conditions = [];
 
