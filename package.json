@@ -38,7 +38,7 @@
     "embla-carousel-react": "^8.6.0",
     "fs": "^0.0.1-security",
     "mysql2": "^3.14.1",
-    "next": "^15.3.4",
+    "next": "15.3.8",
     "next-auth": "^4.24.11",
     "or": "^0.2.0",
     "papaparse": "^5.5.1",
